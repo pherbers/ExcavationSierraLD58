@@ -1,0 +1,32 @@
+[gd_resource type="SpriteFrames" load_steps=4 format=3 uid="uid://cjj8bqaba3c5l"]
+
+[ext_resource type="Texture2D" uid="uid://bo6n31u43td4j" path="res://assets/curser/S0.png" id="1_ma7o5"]
+[ext_resource type="Texture2D" uid="uid://djij1nljt3fuf" path="res://assets/curser/S1.png" id="2_x2t6y"]
+[ext_resource type="Texture2D" uid="uid://dqm78wqnte2o4" path="res://assets/curser/S2.png" id="3_hnb3c"]
+
+[resource]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"Brush",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_ma7o5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_x2t6y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_hnb3c")
+}],
+"loop": false,
+"name": &"Shovel",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Trowel",
+"speed": 5.0
+}]

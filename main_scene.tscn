@@ -1,10 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://becrpphn77p1r"]
+[gd_scene load_steps=15 format=3 uid="uid://becrpphn77p1r"]
 
 [ext_resource type="Script" uid="uid://m4i2y4jyj8ia" path="res://scripts/toolbelt.gd" id="1_0f027"]
 [ext_resource type="Script" uid="uid://dbi6chh64urre" path="res://scripts/UI/button_shovel.gd" id="2_2c62f"]
 [ext_resource type="Script" uid="uid://cj6itvqrcs2e6" path="res://scripts/UI/button_trowel.gd" id="3_d5x1h"]
 [ext_resource type="Script" uid="uid://yhb876jjdufr" path="res://scripts/UI/button_brush.gd" id="4_8mm7a"]
 [ext_resource type="Script" uid="uid://dg6spvn56tg0o" path="res://scripts/curser.gd" id="5_8mm7a"]
+[ext_resource type="SpriteFrames" uid="uid://cjj8bqaba3c5l" path="res://assets/shovel_sprite_frames.tres" id="6_66tet"]
+[ext_resource type="PackedScene" uid="uid://cu74g7pawm2av" path="res://nodes/dig_site.tscn" id="6_nfk4m"]
+[ext_resource type="Script" path="res://scripts/CameraControl.gd" id="7_66tet"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_d5x1h"]
 device = -1
@@ -31,7 +34,6 @@ unicode = 51
 events = [SubResource("InputEventKey_hq1ik")]
 
 [node name="MainScene" type="Node2D"]
-position = Vector2(10, 0)
 
 [node name="GameState" type="Node" parent="."]
 
@@ -79,10 +81,22 @@ text = "Brush
 script = ExtResource("4_8mm7a")
 tollbelt = NodePath("..")
 
-[node name="Curser" type="Node2D" parent="."]
+[node name="Curser" type="Node2D" parent="." node_paths=PackedStringArray("curserAnimator", "toolbelt")]
 script = ExtResource("5_8mm7a")
+curserAnimator = NodePath("AnimatedSprite2D")
+toolbelt = NodePath("../Toolbelt")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Curser"]
+position = Vector2(16, 16)
+sprite_frames = ExtResource("6_66tet")
+animation = &"Brush"
+
+[node name="DigSite" parent="." instance=ExtResource("6_nfk4m")]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(157, 100)
+zoom = Vector2(4, 4)
+script = ExtResource("7_66tet")
 
 [connection signal="pressed" from="Toolbelt/ShovelButton" to="Toolbelt/ShovelButton" method="_on_pressed"]
 [connection signal="pressed" from="Toolbelt/TrowelButton" to="Toolbelt/TrowelButton" method="_on_pressed"]
