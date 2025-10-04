@@ -222,6 +222,69 @@ func dig_tile(pos: Vector2i, max_depth=-1) -> DigResult:
     
     return DigResult.OK
 
+func take_object(pos: Vector2i) -> String:
+    if not bounds.has_point(pos):
+        return ""
+    
+    var theObj = ""
+    for layer_index in dig_layers.size():
+        if object_layers.size() > layer_index:
+            var obj_layer = object_layers[layer_index]
+            if obj_layer == null:
+                break
+            var tile_data = obj_layer.get_cell_tile_data(pos)
+            if tile_data and tile_data.has_custom_data("ObjectID"):
+                theObj = tile_data.get_custom_data("ObjectID")
+                break
+        var layer = dig_layers[layer_index]
+        if layer.get_cell_tile_data(pos):
+            break
+    
+    if theObj == "":
+        return ""
+    
+    var closed = []
+    var take_q = [pos]
+    while not take_q.is_empty():
+        var currentPos = take_q.pop_back()
+        
+        var obj_pos = find_top_object(currentPos)
+        if obj_pos.z == -1:
+            continue
+        if obj_pos in closed:
+            continue
+        var obj_layer = object_layers[obj_pos.z]
+        var obj_data = obj_layer.get_cell_tile_data(Vector2i(obj_pos.x, obj_pos.y))
+        if obj_data.has_custom_data("ObjectID"):
+            if theObj != obj_data.get_custom_data("ObjectID"):
+                continue
+        if dig_layers[obj_pos.z].get_cell_tile_data(Vector2i(obj_pos.x, obj_pos.y)):
+            print(str(theObj) + " is stuck...")
+            return ""
+        closed.append(obj_pos)
+        take_q.append_array(obj_layer.get_surrounding_cells(currentPos))
+    
+    print(str(theObj) + " is free to be picked up")
+    
+    for obj_pos in closed:
+        var obj_layer = object_layers[obj_pos.z]
+        obj_layer.erase_cell(Vector2i(obj_pos.x, obj_pos.y))
+    
+    
+    return theObj
+
+func find_top_object(pos: Vector2i) -> Vector3i:
+    for layer_index in dig_layers.size():
+        if object_layers.size() > layer_index:
+            var obj_layer = object_layers[layer_index]
+            var tile_data = obj_layer.get_cell_tile_data(pos)
+            if tile_data:
+                return Vector3i(pos.x, pos.y, layer_index)
+        var layer = dig_layers[layer_index]
+        if layer.get_cell_tile_data(pos):
+            break
+    return Vector3i(pos.x, pos.y, -1)
+    
 func read_mask(mask: Texture2D) -> Array[Vector3i]:
     var img = mask.get_image()
     var mask_tiles: Array[Vector3i] = []
@@ -264,6 +327,9 @@ func _input(event: InputEvent) -> void:
         if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
             var tile = dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position())
             dig_trowel(tile, 0)
+        if event.pressed and event.button_index == MOUSE_BUTTON_MIDDLE:
+            var tile = dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position())
+            print(take_object(tile))
         elif event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
             is_brushing = true
         elif !event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
