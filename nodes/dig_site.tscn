@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=4 uid="uid://cu74g7pawm2av"]
 
-[ext_resource type="Script" uid="uid://767dwy333a7k" path="res://nodes/dig_site.gd" id="1_5h2ie"]
+[ext_resource type="Script" uid="uid://767dwy333a7k" path="res://scripts/dig_site.gd" id="1_5h2ie"]
 [ext_resource type="TileSet" uid="uid://c1kjxdb7xjtdf" path="res://assets/tilesets/layer1.tres" id="2_s4e4a"]
 [ext_resource type="TileSet" uid="uid://nds3ir3ao1f6" path="res://assets/tilesets/layer2.tres" id="3_s4e4a"]
 [ext_resource type="TileSet" uid="uid://dud4ofxgileu2" path="res://assets/tilesets/layer3.tres" id="4_27ss3"]

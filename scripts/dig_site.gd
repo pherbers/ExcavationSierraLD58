@@ -1,5 +1,7 @@
 extends Node2D
 
+class_name DigSite
+
 var layers: Array[TileMapLayer]
 var bounds: Rect2i
 

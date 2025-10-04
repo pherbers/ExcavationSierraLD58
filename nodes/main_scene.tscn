@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://becrpphn77p1r"]
+[gd_scene load_steps=3 format=3 uid="uid://becrpphn77p1r"]
 
 [ext_resource type="PackedScene" uid="uid://cu74g7pawm2av" path="res://nodes/dig_site.tscn" id="1_2xkxk"]
+[ext_resource type="Script" uid="uid://c5ha2v27vo41y" path="res://scripts/CameraControl.gd" id="2_60xiw"]
 
 [node name="MainScene" type="Node2D"]
 texture_filter = 1
@@ -10,3 +11,4 @@ texture_filter = 1
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(157, 100)
 zoom = Vector2(4, 4)
+script = ExtResource("2_60xiw")
