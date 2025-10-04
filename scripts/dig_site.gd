@@ -4,7 +4,7 @@ class_name DigSite
 
 var dig_layers: Array[TileMapLayer]
 var object_layers: Array[TileMapLayer]
-var bounds: Rect2i
+@export var bounds: Rect2i
 
 @export var shovel_masks: Array[Texture2D]
 @export var trowel_masks: Array[Texture2D]
@@ -56,13 +56,11 @@ func _ready() -> void:
     _trowel_cells_es = read_mask(trowel_masks[6])
     _trowel_cells_se = read_mask(trowel_masks[7])
     
-    bounds = Rect2i()
     for t in $DigLayers.find_children("*", "TileMapLayer"):
         dig_layers.append(t)
-        bounds = bounds.expand((t as TileMapLayer).get_used_rect().end)
-        bounds = bounds.expand((t as TileMapLayer).get_used_rect().position)
         
     dig_layers.sort_custom(func (t): return t.z_index)
+    dig_layers.pop_back()  # remove bedrock
     
     for t in $ObjectLayers.find_children("*", "TileMapLayer"):
         object_layers.append(t)
