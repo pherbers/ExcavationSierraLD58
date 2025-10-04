@@ -11,17 +11,24 @@
 
 [node name="GameState" type="Node" parent="."]
 
-[node name="Toolbelt" parent="." instance=ExtResource("1_hq1ik")]
+[node name="Toolbelt" parent="." node_paths=PackedStringArray("digSite") instance=ExtResource("1_hq1ik")]
+digSite = NodePath("../DigSite")
 
-[node name="Curser" type="Node2D" parent="." node_paths=PackedStringArray("curserAnimator", "toolbelt")]
+[node name="Curser" type="Node2D" parent="." node_paths=PackedStringArray("curserAnimator", "toolbelt", "label")]
 script = ExtResource("5_8mm7a")
 curserAnimator = NodePath("AnimatedSprite2D")
 toolbelt = NodePath("../Toolbelt")
+label = NodePath("Label")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Curser"]
 position = Vector2(16, 16)
 sprite_frames = ExtResource("6_66tet")
 animation = &"Brush"
+
+[node name="Label" type="Label" parent="Curser"]
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Shovel"
 
 [node name="DigSite" parent="." instance=ExtResource("6_nfk4m")]
 
