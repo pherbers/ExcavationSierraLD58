@@ -1,10 +1,11 @@
-[gd_scene load_steps=15 format=3 uid="uid://do4voo658ul1u"]
+[gd_scene load_steps=19 format=3 uid="uid://do4voo658ul1u"]
 
 [ext_resource type="Script" uid="uid://m4i2y4jyj8ia" path="res://scripts/toolbelt.gd" id="1_p5adi"]
 [ext_resource type="Script" uid="uid://dbi6chh64urre" path="res://scripts/ui/button_shovel.gd" id="2_4v4l6"]
 [ext_resource type="Script" uid="uid://ill8ddwckiwl" path="res://scripts/ui/button_hand.gd" id="2_txb6w"]
 [ext_resource type="Script" uid="uid://cj6itvqrcs2e6" path="res://scripts/ui/button_trowel.gd" id="3_txb6w"]
 [ext_resource type="Script" uid="uid://yhb876jjdufr" path="res://scripts/ui/button_brush.gd" id="4_b14al"]
+[ext_resource type="Script" uid="uid://bqc4jda7ylaxr" path="res://scripts/ui/button_rotation.gd" id="6_txb6w"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_p5adi"]
 device = -1
@@ -45,6 +46,21 @@ unicode = 52
 
 [sub_resource type="Shortcut" id="Shortcut_nfk4m"]
 events = [SubResource("InputEventKey_b14al")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_78dcd"]
+device = -1
+keycode = 82
+unicode = 114
+
+[sub_resource type="InputEventMouseButton" id="InputEventMouseButton_vtogy"]
+button_mask = 8
+position = Vector2(395, 21)
+global_position = Vector2(414, 117)
+button_index = 4
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_pesch"]
+events = [SubResource("InputEventKey_78dcd"), SubResource("InputEventMouseButton_vtogy")]
 
 [node name="Toolbelt" type="CanvasLayer"]
 script = ExtResource("1_p5adi")
@@ -108,7 +124,23 @@ script = ExtResource("4_b14al")
 tollbelt = NodePath("..")
 metadata/_edit_use_anchors_ = true
 
+[node name="RotationButton" type="Button" parent="." node_paths=PackedStringArray("tollbelt")]
+anchors_preset = -1
+anchor_right = 0.998
+anchor_bottom = 1.0
+offset_left = 1021.0
+offset_top = 603.0
+offset_right = -1.6960449
+offset_bottom = -7.0
+shortcut = SubResource("Shortcut_pesch")
+text = "Rotation
+"
+script = ExtResource("6_txb6w")
+tollbelt = NodePath("..")
+metadata/_edit_use_anchors_ = true
+
 [connection signal="pressed" from="HandButton" to="HandButton" method="_on_pressed"]
 [connection signal="pressed" from="ShovelButton" to="ShovelButton" method="_on_pressed"]
 [connection signal="pressed" from="TrowelButton" to="TrowelButton" method="_on_pressed"]
 [connection signal="pressed" from="BrushButton" to="BrushButton" method="_on_pressed"]
+[connection signal="pressed" from="RotationButton" to="RotationButton" method="_on_pressed"]
