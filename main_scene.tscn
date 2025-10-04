@@ -1,84 +1,52 @@
-[gd_scene load_steps=20 format=3 uid="uid://becrpphn77p1r"]
+[gd_scene load_steps=15 format=3 uid="uid://lscs07ilg14g"]
 
-[ext_resource type="Script" uid="uid://m4i2y4jyj8ia" path="res://scripts/toolbelt.gd" id="1_0f027"]
+[ext_resource type="Script" path="res://scripts/toolbelt.gd" id="1_0f027"]
 [ext_resource type="Script" uid="uid://dbi6chh64urre" path="res://scripts/UI/button_shovel.gd" id="2_2c62f"]
-[ext_resource type="Script" uid="uid://ill8ddwckiwl" path="res://scripts/UI/button_hand.gd" id="2_7ycvg"]
 [ext_resource type="Script" uid="uid://cj6itvqrcs2e6" path="res://scripts/UI/button_trowel.gd" id="3_d5x1h"]
 [ext_resource type="Script" uid="uid://yhb876jjdufr" path="res://scripts/UI/button_brush.gd" id="4_8mm7a"]
-[ext_resource type="Script" uid="uid://dg6spvn56tg0o" path="res://scripts/curser.gd" id="5_8mm7a"]
-[ext_resource type="SpriteFrames" uid="uid://cjj8bqaba3c5l" path="res://assets/shovel_sprite_frames.tres" id="6_66tet"]
+[ext_resource type="Script" path="res://scripts/curser.gd" id="5_8mm7a"]
+[ext_resource type="SpriteFrames" path="res://assets/shovel_sprite_frames.tres" id="6_66tet"]
 [ext_resource type="PackedScene" uid="uid://cu74g7pawm2av" path="res://nodes/dig_site.tscn" id="6_nfk4m"]
-[ext_resource type="Script" path="res://scripts/CameraControl.gd" id="7_66tet"]
-[ext_resource type="PackedScene" uid="uid://dlliy8iqort6s" path="res://nodes/collection.tscn" id="10_wr18j"]
+[ext_resource type="Script" uid="uid://c5ha2v27vo41y" path="res://scripts/CameraControl.gd" id="7_66tet"]
 
-[sub_resource type="InputEventKey" id="InputEventKey_wr18j"]
+[sub_resource type="InputEventKey" id="InputEventKey_d5x1h"]
 device = -1
 keycode = 49
 unicode = 49
 
-[sub_resource type="InputEventMouseButton" id="InputEventMouseButton_qwutr"]
-button_mask = 2
-position = Vector2(185, 32)
-global_position = Vector2(204, 128)
-button_index = 2
-pressed = true
+[sub_resource type="Shortcut" id="Shortcut_8mm7a"]
+events = [SubResource("InputEventKey_d5x1h")]
 
-[sub_resource type="Shortcut" id="Shortcut_671wp"]
-events = [SubResource("InputEventKey_wr18j"), SubResource("InputEventMouseButton_qwutr")]
-
-[sub_resource type="InputEventKey" id="InputEventKey_7ycvg"]
+[sub_resource type="InputEventKey" id="InputEventKey_8mm7a"]
 device = -1
 keycode = 50
 unicode = 50
 
-[sub_resource type="Shortcut" id="Shortcut_8mm7a"]
-events = [SubResource("InputEventKey_7ycvg")]
+[sub_resource type="Shortcut" id="Shortcut_hq1ik"]
+events = [SubResource("InputEventKey_8mm7a")]
 
-[sub_resource type="InputEventKey" id="InputEventKey_qwutr"]
+[sub_resource type="InputEventKey" id="InputEventKey_hq1ik"]
 device = -1
 keycode = 51
 unicode = 51
 
-[sub_resource type="Shortcut" id="Shortcut_hq1ik"]
-events = [SubResource("InputEventKey_qwutr")]
-
-[sub_resource type="InputEventKey" id="InputEventKey_671wp"]
-device = -1
-keycode = 52
-unicode = 52
-
 [sub_resource type="Shortcut" id="Shortcut_nfk4m"]
-events = [SubResource("InputEventKey_671wp")]
+events = [SubResource("InputEventKey_hq1ik")]
 
 [node name="MainScene" type="Node2D"]
 
 [node name="GameState" type="Node" parent="."]
 
-[node name="Toolbelt" type="CanvasLayer" parent="."]
+[node name="Toolbelt" type="Node" parent="."]
 script = ExtResource("1_0f027")
-
-[node name="HandButton" type="Button" parent="Toolbelt" node_paths=PackedStringArray("tollbelt")]
-anchors_preset = -1
-anchor_right = 0.998
-anchor_bottom = 1.0
-offset_left = 1026.0
-offset_top = 8.0
-offset_right = 3.303955
-offset_bottom = -602.0
-shortcut = SubResource("Shortcut_671wp")
-text = "Hand
-"
-script = ExtResource("2_7ycvg")
-tollbelt = NodePath("..")
 
 [node name="ShovelButton" type="Button" parent="Toolbelt" node_paths=PackedStringArray("tollbelt")]
 anchors_preset = -1
 anchor_right = 0.998
 anchor_bottom = 1.0
-offset_left = 1024.0
-offset_top = 53.0
-offset_right = 1.3039551
-offset_bottom = -557.0
+offset_left = 1025.0
+offset_right = 2.303955
+offset_bottom = -610.0
 shortcut = SubResource("Shortcut_8mm7a")
 text = "Shovel
 "
@@ -89,10 +57,10 @@ tollbelt = NodePath("..")
 anchors_preset = -1
 anchor_right = 0.998
 anchor_bottom = 1.0
-offset_left = 1024.0
-offset_top = 98.0
-offset_right = 1.3039551
-offset_bottom = -511.0
+offset_left = 1025.0
+offset_top = 45.0
+offset_right = 2.303955
+offset_bottom = -564.0
 shortcut = SubResource("Shortcut_hq1ik")
 text = "Trowel
 "
@@ -103,10 +71,10 @@ tollbelt = NodePath("..")
 anchors_preset = -1
 anchor_right = 0.998
 anchor_bottom = 1.0
-offset_left = 1024.0
-offset_top = 143.0
-offset_right = 1.3039551
-offset_bottom = -467.0
+offset_left = 1025.0
+offset_top = 90.0
+offset_right = 2.303955
+offset_bottom = -520.0
 shortcut = SubResource("Shortcut_nfk4m")
 text = "Brush
 "
@@ -130,11 +98,6 @@ position = Vector2(157, 100)
 zoom = Vector2(4, 4)
 script = ExtResource("7_66tet")
 
-[node name="Collection" parent="." node_paths=PackedStringArray("toolbelt") instance=ExtResource("10_wr18j")]
-position = Vector2(-494, 0)
-toolbelt = NodePath("../Toolbelt")
-
-[connection signal="pressed" from="Toolbelt/HandButton" to="Toolbelt/HandButton" method="_on_pressed"]
 [connection signal="pressed" from="Toolbelt/ShovelButton" to="Toolbelt/ShovelButton" method="_on_pressed"]
 [connection signal="pressed" from="Toolbelt/TrowelButton" to="Toolbelt/TrowelButton" method="_on_pressed"]
 [connection signal="pressed" from="Toolbelt/BrushButton" to="Toolbelt/BrushButton" method="_on_pressed"]
