@@ -5,10 +5,10 @@ class_name Curser
 
 @export var toolbelt: Toolbelt
 
-var lastTool: Toolbelt.Tools = Toolbelt.Tools.Shovel
+var lastTool: Toolbelt.Tools = Toolbelt.Tools.Hand
 
 func _ready() -> void:
-	changeToShovel()
+	changeToHand()
 
 func _process(_delta: float):
 	var posMouse = get_global_mouse_position()
@@ -23,6 +23,8 @@ func _process(_delta: float):
 			changeToTrowel()
 		elif currentTool == Toolbelt.Tools.Brush:
 			changeToBrush()
+		elif currentTool == Toolbelt.Tools.Hand:
+			changeToHand()
 
 func changeToShovel():
 	curserAnimator.stop()
@@ -33,5 +35,9 @@ func changeToTrowel():
 	curserAnimator.play("Shovel")
 	
 func changeToBrush():
+	curserAnimator.stop()
+	curserAnimator.play("Shovel")
+	
+func changeToHand():
 	curserAnimator.stop()
 	curserAnimator.play("Shovel")
