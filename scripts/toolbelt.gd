@@ -27,6 +27,8 @@ func digSiteAktion(pressed:bool):
 		digSite.is_brushing = false
 	else:
 		match currentTool:
+			Tools.Hand:
+				digSite.take_object(digSite.getTileForMousePos())
 			Tools.Shovel: 
 				digSite.dig_shovel(digSite.getTileForMousePos(), 0)
 			Tools.Trowel:
