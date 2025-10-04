@@ -320,18 +320,10 @@ func get_trowel_tiles(trowel_dir: int) -> Array[Vector3i]:
         7: return _trowel_cells_nw
     return _trowel_cells_ne
 
+func getTileForMousePos():
+    return dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position())
+
 func _input(event: InputEvent) -> void:
-    if event is InputEventMouseButton:
-        if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-            var tile = dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position())
-            dig_trowel(tile, 0)
-        if event.pressed and event.button_index == MOUSE_BUTTON_MIDDLE:
-            var tile = dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position())
-            print(take_object(tile))
-        elif event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-            is_brushing = true
-        elif !event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-            is_brushing = false
     if event is InputEventMouseMotion:
         if is_brushing:
             _brush_timer += event.velocity.length() / 10.

@@ -4,6 +4,7 @@ class_name Curser
 @export var curserAnimator: AnimatedSprite2D
 
 @export var toolbelt: Toolbelt
+@export var label:Label
 
 var lastTool: Toolbelt.Tools = Toolbelt.Tools.Hand
 
@@ -29,15 +30,19 @@ func _process(_delta: float):
 func changeToShovel():
 	curserAnimator.stop()
 	curserAnimator.play("Shovel")
+	label.text = "Shovel"
 	
 func changeToTrowel():
 	curserAnimator.stop()
 	curserAnimator.play("Shovel")
+	label.text = "Trowel"
 	
 func changeToBrush():
 	curserAnimator.stop()
 	curserAnimator.play("Shovel")
+	label.text = "Brush"
 	
 func changeToHand():
 	curserAnimator.stop()
 	curserAnimator.play("Shovel")
+	label.text = "Hand"

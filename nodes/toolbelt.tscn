@@ -1,0 +1,114 @@
+[gd_scene load_steps=15 format=3 uid="uid://do4voo658ul1u"]
+
+[ext_resource type="Script" uid="uid://m4i2y4jyj8ia" path="res://scripts/toolbelt.gd" id="1_p5adi"]
+[ext_resource type="Script" uid="uid://dbi6chh64urre" path="res://scripts/ui/button_shovel.gd" id="2_4v4l6"]
+[ext_resource type="Script" uid="uid://ill8ddwckiwl" path="res://scripts/ui/button_hand.gd" id="2_txb6w"]
+[ext_resource type="Script" uid="uid://cj6itvqrcs2e6" path="res://scripts/ui/button_trowel.gd" id="3_txb6w"]
+[ext_resource type="Script" uid="uid://yhb876jjdufr" path="res://scripts/ui/button_brush.gd" id="4_b14al"]
+
+[sub_resource type="InputEventKey" id="InputEventKey_p5adi"]
+device = -1
+keycode = 49
+unicode = 49
+
+[sub_resource type="InputEventMouseButton" id="InputEventMouseButton_4v4l6"]
+device = -1
+button_mask = 2
+position = Vector2(296, 29)
+global_position = Vector2(315, 125)
+button_index = 2
+pressed = true
+
+[sub_resource type="Shortcut" id="Shortcut_txb6w"]
+events = [SubResource("InputEventKey_p5adi"), SubResource("InputEventMouseButton_4v4l6")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_4v4l6"]
+device = -1
+keycode = 50
+unicode = 50
+
+[sub_resource type="Shortcut" id="Shortcut_8mm7a"]
+events = [SubResource("InputEventKey_4v4l6")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_txb6w"]
+device = -1
+keycode = 51
+unicode = 51
+
+[sub_resource type="Shortcut" id="Shortcut_hq1ik"]
+events = [SubResource("InputEventKey_txb6w")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_b14al"]
+device = -1
+keycode = 52
+unicode = 52
+
+[sub_resource type="Shortcut" id="Shortcut_nfk4m"]
+events = [SubResource("InputEventKey_b14al")]
+
+[node name="Toolbelt" type="CanvasLayer"]
+script = ExtResource("1_p5adi")
+
+[node name="HandButton" type="Button" parent="." node_paths=PackedStringArray("tollbelt")]
+anchors_preset = -1
+anchor_right = 0.998
+anchor_bottom = 1.0
+offset_left = 1026.0
+offset_right = 3.303955
+offset_bottom = -610.0
+shortcut = SubResource("Shortcut_txb6w")
+text = "Shovel
+"
+script = ExtResource("2_txb6w")
+tollbelt = NodePath("..")
+metadata/_edit_use_anchors_ = true
+
+[node name="ShovelButton" type="Button" parent="." node_paths=PackedStringArray("tollbelt")]
+anchors_preset = -1
+anchor_right = 0.998
+anchor_bottom = 1.0
+offset_left = 1025.0
+offset_top = 42.0
+offset_right = 2.303955
+offset_bottom = -568.0
+shortcut = SubResource("Shortcut_8mm7a")
+text = "Shovel
+"
+script = ExtResource("2_4v4l6")
+tollbelt = NodePath("..")
+metadata/_edit_use_anchors_ = true
+
+[node name="TrowelButton" type="Button" parent="." node_paths=PackedStringArray("tollbelt")]
+anchors_preset = -1
+anchor_right = 0.998
+anchor_bottom = 1.0
+offset_left = 1025.0
+offset_top = 87.0
+offset_right = 2.303955
+offset_bottom = -522.0
+shortcut = SubResource("Shortcut_hq1ik")
+text = "Trowel
+"
+script = ExtResource("3_txb6w")
+tollbelt = NodePath("..")
+metadata/_edit_use_anchors_ = true
+
+[node name="BrushButton" type="Button" parent="." node_paths=PackedStringArray("tollbelt")]
+anchors_preset = -1
+anchor_right = 0.998
+anchor_bottom = 1.0
+offset_left = 1025.0
+offset_top = 132.0
+offset_right = 2.303955
+offset_bottom = -478.0
+shortcut = SubResource("Shortcut_nfk4m")
+text = "Brush
+"
+script = ExtResource("4_b14al")
+tollbelt = NodePath("..")
+metadata/_edit_use_anchors_ = true
+
+[connection signal="pressed" from="HandButton" to="HandButton" method="_on_pressed"]
+[connection signal="pressed" from="ShovelButton" to="ShovelButton" method="_on_pressed"]
+[connection signal="pressed" from="TrowelButton" to="TrowelButton" method="_on_pressed"]
+[connection signal="pressed" from="BrushButton" to="BrushButton" method="_on_pressed"]
