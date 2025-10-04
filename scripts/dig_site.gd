@@ -59,7 +59,7 @@ func _ready() -> void:
     for t in $DigLayers.find_children("*", "TileMapLayer"):
         dig_layers.append(t)
         
-    dig_layers.sort_custom(func (t): return t.z_index)
+    dig_layers.sort_custom(func (t1, t2): return t1.z_index > t2.z_index)
     dig_layers.pop_back()  # remove bedrock
     
     for t in $ObjectLayers.find_children("*", "TileMapLayer"):
@@ -78,6 +78,8 @@ func _process(_delta: float) -> void:
     if _dig_queue_dirty:
         _dig_queue.sort_custom(func(d1,d2): return d1.time > d2.time)
         _dig_queue_dirty = false
+        
+    var _hitBone = false
     while _dig_queue.size() > 0:
         var di = _dig_queue.back()
         if ct > di.time:
@@ -85,10 +87,13 @@ func _process(_delta: float) -> void:
             var result = dig_tile(di.pos, di.max_depth)
             if result == DigResult.HitBone:
                 print("Hit Bone at " + str(di.pos))
-                _dig_queue.clear()
+                _hitBone = true
         else:
             break
-
+    if _hitBone:
+        # stop digging!
+        _dig_queue.clear()
+        
 func dig_shovel(pos: Vector2i, dir: int):
     # find first available layer
     var dig_layer_index = -1
@@ -197,6 +202,7 @@ func dig_tile(pos: Vector2i, max_depth=-1) -> DigResult:
     if not bounds.has_point(pos):
         return DigResult.NoOp
     var dig_layer_index = -1
+    var hitBone = false
     for layer_index in dig_layers.size():
         
         if layer_index > max_depth and max_depth >= 0:
@@ -205,7 +211,7 @@ func dig_tile(pos: Vector2i, max_depth=-1) -> DigResult:
         if object_layers.size() > layer_index:
             var obj_layer = object_layers[layer_index]
             if obj_layer.get_cell_tile_data(pos):
-                return DigResult.HitBone
+                hitBone = true
         var layer = dig_layers[layer_index]
         if layer.get_cell_tile_data(pos):
             dig_layer_index = layer_index
@@ -218,6 +224,8 @@ func dig_tile(pos: Vector2i, max_depth=-1) -> DigResult:
     diglayer.set_cell(pos, -1)
     diglayer.set_cells_terrain_connect([pos], 0, -1, false)
     
+    if hitBone:
+        return DigResult.HitBone
     return DigResult.OK
 
 func take_object(pos: Vector2i) -> String:

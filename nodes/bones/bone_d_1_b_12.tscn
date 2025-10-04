@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://ru6og16mv1qj"]
+
+[ext_resource type="TileSet" uid="uid://b1ohmhog885ai" path="res://assets/bones/dino_tiles.tres" id="1_cl76e"]
+[ext_resource type="Script" uid="uid://dhaiav1alhrig" path="res://scripts/grid_bone.gd" id="2_ma67x"]
+
+[node name="bone_d1_b12" type="TileMapLayer"]
+tile_map_data = PackedByteArray(0, 0, 255, 255, 254, 255, 0, 0, 24, 0, 6, 0, 0, 0, 255, 255, 255, 255, 0, 0, 24, 0, 7, 0, 0, 0, 255, 255, 0, 0, 0, 0, 24, 0, 8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 25, 0, 8, 0, 0, 0, 1, 0, 0, 0, 0, 0, 26, 0, 8, 0, 0, 0)
+tile_set = ExtResource("1_cl76e")
+script = ExtResource("2_ma67x")
