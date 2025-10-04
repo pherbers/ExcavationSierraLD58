@@ -1,12 +1,32 @@
-[gd_scene load_steps=10 format=4 uid="uid://cu74g7pawm2av"]
+[gd_scene load_steps=16 format=4 uid="uid://cu74g7pawm2av"]
 
 [ext_resource type="Script" uid="uid://767dwy333a7k" path="res://scripts/dig_site.gd" id="1_5h2ie"]
 [ext_resource type="TileSet" uid="uid://c1kjxdb7xjtdf" path="res://assets/tilesets/layer1.tres" id="2_s4e4a"]
+[ext_resource type="Texture2D" uid="uid://bwelilawkhdrr" path="res://assets/dig_masks.png" id="2_v4sw2"]
 [ext_resource type="TileSet" uid="uid://nds3ir3ao1f6" path="res://assets/tilesets/layer2.tres" id="3_s4e4a"]
 [ext_resource type="TileSet" uid="uid://dud4ofxgileu2" path="res://assets/tilesets/layer3.tres" id="4_27ss3"]
 [ext_resource type="TileSet" uid="uid://c08nwllp4hi6y" path="res://assets/tilesets/layer4.tres" id="5_k8uxk"]
 [ext_resource type="TileSet" uid="uid://6445fnwhdw4f" path="res://assets/tilesets/layer5.tres" id="6_v4sw2"]
 [ext_resource type="Texture2D" uid="uid://dysbrwl71757v" path="res://assets/bones/Bone1.png" id="7_k8uxk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i3jma"]
+atlas = ExtResource("2_v4sw2")
+region = Rect2(0, 0, 11, 11)
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pcsen"]
+load_path = "res://.godot/imported/dig_masks.png-9e844b62b9a17c5fd26fee2797a9d166.ctex"
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vfbpc"]
+atlas = SubResource("CompressedTexture2D_pcsen")
+region = Rect2(12, 0, 11, 11)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ky2e5"]
+atlas = SubResource("CompressedTexture2D_pcsen")
+region = Rect2(24, 0, 11, 11)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kr0al"]
+atlas = SubResource("CompressedTexture2D_pcsen")
+region = Rect2(36, 0, 11, 11)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k8uxk"]
 texture = ExtResource("7_k8uxk")
@@ -43,6 +63,7 @@ sources/1 = SubResource("TileSetAtlasSource_k8uxk")
 [node name="DigSite" type="Node2D"]
 texture_filter = 1
 script = ExtResource("1_5h2ie")
+shovel_masks = Array[Texture2D]([SubResource("AtlasTexture_i3jma"), SubResource("AtlasTexture_vfbpc"), SubResource("AtlasTexture_ky2e5"), SubResource("AtlasTexture_kr0al")])
 
 [node name="DigLayers" type="Node2D" parent="."]
 

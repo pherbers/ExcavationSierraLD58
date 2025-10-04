@@ -6,6 +6,12 @@ var dig_layers: Array[TileMapLayer]
 var object_layers: Array[TileMapLayer]
 var bounds: Rect2i
 
+@export var shovel_masks: Array[Texture2D]
+var _shovel_cells_west: Array[Vector3i]
+var _shovel_cells_north: Array[Vector3i]
+var _shovel_cells_east: Array[Vector3i]
+var _shovel_cells_south: Array[Vector3i]
+
 var _dig_queue: Array[DigInstruction] = []
 var _dig_queue_dirty = false
 
@@ -21,6 +27,11 @@ enum DigResult {
 }
 
 func _ready() -> void:
+    _shovel_cells_west = read_mask(shovel_masks[0])
+    _shovel_cells_south = read_mask(shovel_masks[1])
+    _shovel_cells_east = read_mask(shovel_masks[2])
+    _shovel_cells_north = read_mask(shovel_masks[3])
+    
     bounds = Rect2i()
     for t in $DigLayers.find_children("*", "TileMapLayer"):
         dig_layers.append(t)
@@ -52,7 +63,7 @@ func _process(_delta: float) -> void:
         else:
             break
 
-func dig_circle(pos: Vector2i, radius: int):
+func dig_shovel(pos: Vector2i):
     # find first available layer
     var dig_layer_index = -1
 
@@ -65,18 +76,12 @@ func dig_circle(pos: Vector2i, radius: int):
     if dig_layer_index == -1:
         return
     
-    print("Digging at " + str(pos) + " with radius "  + str(radius) + " at depth " + str(dig_layer_index))
+    print("Digging at " + str(pos) + " with shovel at depth " + str(dig_layer_index))
     
-    var xmin = max(pos.x - radius, bounds.position.x)
-    var ymin = max(pos.y - radius, bounds.position.y)
-    var xmax = min(pos.x + radius, bounds.end.x) + 1
-    var ymax = min(pos.y + radius, bounds.end.y) + 1
-    for x in range(xmin, xmax):
-        for y in range(ymin, ymax):
-            var p = Vector2i(x,y)
-            var dist_to_center = (p - pos).length()
-            if dist_to_center - 0.1 <= radius:
-                queue_dig_tile(p, pow(dist_to_center, 2) / 30., dig_layer_index)
+    for pd in get_shovel_tiles(0):
+        var p = Vector2i(pd.x, pd.y)
+        var delay: float = pd.z
+        queue_dig_tile(p + pos, delay / 32., dig_layer_index)
 
 func queue_dig_tile(pos, time=0., max_depth=-1):
     var ct = Time.get_ticks_msec()
@@ -114,8 +119,33 @@ func dig_tile(pos: Vector2i, max_depth=-1) -> DigResult:
     
     return DigResult.OK
 
+func read_mask(mask: Texture2D) -> Array[Vector3i]:
+    var img = mask.get_image()
+    var mask_tiles: Array[Vector3i] = []
+    var cx: int = - floor(img.get_width() - 1) / 2
+    var cy: int = - floor(img.get_height() - 1) / 2
+    for x in img.get_width():
+        for y in img.get_height():
+            var c = img.get_pixel(x, y)
+            if c.b < 1.:
+                var t = Vector3i(cx + x, cy + y, floor(c.b*16))
+                mask_tiles.append(t)
+    return mask_tiles
+
+func get_shovel_tiles(shovel_dir: int) -> Array[Vector3i]:
+    match(shovel_dir):
+        0:
+            return _shovel_cells_north
+        1:
+            return _shovel_cells_west
+        2:
+            return _shovel_cells_south
+        3:
+            return _shovel_cells_east
+    return _shovel_cells_north
+
 func _input(event: InputEvent) -> void:
     if event is InputEventMouseButton:
         if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
             var tile = dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position())
-            dig_circle(tile, 4)
+            dig_shovel(tile)

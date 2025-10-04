@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="ArchaeoLD58"
-run/main_scene="uid://becrpphn77p1r"
+run/main_scene="uid://yasf26ijc1fk"
 config/features=PackedStringArray("4.5", "GL Compatibility")
 config/icon="res://icon.svg"
 

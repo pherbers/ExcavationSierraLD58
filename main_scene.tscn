@@ -1,13 +1,13 @@
-[gd_scene load_steps=15 format=3 uid="uid://becrpphn77p1r"]
+[gd_scene load_steps=15 format=3 uid="uid://lscs07ilg14g"]
 
-[ext_resource type="Script" uid="uid://m4i2y4jyj8ia" path="res://scripts/toolbelt.gd" id="1_0f027"]
+[ext_resource type="Script" path="res://scripts/toolbelt.gd" id="1_0f027"]
 [ext_resource type="Script" uid="uid://dbi6chh64urre" path="res://scripts/UI/button_shovel.gd" id="2_2c62f"]
 [ext_resource type="Script" uid="uid://cj6itvqrcs2e6" path="res://scripts/UI/button_trowel.gd" id="3_d5x1h"]
 [ext_resource type="Script" uid="uid://yhb876jjdufr" path="res://scripts/UI/button_brush.gd" id="4_8mm7a"]
-[ext_resource type="Script" uid="uid://dg6spvn56tg0o" path="res://scripts/curser.gd" id="5_8mm7a"]
-[ext_resource type="SpriteFrames" uid="uid://cjj8bqaba3c5l" path="res://assets/shovel_sprite_frames.tres" id="6_66tet"]
+[ext_resource type="Script" path="res://scripts/curser.gd" id="5_8mm7a"]
+[ext_resource type="SpriteFrames" path="res://assets/shovel_sprite_frames.tres" id="6_66tet"]
 [ext_resource type="PackedScene" uid="uid://cu74g7pawm2av" path="res://nodes/dig_site.tscn" id="6_nfk4m"]
-[ext_resource type="Script" path="res://scripts/CameraControl.gd" id="7_66tet"]
+[ext_resource type="Script" uid="uid://c5ha2v27vo41y" path="res://scripts/CameraControl.gd" id="7_66tet"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_d5x1h"]
 device = -1
