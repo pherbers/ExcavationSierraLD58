@@ -7,13 +7,28 @@ var object_layers: Array[TileMapLayer]
 var bounds: Rect2i
 
 @export var shovel_masks: Array[Texture2D]
+@export var trowel_masks: Array[Texture2D]
 var _shovel_cells_west: Array[Vector3i]
 var _shovel_cells_north: Array[Vector3i]
 var _shovel_cells_east: Array[Vector3i]
 var _shovel_cells_south: Array[Vector3i]
+var _trowel_cells_es: Array[Vector3i]
+var _trowel_cells_sw: Array[Vector3i]
+var _trowel_cells_wn: Array[Vector3i]
+var _trowel_cells_ne: Array[Vector3i]
+var _trowel_cells_en: Array[Vector3i]
+var _trowel_cells_nw: Array[Vector3i]
+var _trowel_cells_ws: Array[Vector3i]
+var _trowel_cells_se: Array[Vector3i]
 
 var _dig_queue: Array[DigInstruction] = []
 var _dig_queue_dirty = false
+
+var is_brushing = false
+var brush_time = 100
+var _brush_timer = 0.
+var _brush_chance = 0.
+
 
 class DigInstruction:
     var pos: Vector2i
@@ -27,10 +42,19 @@ enum DigResult {
 }
 
 func _ready() -> void:
-    _shovel_cells_west = read_mask(shovel_masks[0])
+    _shovel_cells_west  = read_mask(shovel_masks[0])
     _shovel_cells_south = read_mask(shovel_masks[1])
-    _shovel_cells_east = read_mask(shovel_masks[2])
+    _shovel_cells_east  = read_mask(shovel_masks[2])
     _shovel_cells_north = read_mask(shovel_masks[3])
+    
+    _trowel_cells_ws = read_mask(trowel_masks[0])
+    _trowel_cells_sw = read_mask(trowel_masks[1])
+    _trowel_cells_en = read_mask(trowel_masks[2])
+    _trowel_cells_ne = read_mask(trowel_masks[3])
+    _trowel_cells_wn = read_mask(trowel_masks[4])
+    _trowel_cells_nw = read_mask(trowel_masks[5])
+    _trowel_cells_es = read_mask(trowel_masks[6])
+    _trowel_cells_se = read_mask(trowel_masks[7])
     
     bounds = Rect2i()
     for t in $DigLayers.find_children("*", "TileMapLayer"):
@@ -48,6 +72,10 @@ func _ready() -> void:
     print("Dig Site prepared, it is " + str(len(dig_layers)) + " layers deep")
 
 func _process(_delta: float) -> void:
+    if is_brushing and _brush_timer > brush_time:
+        dig_brush(dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position()), 3)
+        _brush_timer = 0
+    
     var ct = Time.get_ticks_msec()
     if _dig_queue_dirty:
         _dig_queue.sort_custom(func(d1,d2): return d1.time > d2.time)
@@ -63,7 +91,7 @@ func _process(_delta: float) -> void:
         else:
             break
 
-func dig_shovel(pos: Vector2i):
+func dig_shovel(pos: Vector2i, dir: int):
     # find first available layer
     var dig_layer_index = -1
 
@@ -78,10 +106,85 @@ func dig_shovel(pos: Vector2i):
     
     print("Digging at " + str(pos) + " with shovel at depth " + str(dig_layer_index))
     
-    for pd in get_shovel_tiles(0):
+    for pd in get_shovel_tiles(dir):
         var p = Vector2i(pd.x, pd.y)
         var delay: float = pd.z
         queue_dig_tile(p + pos, delay / 32., dig_layer_index)
+
+func dig_trowel(pos: Vector2i, dir: int):
+    # find first available layer
+    var dig_layer_index = -1
+
+    for layer_index in dig_layers.size():
+        var layer = dig_layers[layer_index]
+        if layer.get_cell_tile_data(pos):
+            dig_layer_index = layer_index
+            break
+    
+    if dig_layer_index == -1:
+        return
+    
+    print("Digging at " + str(pos) + " with shovel at depth " + str(dig_layer_index))
+    
+    for pd in get_trowel_tiles(dir):
+        var p = Vector2i(pd.x, pd.y)
+        var delay: float = pd.z
+        queue_dig_tile(p + pos, delay / 32., dig_layer_index)
+
+func dig_brush(pos: Vector2i, radius: int):
+    var xmin = max(pos.x - radius, bounds.position.x)
+    var ymin = max(pos.y - radius, bounds.position.y)
+    var xmax = min(pos.x + radius, bounds.end.x) + 1
+    var ymax = min(pos.y + radius, bounds.end.y) + 1
+    for x in range(xmin, xmax):
+        for y in range(ymin, ymax):
+            var p = Vector2i(x,y)
+            var dist_to_center = (p - pos).length()
+            if dist_to_center - 0.1 <= radius:
+                brush_tile(p)
+                
+    _brush_chance += 0.01
+
+func brush_tile(pos: Vector2i) -> DigResult:
+    var base_random = randf()
+    if base_random > _brush_chance:
+        return DigResult.NoOp
+
+    var dig_layer_index = -1
+    for layer_index in dig_layers.size():
+        if object_layers.size() > layer_index:
+            var obj_layer = object_layers[layer_index]
+            if obj_layer.get_cell_tile_data(pos):
+                #return DigResult.NoOp
+                pass
+        var l = dig_layers[layer_index]
+        if l.get_cell_tile_data(pos):
+            dig_layer_index = layer_index
+            break
+            
+    # Check neighborhood
+    var layer = dig_layers[dig_layer_index]
+    var neighbours = [Vector2i(-1,-1), Vector2i(-1,0), Vector2i(-1,1), Vector2i(0,1), Vector2i(1,1), Vector2i(1,0), Vector2i(1,-1), Vector2i(0,-1)]
+    var n_count = 0
+    for n in neighbours:
+        if layer.get_cell_tile_data(pos + n):
+            n_count += 1
+    
+    var r = 0
+    match n_count:
+        8,7,6: r = 0.
+        5,4:   r = 0.1
+        3:     r = 0.2
+        2:     r = 0.5
+        1:     r = 0.8
+        0:     r = 1.
+            
+    if randf() < r:
+        layer.set_cells_terrain_connect([pos], 0, -1, false)
+        _brush_chance = 0.
+        return DigResult.OK
+    else:
+        return DigResult.NoOp
 
 func queue_dig_tile(pos, time=0., max_depth=-1):
     var ct = Time.get_ticks_msec()
@@ -143,9 +246,28 @@ func get_shovel_tiles(shovel_dir: int) -> Array[Vector3i]:
         3:
             return _shovel_cells_east
     return _shovel_cells_north
+    
+func get_trowel_tiles(trowel_dir: int) -> Array[Vector3i]:
+    match(trowel_dir):
+        0: return _trowel_cells_ne
+        1: return _trowel_cells_en
+        2: return _trowel_cells_es
+        3: return _trowel_cells_se
+        4: return _trowel_cells_sw
+        5: return _trowel_cells_ws
+        6: return _trowel_cells_wn
+        7: return _trowel_cells_nw
+    return _trowel_cells_ne
 
 func _input(event: InputEvent) -> void:
     if event is InputEventMouseButton:
         if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
             var tile = dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position())
-            dig_shovel(tile)
+            dig_trowel(tile, 0)
+        elif event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+            is_brushing = true
+        elif !event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+            is_brushing = false
+    if event is InputEventMouseMotion:
+        if is_brushing:
+            _brush_timer += event.velocity.length() / 10.

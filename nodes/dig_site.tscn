@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://cu74g7pawm2av"]
+[gd_scene load_steps=24 format=4 uid="uid://cu74g7pawm2av"]
 
 [ext_resource type="Script" uid="uid://767dwy333a7k" path="res://scripts/dig_site.gd" id="1_5h2ie"]
 [ext_resource type="TileSet" uid="uid://c1kjxdb7xjtdf" path="res://assets/tilesets/layer1.tres" id="2_s4e4a"]
@@ -27,6 +27,38 @@ region = Rect2(24, 0, 11, 11)
 [sub_resource type="AtlasTexture" id="AtlasTexture_kr0al"]
 atlas = SubResource("CompressedTexture2D_pcsen")
 region = Rect2(36, 0, 11, 11)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v4sw2"]
+atlas = ExtResource("2_v4sw2")
+region = Rect2(0, 24, 11, 11)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pcsen"]
+atlas = ExtResource("2_v4sw2")
+region = Rect2(12, 24, 11, 11)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lxrcy"]
+atlas = ExtResource("2_v4sw2")
+region = Rect2(24, 24, 11, 11)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tgc84"]
+atlas = ExtResource("2_v4sw2")
+region = Rect2(36, 24, 11, 11)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q7xge"]
+atlas = ExtResource("2_v4sw2")
+region = Rect2(0, 36, 11, 11)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bv2fc"]
+atlas = ExtResource("2_v4sw2")
+region = Rect2(12, 36, 11, 11)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fs82h"]
+atlas = ExtResource("2_v4sw2")
+region = Rect2(24, 36, 11, 11)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u6ecg"]
+atlas = ExtResource("2_v4sw2")
+region = Rect2(36, 36, 11, 11)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_k8uxk"]
 texture = ExtResource("7_k8uxk")
@@ -64,6 +96,7 @@ sources/1 = SubResource("TileSetAtlasSource_k8uxk")
 texture_filter = 1
 script = ExtResource("1_5h2ie")
 shovel_masks = Array[Texture2D]([SubResource("AtlasTexture_i3jma"), SubResource("AtlasTexture_vfbpc"), SubResource("AtlasTexture_ky2e5"), SubResource("AtlasTexture_kr0al")])
+trowel_masks = Array[Texture2D]([SubResource("AtlasTexture_v4sw2"), SubResource("AtlasTexture_pcsen"), SubResource("AtlasTexture_lxrcy"), SubResource("AtlasTexture_tgc84"), SubResource("AtlasTexture_q7xge"), SubResource("AtlasTexture_bv2fc"), SubResource("AtlasTexture_fs82h"), SubResource("AtlasTexture_u6ecg")])
 
 [node name="DigLayers" type="Node2D" parent="."]
 
@@ -94,7 +127,7 @@ tile_set = ExtResource("6_v4sw2")
 
 [node name="ObjectLayers" type="Node2D" parent="."]
 
-[node name="TileMapLayer" type="TileMapLayer" parent="ObjectLayers"]
+[node name="Layer1" type="TileMapLayer" parent="ObjectLayers"]
 z_index = -1
 tile_map_data = PackedByteArray("AAAPAAkAAQAAAAUAAAAPAAoAAQAAAAYAAAAQAAkAAQABAAUAAAAQAAoAAQABAAYAAAAQAAsAAQABAAcAAAARAAgAAQACAAQAAAARAAkAAQACAAUAAAARAAoAAQACAAYAAAARAAsAAQACAAcAAAASAAcAAQADAAMAAAASAAgAAQADAAQAAAASAAkAAQADAAUAAAASAAoAAQADAAYAAAATAAUAAQAEAAEAAAATAAYAAQAEAAIAAAATAAcAAQAEAAMAAAATAAgAAQAEAAQAAAATAAkAAQAEAAUAAAAUAAUAAQAFAAEAAAAUAAYAAQAFAAIAAAAUAAcAAQAFAAMAAAAUAAgAAQAFAAQAAAAVAAYAAQAGAAIAAAAVAAcAAQAGAAMAAAA=")
 tile_set = SubResource("TileSet_v4sw2")
