@@ -12,6 +12,13 @@ var lastTool: Toolbelt.Tools = Toolbelt.Tools.Hand
 func _ready() -> void:
     changeToHand()
 
+func _input(event: InputEvent) -> void:
+    if event is InputEventMouseButton:
+        if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+            curserAnimator.play()
+        elif !event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+            curserAnimator.stop()
+
 func _process(_delta: float):
     var posMouse = get_global_mouse_position()
     position = posMouse
@@ -27,6 +34,8 @@ func _process(_delta: float):
             changeToBrush()
         elif currentTool == Toolbelt.Tools.Hand:
             changeToHand()
+        elif currentTool == Toolbelt.Tools.GPR:
+            changeToGPR()
             
     if currentTool == Toolbelt.Tools.GPR:
         var mouseTile = dig_site.getTileForMousePos()
@@ -42,26 +51,40 @@ func _process(_delta: float):
             label.text = "GPR (3)"
 
 func changeToShovel():
-    curserAnimator.stop()
+    curserAnimator.visible = true
     curserAnimator.play("Shovel")
+    curserAnimator.stop()
     label.text = "Shovel"
+    label.visible = false
+    Input.set_default_cursor_shape(Input.CURSOR_ARROW)
     
 func changeToTrowel():
+    curserAnimator.visible = true
+    curserAnimator.play("Trowel")
     curserAnimator.stop()
-    curserAnimator.play("Shovel")
     label.text = "Trowel"
+    label.visible = false
+    Input.set_default_cursor_shape(Input.CURSOR_ARROW)
     
 func changeToBrush():
+    curserAnimator.visible = true
+    curserAnimator.play("Brush")
     curserAnimator.stop()
-    curserAnimator.play("Shovel")
     label.text = "Brush"
+    label.visible = false
+    Input.set_default_cursor_shape(Input.CURSOR_ARROW)
     
 func changeToHand():
+    curserAnimator.visible = false
     curserAnimator.stop()
-    curserAnimator.play("Shovel")
     label.text = "Hand"
+    label.visible = false
+    Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
     
 func changeToGPR():
-    curserAnimator.stop()
+    curserAnimator.visible = true
     curserAnimator.play("GPR")
+    curserAnimator.stop()
     label.text = "GPR"
+    label.visible = false
+    Input.set_default_cursor_shape(Input.CURSOR_ARROW)
