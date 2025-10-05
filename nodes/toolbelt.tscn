@@ -1,11 +1,11 @@
 [gd_scene load_steps=19 format=3 uid="uid://do4voo658ul1u"]
 
 [ext_resource type="Script" uid="uid://m4i2y4jyj8ia" path="res://scripts/toolbelt.gd" id="1_p5adi"]
-[ext_resource type="Script" uid="uid://dbi6chh64urre" path="res://scripts/ui/button_shovel.gd" id="2_4v4l6"]
-[ext_resource type="Script" uid="uid://ill8ddwckiwl" path="res://scripts/ui/button_hand.gd" id="2_txb6w"]
-[ext_resource type="Script" uid="uid://cj6itvqrcs2e6" path="res://scripts/ui/button_trowel.gd" id="3_txb6w"]
-[ext_resource type="Script" uid="uid://yhb876jjdufr" path="res://scripts/ui/button_brush.gd" id="4_b14al"]
-[ext_resource type="Script" uid="uid://bqc4jda7ylaxr" path="res://scripts/ui/button_rotation.gd" id="6_txb6w"]
+[ext_resource type="Script" uid="uid://dbi6chh64urre" path="res://scripts/UI/button_shovel.gd" id="2_4v4l6"]
+[ext_resource type="Script" uid="uid://d14le5nxs1k5c" path="res://scripts/UI/button_hand.gd" id="2_txb6w"]
+[ext_resource type="Script" uid="uid://cj6itvqrcs2e6" path="res://scripts/UI/button_trowel.gd" id="3_txb6w"]
+[ext_resource type="Script" uid="uid://yhb876jjdufr" path="res://scripts/UI/button_brush.gd" id="4_b14al"]
+[ext_resource type="Script" path="res://scripts/UI/button_rotation.gd" id="6_txb6w"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_p5adi"]
 device = -1
