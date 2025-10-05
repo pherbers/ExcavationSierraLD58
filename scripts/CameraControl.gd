@@ -25,8 +25,6 @@ func _process(delta):
         position.x = limit_right
     elif position.x < limit_left:
         position.x = limit_left
-        
-    print(position)
 
 
 func _input(event):

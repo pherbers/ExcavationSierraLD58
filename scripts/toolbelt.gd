@@ -121,7 +121,7 @@ func digSiteAktion(pressed:bool):
                 digSite.is_brushing = true
                 brush_used.emit()
             Tools.GPR:
-                var result = digSite.place_flag(digSite.getTileForMousePos())
+                var result = digSite.place_multi_flag(digSite.getTileForMousePos())
                 if result == DigSite.DigResult.OK:
                     gpr_used.emit()
 

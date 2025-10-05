@@ -170,12 +170,14 @@ func brush_tile(p: Vector3i) -> DigResult:
         return DigResult.NoOp
 
     var dig_layer_index = -1
+    var brushing_bone = false
     for layer_index in dig_layers.size():
-        #if object_layers.size() > layer_index:
-        #    var obj_layer = object_layers[layer_index]
-        #    if obj_layer.get_cell_tile_data(pos):
-        #        #return DigResult.NoOp
-        #        pass
+        if object_layers.size() > layer_index:
+            var obj_layer = object_layers[layer_index]
+            if obj_layer.get_cell_tile_data(pos):
+                dig_layer_index = layer_index
+                brushing_bone = true
+                break
         var l = dig_layers[layer_index]
         if l.get_cell_tile_data(pos):
             dig_layer_index = layer_index
@@ -183,20 +185,23 @@ func brush_tile(p: Vector3i) -> DigResult:
             
     # Check neighborhood
     var layer = dig_layers[dig_layer_index]
-    var neighbours = [Vector2i(-1,-1), Vector2i(-1,0), Vector2i(-1,1), Vector2i(0,1), Vector2i(1,1), Vector2i(1,0), Vector2i(1,-1), Vector2i(0,-1)]
-    var n_count = 0
-    for n in neighbours:
-        if layer.get_cell_tile_data(pos + n):
-            n_count += 1
-    
     var r = 0
-    match n_count:
-        8,7,6,5: r = 0.
-        4:     r = 0.05
-        3:     r = 0.2
-        2:     r = 0.5
-        1:     r = 0.8
-        0:     r = 1.
+    if brushing_bone:
+        r = 0.2
+    else:
+        var neighbours = [Vector2i(-1,-1), Vector2i(-1,0), Vector2i(-1,1), Vector2i(0,1), Vector2i(1,1), Vector2i(1,0), Vector2i(1,-1), Vector2i(0,-1)]
+        var n_count = 0
+        for n in neighbours:
+            if layer.get_cell_tile_data(pos + n):
+                n_count += 1
+        
+        match n_count:
+            8,7,6,5: r = 0.
+            4:     r = 0.05
+            3:     r = max(0.2, r)
+            2:     r = max(0.5, r)
+            1:     r = max(0.8, r)
+            0:     r = max(1., r)
             
     if randf() < r:
         layer.set_cells_terrain_connect([pos], 0, -1, false)
@@ -299,6 +304,11 @@ func take_object(pos: Vector2i) -> String:
     
     return theObj
 
+func place_multi_flag(pos: Vector2i):
+    var cells = get_brush_tiles()
+    for c in cells:
+        place_flag(Vector2i(c.x, c.y) + pos)
+    
 func place_flag(pos: Vector2i):
     if not bounds.has_point(pos):
         return DigResult.NoOp

@@ -61,7 +61,7 @@ func _process(_delta: float):
             curserAnimator.frame = 3
         elif dist < 15.:
             curserAnimator.frame = 2
-        elif dist < 35.:
+        elif dist < 25.:
             curserAnimator.frame = 1
         else:
             curserAnimator.frame = 0
