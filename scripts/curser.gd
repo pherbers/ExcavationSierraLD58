@@ -45,15 +45,15 @@ func _process(_delta: float):
         var dist = (pos - mouseTile).length()
         if dist < 0.5:
             match depth:
-                1: 
+                0: 
                     curserAnimator.frame = 4
-                2:
+                1:
                     curserAnimator.frame = 5
-                3:
+                2:
                     curserAnimator.frame = 6
-                4:
+                3:
                     curserAnimator.frame = 7
-                5:
+                4:
                     curserAnimator.frame = 8
                 _:
                     curserAnimator.frame = 8
@@ -61,9 +61,9 @@ func _process(_delta: float):
             curserAnimator.frame = 3
         elif dist < 15.:
             curserAnimator.frame = 2
-        elif dist < 25.:
+        elif dist < 35.:
             curserAnimator.frame = 1
-        elif dist < 30.:
+        else:
             curserAnimator.frame = 0
 
 func changeToShovel():

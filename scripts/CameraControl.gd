@@ -12,14 +12,21 @@ func _ready():
 
 
 func _process(delta):
-    if moveVectorKeys.length_squared() > 0:
+    if moveVectorKeys.length_squared() > 0.01:
         position += moveVectorKeys.normalized() * delta * scrollSpeed
     else:
         position += moveVectorMouse.normalized() * delta * scrollSpeed
-
-    # TODO: constrain to map bounds
-
-    
+        
+    if position.y > limit_bottom:
+        position.y = limit_bottom
+    elif position.y < limit_top:
+        position.y = limit_top
+    if position.x > limit_right:
+        position.x = limit_right
+    elif position.x < limit_left:
+        position.x = limit_left
+        
+    print(position)
 
 
 func _input(event):

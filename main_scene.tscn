@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://do4voo658ul1u" path="res://nodes/toolbelt.tscn" id="1_hq1ik"]
 [ext_resource type="Script" uid="uid://bs0dqoje38owq" path="res://scripts/game_state.gd" id="1_nfk4m"]
 [ext_resource type="Script" uid="uid://dg6spvn56tg0o" path="res://scripts/curser.gd" id="5_8mm7a"]
-[ext_resource type="SpriteFrames" path="res://assets/shovel_sprite_frames.tres" id="6_66tet"]
+[ext_resource type="SpriteFrames" uid="uid://cjj8bqaba3c5l" path="res://assets/shovel_sprite_frames.tres" id="6_66tet"]
 [ext_resource type="PackedScene" uid="uid://cu74g7pawm2av" path="res://nodes/dig_site.tscn" id="6_nfk4m"]
 [ext_resource type="Script" uid="uid://c5ha2v27vo41y" path="res://scripts/CameraControl.gd" id="7_66tet"]
 [ext_resource type="AudioStream" uid="uid://15wtdmr71jgl" path="res://assets/sounds/desert_ambience.ogg" id="8_66tet"]
@@ -20,15 +20,16 @@ z_index = 10
 digSite = NodePath("../DigSite")
 
 [node name="Curser" type="Node2D" parent="." node_paths=PackedStringArray("curserAnimator", "toolbelt", "label")]
+z_index = 50
 script = ExtResource("5_8mm7a")
 curserAnimator = NodePath("AnimatedSprite2D")
 toolbelt = NodePath("../Toolbelt")
 label = NodePath("Label")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Curser"]
-position = Vector2(16, 16)
 sprite_frames = ExtResource("6_66tet")
-animation = &"Brush"
+animation = &"GPR"
+centered = false
 
 [node name="Label" type="Label" parent="Curser"]
 offset_right = 40.0
@@ -40,10 +41,12 @@ text = "Shovel"
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(58, 51)
 zoom = Vector2(6, 6)
-limit_left = -485
-limit_top = -130
-limit_right = 655
-limit_bottom = 555
+limit_enabled = false
+limit_left = -285
+limit_top = -11
+limit_right = 589
+limit_bottom = 462
+position_smoothing_enabled = true
 script = ExtResource("7_66tet")
 scrollSpeed = 200.0
 

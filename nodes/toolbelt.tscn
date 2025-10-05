@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://dbi6chh64urre" path="res://scripts/UI/button_shovel.gd" id="2_4v4l6"]
 [ext_resource type="Script" uid="uid://cj6itvqrcs2e6" path="res://scripts/UI/button_trowel.gd" id="3_txb6w"]
 [ext_resource type="Script" uid="uid://yhb876jjdufr" path="res://scripts/UI/button_brush.gd" id="4_b14al"]
-[ext_resource type="Script" path="res://scripts/UI/button_rotation.gd" id="6_txb6w"]
+[ext_resource type="Script" uid="uid://bqc4jda7ylaxr" path="res://scripts/UI/button_rotation.gd" id="6_txb6w"]
 [ext_resource type="Texture2D" uid="uid://cuvs60ci4w2n2" path="res://assets/items/Toolbelt.png" id="7_b14al"]
 [ext_resource type="AudioStream" uid="uid://cpxcs4yew7vr0" path="res://assets/sounds/shovel1.ogg" id="7_vtogy"]
 [ext_resource type="AudioStream" uid="uid://crqb2rl1m2ild" path="res://assets/sounds/shovel2.ogg" id="8_pesch"]
