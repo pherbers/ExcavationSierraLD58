@@ -1,11 +1,11 @@
 [gd_scene load_steps=19 format=3 uid="uid://do4voo658ul1u"]
 
 [ext_resource type="Script" uid="uid://m4i2y4jyj8ia" path="res://scripts/toolbelt.gd" id="1_p5adi"]
-[ext_resource type="Script" uid="uid://dbi6chh64urre" path="res://scripts/UI/button_shovel.gd" id="2_4v4l6"]
-[ext_resource type="Script" uid="uid://d14le5nxs1k5c" path="res://scripts/UI/button_hand.gd" id="2_txb6w"]
-[ext_resource type="Script" uid="uid://cj6itvqrcs2e6" path="res://scripts/UI/button_trowel.gd" id="3_txb6w"]
-[ext_resource type="Script" uid="uid://yhb876jjdufr" path="res://scripts/UI/button_brush.gd" id="4_b14al"]
-[ext_resource type="Script" path="res://scripts/UI/button_rotation.gd" id="6_txb6w"]
+[ext_resource type="Script" uid="uid://dbi6chh64urre" path="res://scripts/ui/button_shovel.gd" id="2_4v4l6"]
+[ext_resource type="Script" uid="uid://ill8ddwckiwl" path="res://scripts/ui/button_hand.gd" id="2_txb6w"]
+[ext_resource type="Script" uid="uid://cj6itvqrcs2e6" path="res://scripts/ui/button_trowel.gd" id="3_txb6w"]
+[ext_resource type="Script" uid="uid://yhb876jjdufr" path="res://scripts/ui/button_brush.gd" id="4_b14al"]
+[ext_resource type="Script" uid="uid://bqc4jda7ylaxr" path="res://scripts/ui/button_rotation.gd" id="6_txb6w"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_p5adi"]
 device = -1
@@ -67,11 +67,11 @@ script = ExtResource("1_p5adi")
 
 [node name="HandButton" type="Button" parent="." node_paths=PackedStringArray("tollbelt")]
 anchors_preset = -1
+anchor_left = 0.998
 anchor_right = 0.998
-anchor_bottom = 1.0
-offset_left = 1026.0
+offset_left = -123.696045
 offset_right = 3.303955
-offset_bottom = -610.0
+offset_bottom = 38.0
 shortcut = SubResource("Shortcut_txb6w")
 text = "Shovel
 "
@@ -81,12 +81,12 @@ metadata/_edit_use_anchors_ = true
 
 [node name="ShovelButton" type="Button" parent="." node_paths=PackedStringArray("tollbelt")]
 anchors_preset = -1
+anchor_left = 0.998
 anchor_right = 0.998
-anchor_bottom = 1.0
-offset_left = 1025.0
+offset_left = -124.696045
 offset_top = 42.0
 offset_right = 2.303955
-offset_bottom = -568.0
+offset_bottom = 80.0
 shortcut = SubResource("Shortcut_8mm7a")
 text = "Shovel
 "
@@ -96,12 +96,12 @@ metadata/_edit_use_anchors_ = true
 
 [node name="TrowelButton" type="Button" parent="." node_paths=PackedStringArray("tollbelt")]
 anchors_preset = -1
+anchor_left = 0.998
 anchor_right = 0.998
-anchor_bottom = 1.0
-offset_left = 1025.0
+offset_left = -124.696045
 offset_top = 87.0
 offset_right = 2.303955
-offset_bottom = -522.0
+offset_bottom = 126.0
 shortcut = SubResource("Shortcut_hq1ik")
 text = "Trowel
 "
@@ -111,12 +111,12 @@ metadata/_edit_use_anchors_ = true
 
 [node name="BrushButton" type="Button" parent="." node_paths=PackedStringArray("tollbelt")]
 anchors_preset = -1
+anchor_left = 0.998
 anchor_right = 0.998
-anchor_bottom = 1.0
-offset_left = 1025.0
+offset_left = -124.696045
 offset_top = 132.0
 offset_right = 2.303955
-offset_bottom = -478.0
+offset_bottom = 170.0
 shortcut = SubResource("Shortcut_nfk4m")
 text = "Brush
 "
@@ -126,12 +126,12 @@ metadata/_edit_use_anchors_ = true
 
 [node name="RotationButton" type="Button" parent="." node_paths=PackedStringArray("tollbelt")]
 anchors_preset = -1
+anchor_left = 0.998
 anchor_right = 0.998
-anchor_bottom = 1.0
-offset_left = 1021.0
+offset_left = -128.69604
 offset_top = 603.0
 offset_right = -1.6960449
-offset_bottom = -7.0
+offset_bottom = 641.0
 shortcut = SubResource("Shortcut_pesch")
 text = "Rotation
 "
