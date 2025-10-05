@@ -107,6 +107,7 @@ metadata/_edit_use_anchors_ = true
 
 [node name="RotationButton" type="Button" parent="Toolbelt" node_paths=PackedStringArray("tollbelt")]
 anchors_preset = -1
+anchor_left = 0.998
 anchor_right = 0.998
 anchor_bottom = 1.0
 offset_left = -1.5

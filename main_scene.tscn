@@ -34,10 +34,11 @@ text = "Shovel"
 [node name="DigSite" parent="." instance=ExtResource("6_nfk4m")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(157, 100)
+position = Vector2(-329, 100)
 zoom = Vector2(4, 4)
 script = ExtResource("7_66tet")
 
 [node name="Collection" parent="." node_paths=PackedStringArray("toolbelt") instance=ExtResource("9_7ycvg")]
+z_index = -1
 position = Vector2(-489, 0)
 toolbelt = NodePath("../Toolbelt")

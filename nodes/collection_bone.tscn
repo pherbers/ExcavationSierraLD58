@@ -1,16 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://d04efqiccd3tw"]
+[gd_scene load_steps=4 format=3 uid="uid://d04efqiccd3tw"]
 
-[ext_resource type="Texture2D" uid="uid://cw6vcaddihtdb" path="res://icon.svg" id="1_g31jk"]
 [ext_resource type="Script" uid="uid://doo12k4xnya0y" path="res://scripts/collection/collection_bone.gd" id="2_d2sti"]
 [ext_resource type="Script" uid="uid://d0opl672fhjks" path="res://scripts/collection/bone_area.gd" id="3_r320d"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_py6c4"]
-size = Vector2(129.99997, 130.00009)
+resource_local_to_scene = true
+size = Vector2(40, 88)
 
-[node name="TestBone" type="Sprite2D"]
+[node name="TestBone" type="Node2D" node_paths=PackedStringArray("collider")]
 scale = Vector2(0.2, 0.2)
-texture = ExtResource("1_g31jk")
 script = ExtResource("2_d2sti")
+collider = NodePath("Area2D/CollisionShape2D")
 
 [node name="Area2D" type="Area2D" parent="."]
 position = Vector2(3.814697e-05, 3.814697e-05)
