@@ -11,6 +11,11 @@ signal direction_has_changed(newDir:int)
 
 var direction: int = 0;
 
+signal shovel_used
+signal trowel_used
+signal brush_used
+signal gpr_used
+
 enum Tools {
     Hand,
     Shovel,
@@ -77,13 +82,20 @@ func digSiteAktion(pressed:bool):
                 if boneName != "":
                     gameState.collect_bone(boneName)
             Tools.Shovel: 
-                digSite.dig_shovel(digSite.getTileForMousePos(), direction)
+                var result = digSite.dig_shovel(digSite.getTileForMousePos(), direction)
+                if result == DigSite.DigResult.OK:
+                    shovel_used.emit()
             Tools.Trowel:
-                digSite.dig_trowel(digSite.getTileForMousePos(), direction)
+                var result = digSite.dig_trowel(digSite.getTileForMousePos(), direction)
+                if result == DigSite.DigResult.OK:
+                    trowel_used.emit()
             Tools.Brush:
                 digSite.is_brushing = true
+                brush_used.emit()
             Tools.GPR:
-                digSite.place_flag(digSite.getTileForMousePos())
+                var result = digSite.place_flag(digSite.getTileForMousePos())
+                if result == DigSite.DigResult.OK:
+                    gpr_used.emit()
 
 func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventMouseButton:

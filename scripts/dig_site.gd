@@ -34,6 +34,11 @@ var _brush_chance = 0.
 
 var _bone_positions: Dictionary[String, Vector3i]
 
+signal hit_bone
+signal brush_used
+
+@onready var brush_sound = $BrushSound as AudioStreamPlayer
+
 class DigInstruction:
     var pos: Vector2i
     var time: float
@@ -86,9 +91,12 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
     if is_brushing and _brush_timer > brush_time:
-        dig_brush(dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position()), 3)
+        dig_brush(dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position()))
         _brush_timer = 0
-    
+        brush_used.emit()
+        if !brush_sound.playing:
+            brush_sound.play()
+                
     var ct = Time.get_ticks_msec()
     if _dig_queue_dirty:
         _dig_queue.sort_custom(func(d1,d2): return d1.time > d2.time)
@@ -108,8 +116,9 @@ func _process(_delta: float) -> void:
     if _hitBone:
         # stop digging!
         _dig_queue.clear()
+        hit_bone.emit()
         
-func dig_shovel(pos: Vector2i, dir: int):
+func dig_shovel(pos: Vector2i, dir: int) -> DigResult:
     # find first available layer
     var dig_layer_index = -1
 
@@ -120,7 +129,7 @@ func dig_shovel(pos: Vector2i, dir: int):
             break
     
     if dig_layer_index == -1:
-        return
+        return DigResult.NoOp
     
     print("Digging at " + str(pos) + " with shovel at depth " + str(dig_layer_index))
     
@@ -128,8 +137,9 @@ func dig_shovel(pos: Vector2i, dir: int):
         var p = Vector2i(pd.x, pd.y)
         var delay: float = pd.z
         queue_dig_tile(p + pos, delay / 32., dig_layer_index)
+    return DigResult.OK
 
-func dig_trowel(pos: Vector2i, dir: int):
+func dig_trowel(pos: Vector2i, dir: int) -> DigResult:
     # find first available layer
     var dig_layer_index = -1
 
@@ -140,7 +150,7 @@ func dig_trowel(pos: Vector2i, dir: int):
             break
     
     if dig_layer_index == -1:
-        return
+        return DigResult.NoOp
     
     print("Digging at " + str(pos) + " with shovel at depth " + str(dig_layer_index))
     
@@ -148,13 +158,12 @@ func dig_trowel(pos: Vector2i, dir: int):
         var p = Vector2i(pd.x, pd.y)
         var delay: float = pd.z
         queue_dig_tile(p + pos, delay / 32., dig_layer_index)
+    return DigResult.OK
 
-func dig_brush(pos: Vector2i, radius: int):
+func dig_brush(pos: Vector2i):
     for pd in _brush_cells:
         var p = Vector2i(pd.x,pd.y) + pos
-        var dist_to_center = (p - pos).length()
-        if dist_to_center - 0.1 <= radius:
-            brush_tile(Vector3i(p.x, p.y, pd.z))
+        brush_tile(Vector3i(p.x, p.y, pd.z))
                 
     _brush_chance += 0.01
 
@@ -298,12 +307,13 @@ func take_object(pos: Vector2i) -> String:
 
 func place_flag(pos: Vector2i):
     if not bounds.has_point(pos):
-        return
+        return DigResult.NoOp
     var top_obj = find_top_object(pos, true)
     if top_obj.z >= 0:
         flag_layer.set_cell(pos, 0, Vector2i.ZERO)
     else:
         flag_layer.set_cell(pos, 0, Vector2i(1,0))
+    return DigResult.OK
 
 func find_top_object(pos: Vector2i, ignore_dig_layer=false) -> Vector3i:
     for layer_index in dig_layers.size():
