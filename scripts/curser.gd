@@ -44,16 +44,33 @@ func _process(_delta: float):
         var depth = closest_bone_pos.z
         var dist = (pos - mouseTile).length()
         if dist < 0.5:
-            label.text = "GPR (1) Depth " + str(depth)
+            match depth:
+                1: 
+                    curserAnimator.frame = 4
+                2:
+                    curserAnimator.frame = 5
+                3:
+                    curserAnimator.frame = 6
+                4:
+                    curserAnimator.frame = 7
+                5:
+                    curserAnimator.frame = 8
+                _:
+                    curserAnimator.frame = 8
         elif dist < 5.:
-            label.text = "GPR (2)"
-        elif dist < 20.:
-            label.text = "GPR (3)"
+            curserAnimator.frame = 3
+        elif dist < 15.:
+            curserAnimator.frame = 2
+        elif dist < 25.:
+            curserAnimator.frame = 1
+        elif dist < 30.:
+            curserAnimator.frame = 0
 
 func changeToShovel():
     curserAnimator.visible = true
     curserAnimator.play("Shovel")
     curserAnimator.stop()
+    curserAnimator.frame = 0
     label.text = "Shovel"
     label.visible = false
     Input.set_default_cursor_shape(Input.CURSOR_ARROW)
@@ -62,6 +79,7 @@ func changeToTrowel():
     curserAnimator.visible = true
     curserAnimator.play("Trowel")
     curserAnimator.stop()
+    curserAnimator.frame = 0
     label.text = "Trowel"
     label.visible = false
     Input.set_default_cursor_shape(Input.CURSOR_ARROW)
@@ -70,6 +88,7 @@ func changeToBrush():
     curserAnimator.visible = true
     curserAnimator.play("Brush")
     curserAnimator.stop()
+    curserAnimator.frame = 0
     label.text = "Brush"
     label.visible = false
     Input.set_default_cursor_shape(Input.CURSOR_ARROW)
@@ -77,6 +96,7 @@ func changeToBrush():
 func changeToHand():
     curserAnimator.visible = false
     curserAnimator.stop()
+    curserAnimator.frame = 0
     label.text = "Hand"
     label.visible = false
     Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
@@ -85,6 +105,7 @@ func changeToGPR():
     curserAnimator.visible = true
     curserAnimator.play("GPR")
     curserAnimator.stop()
+    curserAnimator.frame = 0
     label.text = "GPR"
     label.visible = false
     Input.set_default_cursor_shape(Input.CURSOR_ARROW)

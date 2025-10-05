@@ -19,6 +19,7 @@ z_index = 10
 digSite = NodePath("../DigSite")
 
 [node name="Curser" type="Node2D" parent="." node_paths=PackedStringArray("curserAnimator", "toolbelt", "label")]
+z_index = 5
 script = ExtResource("5_8mm7a")
 curserAnimator = NodePath("AnimatedSprite2D")
 toolbelt = NodePath("../Toolbelt")
@@ -27,6 +28,8 @@ label = NodePath("Label")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Curser"]
 sprite_frames = ExtResource("6_66tet")
 animation = &"GPR"
+frame = 8
+frame_progress = 1.0
 centered = false
 
 [node name="Label" type="Label" parent="Curser"]

@@ -1,9 +1,17 @@
-[gd_resource type="SpriteFrames" load_steps=21 format=3 uid="uid://cjj8bqaba3c5l"]
+[gd_resource type="SpriteFrames" load_steps=29 format=3 uid="uid://cjj8bqaba3c5l"]
 
 [ext_resource type="Texture2D" uid="uid://kcisoqqyrnvr" path="res://assets/curser/Brush-moving.png" id="1_rxiyv"]
-[ext_resource type="Texture2D" uid="uid://c6qaqwflabsi1" path="res://assets/items/Bonefiinder.png" id="2_x2t6y"]
+[ext_resource type="Texture2D" uid="uid://c5ec1kbpx1wno" path="res://assets/items/Bonefinder1.png" id="2_xabob"]
+[ext_resource type="Texture2D" uid="uid://c765ku1512p8p" path="res://assets/items/Bonefinder2.png" id="3_b2wtl"]
 [ext_resource type="Texture2D" uid="uid://bdnqd81j7usnq" path="res://assets/items/Shovel.png" id="3_hnb3c"]
 [ext_resource type="Texture2D" uid="uid://chdlxed3qavfp" path="res://assets/items/Trowel.png" id="4_16qqm"]
+[ext_resource type="Texture2D" uid="uid://0shrg2nu0aoe" path="res://assets/items/Bonefinder3.png" id="4_d83e7"]
+[ext_resource type="Texture2D" uid="uid://b4v8e7otkd8ya" path="res://assets/items/Bonefinder4.png" id="5_14s14"]
+[ext_resource type="Texture2D" uid="uid://dqvvpr6umb3g0" path="res://assets/items/Bonefinder5.png" id="6_pnx2j"]
+[ext_resource type="Texture2D" uid="uid://d0d8rtcpm4ohe" path="res://assets/items/Bonefinder6.png" id="7_33q0r"]
+[ext_resource type="Texture2D" uid="uid://b44gtryyaa7mk" path="res://assets/items/Bonefinder7.png" id="8_xybjm"]
+[ext_resource type="Texture2D" uid="uid://bq6xovpaymf6y" path="res://assets/items/Bonefinder8.png" id="9_khrvx"]
+[ext_resource type="Texture2D" uid="uid://db16k2xrj7cul" path="res://assets/items/Bonefinder9.png" id="10_71tbj"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qftqx"]
 atlas = ExtResource("1_rxiyv")
@@ -126,7 +134,31 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_x2t6y")
+"texture": ExtResource("2_xabob")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_b2wtl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_d83e7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_14s14")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_pnx2j")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_33q0r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_xybjm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_khrvx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_71tbj")
 }],
 "loop": false,
 "name": &"GPR",
