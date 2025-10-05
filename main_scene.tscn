@@ -3,9 +3,9 @@
 [ext_resource type="PackedScene" uid="uid://do4voo658ul1u" path="res://nodes/toolbelt.tscn" id="1_hq1ik"]
 [ext_resource type="Script" uid="uid://bs0dqoje38owq" path="res://scripts/game_state.gd" id="1_nfk4m"]
 [ext_resource type="Script" uid="uid://dg6spvn56tg0o" path="res://scripts/curser.gd" id="5_8mm7a"]
-[ext_resource type="SpriteFrames" uid="uid://cjj8bqaba3c5l" path="res://assets/shovel_sprite_frames.tres" id="6_66tet"]
+[ext_resource type="SpriteFrames" path="res://assets/shovel_sprite_frames.tres" id="6_66tet"]
 [ext_resource type="PackedScene" uid="uid://cu74g7pawm2av" path="res://nodes/dig_site.tscn" id="6_nfk4m"]
-[ext_resource type="Script" path="res://scripts/CameraControl.gd" id="7_66tet"]
+[ext_resource type="Script" uid="uid://c5ha2v27vo41y" path="res://scripts/CameraControl.gd" id="7_66tet"]
 [ext_resource type="PackedScene" uid="uid://dlliy8iqort6s" path="res://nodes/collection.tscn" id="9_7ycvg"]
 
 [node name="MainScene" type="Node2D"]
@@ -37,7 +37,7 @@ text = "Shovel"
 [node name="DigSite" parent="." instance=ExtResource("6_nfk4m")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-97, 92)
+position = Vector2(58, 51)
 zoom = Vector2(4, 4)
 limit_left = -485
 limit_top = -130
@@ -48,7 +48,7 @@ scrollSpeed = 200.0
 
 [node name="Collection" parent="." node_paths=PackedStringArray("gameState") instance=ExtResource("9_7ycvg")]
 z_index = -1
-position = Vector2(-381, 1)
+position = Vector2(-286, 0)
 gameState = NodePath("../GameState")
 
 [connection signal="bone_collected" from="GameState" to="Collection" method="_on_game_state_bone_collected"]
