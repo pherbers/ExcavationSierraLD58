@@ -38,7 +38,7 @@ text = "Shovel"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(58, 51)
-zoom = Vector2(4, 4)
+zoom = Vector2(6, 6)
 limit_left = -485
 limit_top = -130
 limit_right = 655
