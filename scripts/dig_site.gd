@@ -71,7 +71,7 @@ func _ready() -> void:
     for t in $ObjectLayers.find_children("*", "TileMapLayer"):
         object_layers.append(t)
         
-    object_layers.sort_custom(func (t): return t.z_index)
+    object_layers.sort_custom(func (t1, t2): return t1.z_index > t2.z_index)
     
     for object_layer_index in object_layers.size():
         var object_layer = object_layers[object_layer_index]
