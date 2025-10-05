@@ -55,4 +55,4 @@ text = "Created for the  Ludum Dare 58.
 Created by Adrian Herbers, and Patrick Herbers, and Patrick Quiskamp"
 autowrap_mode = 2
 
-[connection signal="pressed" from="Camera2D/Menue/Button" to="." method="play_game"]
+[connection signal="pressed" from="Camera2D/Menue/Button" to="Camera2D/Menue" method="play_game"]

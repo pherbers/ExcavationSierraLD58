@@ -14,14 +14,10 @@ var _shovel_cells_west: Array[Vector3i]
 var _shovel_cells_north: Array[Vector3i]
 var _shovel_cells_east: Array[Vector3i]
 var _shovel_cells_south: Array[Vector3i]
-var _trowel_cells_es: Array[Vector3i]
-var _trowel_cells_sw: Array[Vector3i]
-var _trowel_cells_wn: Array[Vector3i]
-var _trowel_cells_ne: Array[Vector3i]
-var _trowel_cells_en: Array[Vector3i]
-var _trowel_cells_nw: Array[Vector3i]
-var _trowel_cells_ws: Array[Vector3i]
-var _trowel_cells_se: Array[Vector3i]
+var _trowel_cells_e: Array[Vector3i]
+var _trowel_cells_s: Array[Vector3i]
+var _trowel_cells_w: Array[Vector3i]
+var _trowel_cells_n: Array[Vector3i]
 var _brush_cells: Array[Vector3i]
 
 var _dig_queue: Array[DigInstruction] = []
@@ -33,6 +29,11 @@ var _brush_timer = 0.
 var _brush_chance = 0.
 
 var _bone_positions: Dictionary[String, Vector3i]
+
+signal hit_bone
+signal brush_used
+
+@onready var brush_sound = $BrushSound as AudioStreamPlayer
 
 class DigInstruction:
     var pos: Vector2i
@@ -51,14 +52,10 @@ func _ready() -> void:
     _shovel_cells_east  = read_mask(shovel_masks[2])
     _shovel_cells_north = read_mask(shovel_masks[3])
     
-    _trowel_cells_es = read_mask(trowel_masks[0])
-    _trowel_cells_sw = read_mask(trowel_masks[1])
-    _trowel_cells_wn = read_mask(trowel_masks[2])
-    _trowel_cells_ne = read_mask(trowel_masks[3])
-    _trowel_cells_en = read_mask(trowel_masks[4])
-    _trowel_cells_nw = read_mask(trowel_masks[5])
-    _trowel_cells_ws = read_mask(trowel_masks[6])
-    _trowel_cells_se = read_mask(trowel_masks[7])
+    _trowel_cells_e = read_mask(trowel_masks[0])
+    _trowel_cells_s = read_mask(trowel_masks[1])
+    _trowel_cells_w = read_mask(trowel_masks[2])
+    _trowel_cells_n = read_mask(trowel_masks[3])
     
     _brush_cells = read_mask(brush_mask)
     
@@ -85,10 +82,15 @@ func _ready() -> void:
     print("Dig Site prepared, it is " + str(len(dig_layers)) + " layers deep")
 
 func _process(_delta: float) -> void:
+    if is_brushing:
+        _brush_timer += _delta * 1000
     if is_brushing and _brush_timer > brush_time:
-        dig_brush(dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position()), 3)
+        dig_brush(dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position()))
         _brush_timer = 0
-    
+        brush_used.emit()
+        if !brush_sound.playing:
+            brush_sound.play()
+                
     var ct = Time.get_ticks_msec()
     if _dig_queue_dirty:
         _dig_queue.sort_custom(func(d1,d2): return d1.time > d2.time)
@@ -108,8 +110,9 @@ func _process(_delta: float) -> void:
     if _hitBone:
         # stop digging!
         _dig_queue.clear()
+        hit_bone.emit()
         
-func dig_shovel(pos: Vector2i, dir: int):
+func dig_shovel(pos: Vector2i, dir: int) -> DigResult:
     # find first available layer
     var dig_layer_index = -1
 
@@ -120,7 +123,7 @@ func dig_shovel(pos: Vector2i, dir: int):
             break
     
     if dig_layer_index == -1:
-        return
+        return DigResult.NoOp
     
     print("Digging at " + str(pos) + " with shovel at depth " + str(dig_layer_index))
     
@@ -128,8 +131,9 @@ func dig_shovel(pos: Vector2i, dir: int):
         var p = Vector2i(pd.x, pd.y)
         var delay: float = pd.z
         queue_dig_tile(p + pos, delay / 32., dig_layer_index)
+    return DigResult.OK
 
-func dig_trowel(pos: Vector2i, dir: int):
+func dig_trowel(pos: Vector2i, dir: int) -> DigResult:
     # find first available layer
     var dig_layer_index = -1
 
@@ -140,7 +144,7 @@ func dig_trowel(pos: Vector2i, dir: int):
             break
     
     if dig_layer_index == -1:
-        return
+        return DigResult.NoOp
     
     print("Digging at " + str(pos) + " with shovel at depth " + str(dig_layer_index))
     
@@ -148,13 +152,12 @@ func dig_trowel(pos: Vector2i, dir: int):
         var p = Vector2i(pd.x, pd.y)
         var delay: float = pd.z
         queue_dig_tile(p + pos, delay / 32., dig_layer_index)
+    return DigResult.OK
 
-func dig_brush(pos: Vector2i, radius: int):
+func dig_brush(pos: Vector2i):
     for pd in _brush_cells:
         var p = Vector2i(pd.x,pd.y) + pos
-        var dist_to_center = (p - pos).length()
-        if dist_to_center - 0.1 <= radius:
-            brush_tile(Vector3i(p.x, p.y, pd.z))
+        brush_tile(Vector3i(p.x, p.y, pd.z))
                 
     _brush_chance += 0.01
 
@@ -298,12 +301,13 @@ func take_object(pos: Vector2i) -> String:
 
 func place_flag(pos: Vector2i):
     if not bounds.has_point(pos):
-        return
+        return DigResult.NoOp
     var top_obj = find_top_object(pos, true)
     if top_obj.z >= 0:
         flag_layer.set_cell(pos, 0, Vector2i.ZERO)
     else:
         flag_layer.set_cell(pos, 0, Vector2i(1,0))
+    return DigResult.OK
 
 func find_top_object(pos: Vector2i, ignore_dig_layer=false) -> Vector3i:
     for layer_index in dig_layers.size():
@@ -359,15 +363,11 @@ func get_shovel_tiles(shovel_dir: int) -> Array[Vector3i]:
     
 func get_trowel_tiles(trowel_dir: int) -> Array[Vector3i]:
     match(trowel_dir):
-        0: return _trowel_cells_ne
-        1: return _trowel_cells_en
-        2: return _trowel_cells_es
-        3: return _trowel_cells_se
-        4: return _trowel_cells_sw
-        5: return _trowel_cells_ws
-        6: return _trowel_cells_wn
-        7: return _trowel_cells_nw
-    return _trowel_cells_ne
+        0: return _trowel_cells_n
+        1: return _trowel_cells_e
+        2: return _trowel_cells_s
+        3: return _trowel_cells_w
+    return _trowel_cells_n
 
 func get_brush_tiles() -> Array[Vector3i]:
     return _brush_cells
