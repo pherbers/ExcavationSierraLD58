@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://dj3gh6hvhj8ka"]
+
+[ext_resource type="Script" uid="uid://ci3ntjh4helve" path="res://scripts/main_menue.gd" id="1_ldtmt"]
+
+[node name="MainMenue" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(96, 54)
+scale = Vector2(0.99999994, 0.99999994)
+zoom = Vector2(6, 6)
+limit_left = -485
+limit_top = -130
+limit_right = 655
+limit_bottom = 555
+
+[node name="Menue" type="Node2D" parent="Camera2D"]
+scale = Vector2(0.4, 0.4)
+script = ExtResource("1_ldtmt")
+
+[node name="Button" type="Button" parent="Camera2D/Menue"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Start"
+
+[node name="Title" type="Label" parent="Camera2D/Menue"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -57.0
+offset_top = -72.0
+offset_right = 61.0
+offset_bottom = -49.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Ich bin ein Titel"
+
+[node name="Impressum" type="Label" parent="Camera2D/Menue"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -230.00003
+offset_top = 47.500008
+offset_right = 225.0
+offset_bottom = 126.00001
+grow_horizontal = 2
+grow_vertical = 0
+text = "Created for the  Ludum Dare 58.
+Created by Adrian Herbers, and Patrick Herbers, and Patrick Quiskamp"
+autowrap_mode = 2
+
+[connection signal="pressed" from="Camera2D/Menue/Button" to="." method="play_game"]

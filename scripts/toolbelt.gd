@@ -29,11 +29,19 @@ var tool_dic_mod = {
 
 static var currentTool: Tools = Tools.Hand
 
+func _ready() -> void:
+    get_viewport().size_changed.connect(window_update)
+    window_update()
+
+func window_update():
+    var zoom = max(floor(get_viewport().get_visible_rect().size.y / 200), 1.)
+    print("Setting zoom to " + str(zoom))
+    camera.zoom = Vector2i(zoom, zoom)
+
 func change_tool(newTool:Tools):
     if currentTool == newTool: return
     currentTool = newTool
     direction = 0
-    print(Tools.keys()[currentTool], " Tool selected!")
     tool_has_changed.emit(currentTool)
 
 func switch_to_shovel():
@@ -49,14 +57,12 @@ func change_direction_up():
     direction += 1
     direction = direction % tool_dic_mod[currentTool]
     direction_has_changed.emit(direction)
-    print("New Direction:", direction)
     
 func change_direction_down():
     direction -= 1
     if direction < 0: 
         direction = tool_dic_mod[currentTool] - 1
     direction_has_changed.emit(direction)
-    print("New Direction:", direction)
 
 func digSiteAktion(pressed:bool):
     if !pressed:
@@ -77,6 +83,9 @@ func digSiteAktion(pressed:bool):
                 digSite.place_flag(digSite.getTileForMousePos())
 
 func _unhandled_input(event: InputEvent) -> void:
+    if event is InputEventKey:
+        if event.pressed and event.keycode == KEY_1:
+            change_tool(Tools.Hand)
     if event is InputEventMouseButton:
         if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
             change_tool(Tools.Hand)
@@ -91,5 +100,5 @@ func _unhandled_input(event: InputEvent) -> void:
         
 
 func _process(_delta: float) -> void:
-    var camBottomRight = camera.get_screen_center_position() + Vector2(get_viewport_rect().size / 8)
+    var camBottomRight = camera.get_screen_center_position() + Vector2(get_viewport_rect().size / camera.zoom / 2)
     global_position = camBottomRight

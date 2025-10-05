@@ -1,10 +1,10 @@
-[gd_scene load_steps=16 format=3 uid="uid://do4voo658ul1u"]
+[gd_scene load_steps=18 format=3 uid="uid://do4voo658ul1u"]
 
 [ext_resource type="Script" uid="uid://m4i2y4jyj8ia" path="res://scripts/toolbelt.gd" id="1_p5adi"]
-[ext_resource type="Script" uid="uid://dbi6chh64urre" path="res://scripts/UI/button_shovel.gd" id="2_4v4l6"]
-[ext_resource type="Script" uid="uid://cj6itvqrcs2e6" path="res://scripts/UI/button_trowel.gd" id="3_txb6w"]
-[ext_resource type="Script" uid="uid://yhb876jjdufr" path="res://scripts/UI/button_brush.gd" id="4_b14al"]
-[ext_resource type="Script" path="res://scripts/UI/button_rotation.gd" id="6_txb6w"]
+[ext_resource type="Script" uid="uid://dbi6chh64urre" path="res://scripts/ui/button_shovel.gd" id="2_4v4l6"]
+[ext_resource type="Script" uid="uid://cj6itvqrcs2e6" path="res://scripts/ui/button_trowel.gd" id="3_txb6w"]
+[ext_resource type="Script" uid="uid://yhb876jjdufr" path="res://scripts/ui/button_brush.gd" id="4_b14al"]
+[ext_resource type="Script" uid="uid://bqc4jda7ylaxr" path="res://scripts/UI/button_rotation.gd" id="6_txb6w"]
 [ext_resource type="Texture2D" uid="uid://cuvs60ci4w2n2" path="res://assets/items/Toolbelt.png" id="7_b14al"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_4v4l6"]
@@ -30,6 +30,14 @@ unicode = 52
 
 [sub_resource type="Shortcut" id="Shortcut_nfk4m"]
 events = [SubResource("InputEventKey_b14al")]
+
+[sub_resource type="InputEventKey" id="InputEventKey_vtogy"]
+device = -1
+keycode = 53
+unicode = 53
+
+[sub_resource type="Shortcut" id="Shortcut_wk75a"]
+events = [SubResource("InputEventKey_vtogy")]
 
 [sub_resource type="InputEventKey" id="InputEventKey_78dcd"]
 device = -1
@@ -133,7 +141,7 @@ offset_top = 28.43283
 offset_right = 27.595999
 offset_bottom = -74.56717
 focus_mode = 0
-shortcut = SubResource("Shortcut_nfk4m")
+shortcut = SubResource("Shortcut_wk75a")
 flat = true
 metadata/_edit_use_anchors_ = true
 
