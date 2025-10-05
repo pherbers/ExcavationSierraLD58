@@ -8,6 +8,7 @@ var object_layers: Array[TileMapLayer]
 
 @export var shovel_masks: Array[Texture2D]
 @export var trowel_masks: Array[Texture2D]
+@export var brush_mask: Texture2D
 var _shovel_cells_west: Array[Vector3i]
 var _shovel_cells_north: Array[Vector3i]
 var _shovel_cells_east: Array[Vector3i]
@@ -20,6 +21,7 @@ var _trowel_cells_en: Array[Vector3i]
 var _trowel_cells_nw: Array[Vector3i]
 var _trowel_cells_ws: Array[Vector3i]
 var _trowel_cells_se: Array[Vector3i]
+var _brush_cells: Array[Vector3i]
 
 var _dig_queue: Array[DigInstruction] = []
 var _dig_queue_dirty = false
@@ -47,14 +49,16 @@ func _ready() -> void:
     _shovel_cells_east  = read_mask(shovel_masks[2])
     _shovel_cells_north = read_mask(shovel_masks[3])
     
-    _trowel_cells_ws = read_mask(trowel_masks[0])
+    _trowel_cells_es = read_mask(trowel_masks[0])
     _trowel_cells_sw = read_mask(trowel_masks[1])
-    _trowel_cells_en = read_mask(trowel_masks[2])
+    _trowel_cells_wn = read_mask(trowel_masks[2])
     _trowel_cells_ne = read_mask(trowel_masks[3])
-    _trowel_cells_wn = read_mask(trowel_masks[4])
+    _trowel_cells_en = read_mask(trowel_masks[4])
     _trowel_cells_nw = read_mask(trowel_masks[5])
-    _trowel_cells_es = read_mask(trowel_masks[6])
+    _trowel_cells_ws = read_mask(trowel_masks[6])
     _trowel_cells_se = read_mask(trowel_masks[7])
+    
+    _brush_cells = read_mask(brush_mask)
     
     for t in $DigLayers.find_children("*", "TileMapLayer"):
         dig_layers.append(t)
@@ -135,31 +139,29 @@ func dig_trowel(pos: Vector2i, dir: int):
         queue_dig_tile(p + pos, delay / 32., dig_layer_index)
 
 func dig_brush(pos: Vector2i, radius: int):
-    var xmin = max(pos.x - radius, bounds.position.x)
-    var ymin = max(pos.y - radius, bounds.position.y)
-    var xmax = min(pos.x + radius, bounds.end.x) + 1
-    var ymax = min(pos.y + radius, bounds.end.y) + 1
-    for x in range(xmin, xmax):
-        for y in range(ymin, ymax):
-            var p = Vector2i(x,y)
-            var dist_to_center = (p - pos).length()
-            if dist_to_center - 0.1 <= radius:
-                brush_tile(p)
+    for pd in _brush_cells:
+        var p = Vector2i(pd.x,pd.y) + pos
+        var dist_to_center = (p - pos).length()
+        if dist_to_center - 0.1 <= radius:
+            brush_tile(Vector3i(p.x, p.y, pd.z))
                 
     _brush_chance += 0.01
 
-func brush_tile(pos: Vector2i) -> DigResult:
-    var base_random = randf()
+func brush_tile(p: Vector3i) -> DigResult:
+    var pos = Vector2i(p.x, p.y)
+    var strength = p.z
+    
+    var base_random = randf() * strength
     if base_random > _brush_chance:
         return DigResult.NoOp
 
     var dig_layer_index = -1
     for layer_index in dig_layers.size():
-        if object_layers.size() > layer_index:
-            var obj_layer = object_layers[layer_index]
-            if obj_layer.get_cell_tile_data(pos):
-                #return DigResult.NoOp
-                pass
+        #if object_layers.size() > layer_index:
+        #    var obj_layer = object_layers[layer_index]
+        #    if obj_layer.get_cell_tile_data(pos):
+        #        #return DigResult.NoOp
+        #        pass
         var l = dig_layers[layer_index]
         if l.get_cell_tile_data(pos):
             dig_layer_index = layer_index
@@ -175,8 +177,8 @@ func brush_tile(pos: Vector2i) -> DigResult:
     
     var r = 0
     match n_count:
-        8,7,6: r = 0.
-        5,4:   r = 0.1
+        8,7,6,5: r = 0.
+        4:     r = 0.05
         3:     r = 0.2
         2:     r = 0.5
         1:     r = 0.8
@@ -327,6 +329,9 @@ func get_trowel_tiles(trowel_dir: int) -> Array[Vector3i]:
         6: return _trowel_cells_wn
         7: return _trowel_cells_nw
     return _trowel_cells_ne
+
+func get_brush_tiles() -> Array[Vector3i]:
+    return _brush_cells
 
 func getTileForMousePos():
     return dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position())

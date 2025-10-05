@@ -1,10 +1,14 @@
-[gd_scene load_steps=30 format=4 uid="uid://cu74g7pawm2av"]
+[gd_scene load_steps=32 format=4 uid="uid://cu74g7pawm2av"]
 
 [ext_resource type="Script" uid="uid://767dwy333a7k" path="res://scripts/dig_site.gd" id="1_5h2ie"]
 [ext_resource type="TileSet" uid="uid://c1kjxdb7xjtdf" path="res://assets/tilesets/layer1.tres" id="2_s4e4a"]
+[ext_resource type="Texture2D" uid="uid://b1jkgvjclw7wn" path="res://nodes/shovel_east.tres" id="2_u6ecg"]
 [ext_resource type="Texture2D" uid="uid://bwelilawkhdrr" path="res://assets/dig_masks.png" id="2_v4sw2"]
+[ext_resource type="Texture2D" uid="uid://bst5tvovuj5ra" path="res://nodes/shovel_south.tres" id="3_fx5b2"]
 [ext_resource type="TileSet" uid="uid://nds3ir3ao1f6" path="res://assets/tilesets/layer2.tres" id="3_s4e4a"]
+[ext_resource type="Texture2D" uid="uid://cg5wb4fjw38xj" path="res://nodes/shovel_west.tres" id="4_8jhme"]
 [ext_resource type="TileSet" uid="uid://dud4ofxgileu2" path="res://assets/tilesets/layer3.tres" id="4_27ss3"]
+[ext_resource type="Texture2D" uid="uid://ckqyb5yqfb0jd" path="res://nodes/shovel_north.tres" id="5_8jhme"]
 [ext_resource type="TileSet" uid="uid://c08nwllp4hi6y" path="res://assets/tilesets/layer4.tres" id="5_k8uxk"]
 [ext_resource type="TileSet" uid="uid://6445fnwhdw4f" path="res://assets/tilesets/layer5.tres" id="6_v4sw2"]
 [ext_resource type="TileSet" uid="uid://dmb62m1t13ccu" path="res://assets/tilesets/bedrock.tres" id="8_i3jma"]
@@ -14,27 +18,10 @@
 [ext_resource type="Texture2D" uid="uid://onekqtvgusaw" path="res://assets/objects/Seilu.png" id="11_q7xge"]
 [ext_resource type="Texture2D" uid="uid://bocnpxoh4u8to" path="res://assets/objects/SeilEckeOR.png" id="12_tgc84"]
 [ext_resource type="Texture2D" uid="uid://bopcwjkucprjj" path="res://assets/objects/SeilRL.png" id="13_q7xge"]
+[ext_resource type="Script" uid="uid://bxjapktq2qh50" path="res://scripts/tool_preview.gd" id="14_gee6t"]
 [ext_resource type="Texture2D" uid="uid://csgr8gdx8yoq6" path="res://assets/objects/SeilEckeUR.png" id="15_bv2fc"]
+[ext_resource type="Texture2D" uid="uid://ca0ms2w01q8qw" path="res://assets/curser/tile_select.png" id="15_gee6t"]
 [ext_resource type="Texture2D" uid="uid://cwcnlyl8nin8k" path="res://assets/objects/SeilEckeUL.png" id="16_fs82h"]
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_i3jma"]
-atlas = ExtResource("2_v4sw2")
-region = Rect2(0, 0, 11, 11)
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pcsen"]
-load_path = "res://.godot/imported/dig_masks.png-9e844b62b9a17c5fd26fee2797a9d166.ctex"
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vfbpc"]
-atlas = SubResource("CompressedTexture2D_pcsen")
-region = Rect2(12, 0, 11, 11)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ky2e5"]
-atlas = SubResource("CompressedTexture2D_pcsen")
-region = Rect2(24, 0, 11, 11)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kr0al"]
-atlas = SubResource("CompressedTexture2D_pcsen")
-region = Rect2(36, 0, 11, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_v4sw2"]
 atlas = ExtResource("2_v4sw2")
@@ -68,12 +55,17 @@ region = Rect2(24, 36, 11, 11)
 atlas = ExtResource("2_v4sw2")
 region = Rect2(36, 36, 11, 11)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_gee6t"]
+atlas = ExtResource("2_v4sw2")
+region = Rect2(0, 48, 11, 11)
+
 [node name="DigSite" type="Node2D"]
 texture_filter = 1
 script = ExtResource("1_5h2ie")
 bounds = Rect2i(0, 0, 72, 56)
-shovel_masks = Array[Texture2D]([SubResource("AtlasTexture_i3jma"), SubResource("AtlasTexture_vfbpc"), SubResource("AtlasTexture_ky2e5"), SubResource("AtlasTexture_kr0al")])
+shovel_masks = Array[Texture2D]([ExtResource("2_u6ecg"), ExtResource("3_fx5b2"), ExtResource("4_8jhme"), ExtResource("5_8jhme")])
 trowel_masks = Array[Texture2D]([SubResource("AtlasTexture_v4sw2"), SubResource("AtlasTexture_pcsen"), SubResource("AtlasTexture_lxrcy"), SubResource("AtlasTexture_tgc84"), SubResource("AtlasTexture_q7xge"), SubResource("AtlasTexture_bv2fc"), SubResource("AtlasTexture_fs82h"), SubResource("AtlasTexture_u6ecg")])
+brush_mask = SubResource("AtlasTexture_gee6t")
 
 [node name="DigLayers" type="Node2D" parent="."]
 
@@ -118,6 +110,10 @@ tile_set = ExtResource("8_i3jma")
 z_index = -3
 tile_map_data = PackedByteArray("AAAPAAkAAQAAAAUAAAAPAAoAAQAAAAYAAAAQAAkAAQABAAUAAAAQAAoAAQABAAYAAAAQAAsAAQABAAcAAAARAAgAAQACAAQAAAARAAkAAQACAAUAAAARAAoAAQACAAYAAAARAAsAAQACAAcAAAASAAcAAQADAAMAAAASAAgAAQADAAQAAAASAAkAAQADAAUAAAASAAoAAQADAAYAAAATAAUAAQAEAAEAAAATAAYAAQAEAAIAAAATAAcAAQAEAAMAAAATAAgAAQAEAAQAAAATAAkAAQAEAAUAAAAUAAUAAQAFAAEAAAAUAAYAAQAFAAIAAAAUAAcAAQAFAAMAAAAUAAgAAQAFAAQAAAAVAAYAAQAGAAIAAAAVAAcAAQAGAAMAAAAKABsAAAAAAA0AAAAKABwAAAAAAA4AAAAKAB0AAAAAAA8AAAALABsAAAABAA0AAAALABwAAAABAA4AAAALAB0AAAABAA8AAAAMABwAAAACAA4AAAAMAB0AAAACAA8AAAANABsAAAADAA0AAAANABwAAAADAA4AAAANAB0AAAADAA8AAAAOABsAAAAEAA0AAAAOABwAAAAEAA4AAAAOAB0AAAAEAA8AAAAPABsAAAAFAA0AAAAPABwAAAAFAA4AAAAPAB0AAAAFAA8AAAAQABsAAAAGAA0AAAAQABwAAAAGAA4AAAAQAB0AAAAGAA8AAAARABsAAAAHAA0AAAARABwAAAAHAA4AAAARAB0AAAAHAA8AAAAKABYAAAAAAAgAAAAKABcAAAAAAAkAAAAKABgAAAAAAAoAAAAKABkAAAAAAAsAAAALABYAAAABAAgAAAALABcAAAABAAkAAAALABgAAAABAAoAAAALABkAAAABAAsAAAALABoAAAABAAwAAAAMABkAAAACAAsAAAAMABoAAAACAAwAAAALABMAAAABAAUAAAALABQAAAABAAYAAAALABUAAAABAAcAAAAMABIAAAACAAQAAAAMABMAAAACAAUAAAAMABQAAAACAAYAAAAMABUAAAACAAcAAAANABMAAAADAAUAAAANABQAAAADAAYAAAANABUAAAADAAcAAAAOABEAAAAEAAMAAAAOABIAAAAEAAQAAAAOABMAAAAEAAUAAAAOABQAAAAEAAYAAAAPABEAAAAFAAMAAAAPABIAAAAFAAQAAAAPABMAAAAFAAUAAAAPABQAAAAFAAYAAAAPABUAAAAFAAcAAAAPABYAAAAFAAgAAAAQABUAAAAGAAcAAAAQABYAAAAGAAgAAAAQABcAAAAGAAkAAAARABYAAAAHAAgAAAARABcAAAAHAAkAAAARABgAAAAHAAoAAAASABcAAAAIAAkAAAASABgAAAAIAAoAAAATABgAAAAJAAoAAAAUABgAAAAKAAoAAAAVABgAAAALAAoAAAAQAA8AAAAGAAEAAAAQABAAAAAGAAIAAAAQABEAAAAGAAMAAAAQABIAAAAGAAQAAAARAA8AAAAHAAEAAAARABAAAAAHAAIAAAARABEAAAAHAAMAAAARABIAAAAHAAQAAAARABMAAAAHAAUAAAARABQAAAAHAAYAAAARABUAAAAHAAcAAAASABQAAAAIAAYAAAASABUAAAAIAAcAAAATABUAAAAJAAcAAAATABYAAAAJAAgAAAAUABYAAAAKAAgAAAAVABYAAAALAAgAAAAWABYAAAAMAAgAAAASAA4AAAAIAAAAAAASAA8AAAAIAAEAAAASABAAAAAIAAIAAAASABEAAAAIAAMAAAASABIAAAAIAAQAAAASABMAAAAIAAUAAAATAA4AAAAJAAAAAAATAA8AAAAJAAEAAAATABAAAAAJAAIAAAATABEAAAAJAAMAAAATABIAAAAJAAQAAAATABMAAAAJAAUAAAATABQAAAAJAAYAAAAUABQAAAAKAAYAAAAUABUAAAAKAAcAAAAVABUAAAALAAcAAAAWABUAAAAMAAcAAAAUAA4AAAAKAAAAAAAUAA8AAAAKAAEAAAAUABAAAAAKAAIAAAAUABEAAAAKAAMAAAAUABIAAAAKAAQAAAAUABMAAAAKAAUAAAAVABMAAAALAAUAAAAVABQAAAALAAYAAAAWABQAAAAMAAYAAAAVAA4AAAALAAAAAAAVAA8AAAALAAEAAAAVABAAAAALAAIAAAAWAA4AAAAMAAAAAAAWAA8AAAAMAAEAAAAWABAAAAAMAAIAAAAXAA4AAAANAAAAAAAXAA8AAAANAAEAAAAXABAAAAANAAIAAAAYAA4AAAAOAAAAAAAYAA8AAAAOAAEAAAAYABAAAAAOAAIAAAAZAA4AAAAPAAAAAAAZAA8AAAAPAAEAAAAZABAAAAAPAAIAAAAYABEAAAAOAAMAAAAYABIAAAAOAAQAAAAYABMAAAAOAAUAAAAZABEAAAAPAAMAAAAZABIAAAAPAAQAAAAZABMAAAAPAAUAAAAZABYAAAAPAAgAAAAZABcAAAAPAAkAAAAaAA8AAAAQAAEAAAAaABAAAAAQAAIAAAAaABEAAAAQAAMAAAAaABIAAAAQAAQAAAAaABMAAAAQAAUAAAAaABQAAAAQAAYAAAAaABUAAAAQAAcAAAAaABYAAAAQAAgAAAAaABcAAAAQAAkAAAAbAA4AAAARAAAAAAAbAA8AAAARAAEAAAAbABAAAAARAAIAAAAbABEAAAARAAMAAAAbABIAAAARAAQAAAAbABMAAAARAAUAAAAbABQAAAARAAYAAAAbABUAAAARAAcAAAAbABcAAAARAAkAAAAcAA4AAAASAAAAAAAcAA8AAAASAAEAAAAcABAAAAASAAIAAAAcABEAAAASAAMAAAAcABIAAAASAAQAAAAcABMAAAASAAUAAAAdAA8AAAATAAEAAAAdABAAAAATAAIAAAAdABEAAAATAAMAAAAeAA8AAAAUAAEAAAAeABAAAAAUAAIAAAAeABEAAAAUAAMAAAAfABAAAAAVAAIAAAAfABEAAAAVAAMAAAAgABAAAAAWAAIAAAAgABEAAAAWAAMAAAAhABAAAAAXAAIAAAAhABEAAAAXAAMAAAAhABIAAAAXAAQAAAAiABEAAAAYAAMAAAAiABIAAAAYAAQAAAAiABMAAAAYAAUAAAAiABQAAAAYAAYAAAAiABUAAAAYAAcAAAAiABYAAAAYAAgAAAAjABYAAAAZAAgAAAAkABYAAAAaAAgAAAAYABgAAAAOAAoAAAAYABkAAAAOAAsAAAAZABgAAAAPAAoAAAAZABkAAAAPAAsAAAAaABgAAAAQAAoAAAAaABkAAAAQAAsAAAAaABoAAAAQAAwAAAAbABkAAAARAAsAAAAbABoAAAARAAwAAAAbABsAAAARAA0AAAAcABoAAAASAAwAAAAcABsAAAASAA0AAAAdABoAAAATAAwAAAAdABsAAAATAA0AAAAeABoAAAAUAAwAAAAeABsAAAAUAA0AAAAfABoAAAAVAAwAAAAfABsAAAAVAA0AAAAgABoAAAAWAAwAAAAhABoAAAAXAAwAAAAbABwAAAARAA4AAAAcABwAAAASAA4AAAAdABwAAAATAA4AAAAdAB0AAAATAA8AAAAeABwAAAAUAA4AAAAfABwAAAAVAA4AAAAfAB0AAAAVAA8AAAAgABwAAAAWAA4AAAA=")
 tile_set = ExtResource("9_i3jma")
+
+[node name="ToolPreview" type="Node2D" parent="."]
+script = ExtResource("14_gee6t")
+tile_sprite = ExtResource("15_gee6t")
 
 [node name="Seile" type="Node2D" parent="."]
 

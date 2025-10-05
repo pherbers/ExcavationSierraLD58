@@ -1,9 +1,12 @@
-extends Node
+extends Node2D
 class_name Toolbelt
 
 signal tool_has_changed(newTool:Tools)
+signal direction_has_changed(newDir:int)
 
 @export var digSite: DigSite
+
+@onready var camera = $/root/MainScene/Camera2D as Camera2D
 
 var direction: int = 0;
 
@@ -33,12 +36,14 @@ func change_tool(newTool:Tools):
 func change_direction_up():
     direction += 1
     direction = direction % tool_dic_mod[currentTool]
+    direction_has_changed.emit(direction)
     print("New Direction:", direction)
     
 func change_direction_down():
     direction -= 1
     if direction < 0: 
         direction = tool_dic_mod[currentTool] - 1
+    direction_has_changed.emit(direction)
     print("New Direction:", direction)
 
 func digSiteAktion(pressed:bool):
@@ -55,7 +60,7 @@ func digSiteAktion(pressed:bool):
             Tools.Brush:
                 digSite.is_brushing = true
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventMouseButton:
         if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
             change_tool(Tools.Hand)
@@ -68,3 +73,7 @@ func _input(event: InputEvent) -> void:
         elif event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
             change_direction_down()
         
+
+func _process(_delta: float) -> void:
+    var camBottomRight = camera.get_screen_center_position() + Vector2(get_viewport_rect().size / 8)
+    global_position = camBottomRight

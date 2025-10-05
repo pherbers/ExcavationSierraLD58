@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://b1jkgvjclw7wn"]
+
+[ext_resource type="Texture2D" uid="uid://bwelilawkhdrr" path="res://assets/dig_masks.png" id="1_8x3sn"]
+
+[resource]
+atlas = ExtResource("1_8x3sn")
+region = Rect2(0, 0, 11, 11)
