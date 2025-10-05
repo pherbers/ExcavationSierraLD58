@@ -7,6 +7,7 @@ signal direction_has_changed(newDir:int)
 @export var digSite: DigSite
 
 @onready var camera = $/root/MainScene/Camera2D as Camera2D
+@onready var gameState = $/root/MainScene/GameState as GameState
 
 var direction: int = 0;
 
@@ -52,7 +53,9 @@ func digSiteAktion(pressed:bool):
     else:
         match currentTool:
             Tools.Hand:
-                digSite.take_object(digSite.getTileForMousePos())
+                var boneName = digSite.take_object(digSite.getTileForMousePos())
+                if boneName != "":
+                    gameState.collect_bone(boneName)
             Tools.Shovel: 
                 digSite.dig_shovel(digSite.getTileForMousePos(), direction)
             Tools.Trowel:
