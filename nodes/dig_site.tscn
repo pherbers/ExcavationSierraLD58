@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=4 uid="uid://cu74g7pawm2av"]
+[gd_scene load_steps=35 format=4 uid="uid://cu74g7pawm2av"]
 
 [ext_resource type="Script" uid="uid://767dwy333a7k" path="res://scripts/dig_site.gd" id="1_5h2ie"]
 [ext_resource type="TileSet" uid="uid://c1kjxdb7xjtdf" path="res://assets/tilesets/layer1.tres" id="2_s4e4a"]
@@ -42,22 +42,6 @@ region = Rect2(24, 24, 11, 11)
 atlas = ExtResource("2_v4sw2")
 region = Rect2(36, 24, 11, 11)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_q7xge"]
-atlas = ExtResource("2_v4sw2")
-region = Rect2(0, 36, 11, 11)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_bv2fc"]
-atlas = ExtResource("2_v4sw2")
-region = Rect2(12, 36, 11, 11)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fs82h"]
-atlas = ExtResource("2_v4sw2")
-region = Rect2(24, 36, 11, 11)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_u6ecg"]
-atlas = ExtResource("2_v4sw2")
-region = Rect2(36, 36, 11, 11)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_gee6t"]
 atlas = ExtResource("2_v4sw2")
 region = Rect2(0, 48, 11, 11)
@@ -88,7 +72,7 @@ texture_filter = 1
 script = ExtResource("1_5h2ie")
 bounds = Rect2i(0, 0, 72, 56)
 shovel_masks = Array[Texture2D]([ExtResource("2_u6ecg"), ExtResource("3_fx5b2"), ExtResource("4_8jhme"), ExtResource("5_8jhme")])
-trowel_masks = Array[Texture2D]([SubResource("AtlasTexture_v4sw2"), SubResource("AtlasTexture_pcsen"), SubResource("AtlasTexture_lxrcy"), SubResource("AtlasTexture_tgc84"), SubResource("AtlasTexture_q7xge"), SubResource("AtlasTexture_bv2fc"), SubResource("AtlasTexture_fs82h"), SubResource("AtlasTexture_u6ecg")])
+trowel_masks = Array[Texture2D]([SubResource("AtlasTexture_v4sw2"), SubResource("AtlasTexture_pcsen"), SubResource("AtlasTexture_lxrcy"), SubResource("AtlasTexture_tgc84")])
 brush_mask = SubResource("AtlasTexture_gee6t")
 
 [node name="DigLayers" type="Node2D" parent="."]
@@ -156,6 +140,7 @@ tile_map_data = PackedByteArray("AAAMAA0AAAAAAAgAAAAMAA4AAAAAAAkAAAAMAA8AAAAAAAo
 tile_set = ExtResource("9_i3jma")
 
 [node name="ToolPreview" type="Node2D" parent="."]
+z_index = 1
 script = ExtResource("14_gee6t")
 tile_sprite = ExtResource("15_gee6t")
 

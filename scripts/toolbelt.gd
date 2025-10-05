@@ -44,7 +44,7 @@ enum Tools {
 var tool_dic_mod = {
     Tools.Hand : 8,
     Tools.Shovel : 4,
-    Tools.Trowel : 8,
+    Tools.Trowel : 4,
     Tools.Brush : 8,
     Tools.GPR : 1
 }
