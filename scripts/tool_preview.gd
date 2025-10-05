@@ -15,6 +15,10 @@ func tool_changed():
             change_visuals(dig_site.get_shovel_tiles(toolbelt.direction))
         Toolbelt.Tools.Trowel:
             change_visuals(dig_site.get_trowel_tiles(toolbelt.direction))
+        Toolbelt.Tools.Brush:
+            change_visuals(dig_site.get_brush_tiles())
+        Toolbelt.Tools.GPR:
+            change_visuals([Vector3i.ZERO])
         _:
             change_visuals([])
 
@@ -28,7 +32,11 @@ func change_visuals(cells: Array[Vector3i]):
         add_child(s)
         
 
-func _input(event) -> void:
-    if event is InputEventMouseMotion:
-        var layer = dig_site.dig_layers[0] as TileMapLayer
-        global_position = layer.to_global(layer.map_to_local(layer.local_to_map(layer.get_local_mouse_position())))
+func _process(_delta: float) -> void:
+    var layer = dig_site.dig_layers[0] as TileMapLayer
+    var tilePos = layer.local_to_map(layer.get_local_mouse_position())
+    if not dig_site.bounds.has_point(tilePos):
+        visible = false
+    else:
+        visible = true
+    global_position = layer.to_global(layer.map_to_local(tilePos))

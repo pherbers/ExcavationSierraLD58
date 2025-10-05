@@ -39,7 +39,12 @@ text = "Shovel"
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(-329, 100)
 zoom = Vector2(4, 4)
+limit_left = -485
+limit_top = -130
+limit_right = 655
+limit_bottom = 555
 script = ExtResource("7_66tet")
+scrollSpeed = 200.0
 
 [node name="Collection" parent="." node_paths=PackedStringArray("toolbelt") instance=ExtResource("9_7ycvg")]
 z_index = -1

@@ -15,14 +15,16 @@ enum Tools {
     Hand,
     Shovel,
     Trowel,
-    Brush
+    Brush,
+    GPR
 }
 
 var tool_dic_mod = {
     Tools.Hand : 8,
     Tools.Shovel : 4,
     Tools.Trowel : 8,
-    Tools.Brush : 8
+    Tools.Brush : 8,
+    Tools.GPR : 1
 }
 
 static var currentTool: Tools = Tools.Hand
@@ -33,6 +35,15 @@ func change_tool(newTool:Tools):
     direction = 0
     print(Tools.keys()[currentTool], " Tool selected!")
     tool_has_changed.emit(currentTool)
+
+func switch_to_shovel():
+    change_tool(Tools.Shovel)
+func switch_to_trowel():
+    change_tool(Tools.Trowel)
+func switch_to_brush():
+    change_tool(Tools.Brush)
+func switch_to_GPR():
+    change_tool(Tools.GPR)
 
 func change_direction_up():
     direction += 1
@@ -62,6 +73,8 @@ func digSiteAktion(pressed:bool):
                 digSite.dig_trowel(digSite.getTileForMousePos(), direction)
             Tools.Brush:
                 digSite.is_brushing = true
+            Tools.GPR:
+                digSite.place_flag(digSite.getTileForMousePos())
 
 func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventMouseButton:

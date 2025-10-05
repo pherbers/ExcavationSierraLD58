@@ -4,6 +4,7 @@ class_name DigSite
 
 var dig_layers: Array[TileMapLayer]
 var object_layers: Array[TileMapLayer]
+@onready var flag_layer: TileMapLayer = $Flags/TileMapLayer
 @export var bounds: Rect2i
 
 @export var shovel_masks: Array[Texture2D]
@@ -31,6 +32,7 @@ var brush_time = 100
 var _brush_timer = 0.
 var _brush_chance = 0.
 
+var _bone_positions: Dictionary[String, Vector3i]
 
 class DigInstruction:
     var pos: Vector2i
@@ -70,6 +72,15 @@ func _ready() -> void:
         object_layers.append(t)
         
     object_layers.sort_custom(func (t): return t.z_index)
+    
+    for object_layer_index in object_layers.size():
+        var object_layer = object_layers[object_layer_index]
+        for cell in object_layer.get_used_cells():
+            var data = object_layer.get_cell_tile_data(cell)
+            if data == null or not data.has_custom_data("ObjectID"):
+                continue
+            var objname = data.get_custom_data("ObjectID")
+            _bone_positions[objname] = Vector3i(cell.x, cell.y, object_layer_index)
     
     print("Dig Site prepared, it is " + str(len(dig_layers)) + " layers deep")
 
@@ -186,6 +197,7 @@ func brush_tile(p: Vector3i) -> DigResult:
             
     if randf() < r:
         layer.set_cells_terrain_connect([pos], 0, -1, false)
+        flag_layer.set_cell(pos, -1)
         _brush_chance = 0.
         return DigResult.OK
     else:
@@ -225,6 +237,8 @@ func dig_tile(pos: Vector2i, max_depth=-1) -> DigResult:
     var diglayer = dig_layers[dig_layer_index]
     diglayer.set_cell(pos, -1)
     diglayer.set_cells_terrain_connect([pos], 0, -1, false)
+    
+    flag_layer.set_cell(pos, -1)
     
     if hitBone:
         return DigResult.HitBone
@@ -278,10 +292,20 @@ func take_object(pos: Vector2i) -> String:
         var obj_layer = object_layers[obj_pos.z]
         obj_layer.erase_cell(Vector2i(obj_pos.x, obj_pos.y))
     
+    _bone_positions.erase(theObj)
     
     return theObj
 
-func find_top_object(pos: Vector2i) -> Vector3i:
+func place_flag(pos: Vector2i):
+    if not bounds.has_point(pos):
+        return
+    var top_obj = find_top_object(pos, true)
+    if top_obj.z >= 0:
+        flag_layer.set_cell(pos, 0, Vector2i.ZERO)
+    else:
+        flag_layer.set_cell(pos, 0, Vector2i(1,0))
+
+func find_top_object(pos: Vector2i, ignore_dig_layer=false) -> Vector3i:
     for layer_index in dig_layers.size():
         if object_layers.size() > layer_index:
             var obj_layer = object_layers[layer_index]
@@ -289,10 +313,25 @@ func find_top_object(pos: Vector2i) -> Vector3i:
             if tile_data:
                 return Vector3i(pos.x, pos.y, layer_index)
         var layer = dig_layers[layer_index]
-        if layer.get_cell_tile_data(pos):
+        if layer.get_cell_tile_data(pos) and not ignore_dig_layer:
             break
     return Vector3i(pos.x, pos.y, -1)
-    
+
+func get_closest_bone_pos(pos: Vector2i) -> Vector3i:
+    var top_obj = find_top_object(pos, true)
+    if top_obj.z >= 0:
+        return top_obj
+    var closest_pos = Vector3i(-1,-1,-1)
+    var closest_dist = INF
+    for bone_name in _bone_positions:
+        var bone_pos = _bone_positions[bone_name]
+        var dist = (pos - Vector2i(bone_pos.x, bone_pos.y)).length()
+        if dist < closest_dist:
+            closest_pos = bone_pos
+            closest_dist = dist
+            
+    return closest_pos
+
 func read_mask(mask: Texture2D) -> Array[Vector3i]:
     var img = mask.get_image()
     var mask_tiles: Array[Vector3i] = []
@@ -333,7 +372,7 @@ func get_trowel_tiles(trowel_dir: int) -> Array[Vector3i]:
 func get_brush_tiles() -> Array[Vector3i]:
     return _brush_cells
 
-func getTileForMousePos():
+func getTileForMousePos() -> Vector2i:
     return dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position())
 
 func _input(event: InputEvent) -> void:
