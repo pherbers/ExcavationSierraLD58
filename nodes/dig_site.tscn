@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=4 uid="uid://cu74g7pawm2av"]
+[gd_scene load_steps=40 format=4 uid="uid://cu74g7pawm2av"]
 
 [ext_resource type="Script" uid="uid://767dwy333a7k" path="res://scripts/dig_site.gd" id="1_5h2ie"]
 [ext_resource type="TileSet" uid="uid://c1kjxdb7xjtdf" path="res://assets/tilesets/layer1.tres" id="2_s4e4a"]
@@ -11,9 +11,14 @@
 [ext_resource type="Texture2D" uid="uid://ckqyb5yqfb0jd" path="res://nodes/shovel_north.tres" id="5_8jhme"]
 [ext_resource type="TileSet" uid="uid://c08nwllp4hi6y" path="res://assets/tilesets/layer4.tres" id="5_k8uxk"]
 [ext_resource type="TileSet" uid="uid://6445fnwhdw4f" path="res://assets/tilesets/layer5.tres" id="6_v4sw2"]
+[ext_resource type="Texture2D" uid="uid://dstgu4s3cnalo" path="res://assets/bones/Dmaged Bones/Bonefragments1.png" id="7_65ref"]
 [ext_resource type="TileSet" uid="uid://dmb62m1t13ccu" path="res://assets/tilesets/bedrock.tres" id="8_i3jma"]
+[ext_resource type="Texture2D" uid="uid://pk37couk4c3p" path="res://assets/bones/Dmaged Bones/Bonefragments2.png" id="8_qcj6o"]
+[ext_resource type="Texture2D" uid="uid://wjl3feop6gas" path="res://assets/bones/Dmaged Bones/Bonefragments3.png" id="9_8tiaw"]
 [ext_resource type="TileSet" uid="uid://b1ohmhog885ai" path="res://assets/bones/dino_tiles.tres" id="9_i3jma"]
+[ext_resource type="Texture2D" uid="uid://umc1ieqsv2k" path="res://assets/bones/Dmaged Bones/Bonefragments4.png" id="10_45d8p"]
 [ext_resource type="Texture2D" uid="uid://b5vcvh7bkbqjb" path="res://assets/objects/Seil.png" id="10_kr0al"]
+[ext_resource type="Texture2D" uid="uid://8owu3ycc3elf" path="res://assets/bones/Dmaged Bones/Bonefragments5.png" id="11_2rg5i"]
 [ext_resource type="Texture2D" uid="uid://d1ra8g0q6mh7u" path="res://assets/objects/SeilEckeOL.png" id="11_lxrcy"]
 [ext_resource type="Texture2D" uid="uid://onekqtvgusaw" path="res://assets/objects/Seilu.png" id="11_q7xge"]
 [ext_resource type="Texture2D" uid="uid://bocnpxoh4u8to" path="res://assets/objects/SeilEckeOR.png" id="12_tgc84"]
@@ -74,6 +79,7 @@ bounds = Rect2i(0, 0, 72, 56)
 shovel_masks = Array[Texture2D]([ExtResource("2_u6ecg"), ExtResource("3_fx5b2"), ExtResource("4_8jhme"), ExtResource("5_8jhme")])
 trowel_masks = Array[Texture2D]([SubResource("AtlasTexture_v4sw2"), SubResource("AtlasTexture_pcsen"), SubResource("AtlasTexture_lxrcy"), SubResource("AtlasTexture_tgc84")])
 brush_mask = SubResource("AtlasTexture_gee6t")
+damage_sprites = Array[Texture2D]([ExtResource("7_65ref"), ExtResource("8_qcj6o"), ExtResource("9_8tiaw"), ExtResource("10_45d8p"), ExtResource("11_2rg5i")])
 
 [node name="DigLayers" type="Node2D" parent="."]
 
@@ -143,6 +149,9 @@ tile_set = ExtResource("9_i3jma")
 z_index = 1
 script = ExtResource("14_gee6t")
 tile_sprite = ExtResource("15_gee6t")
+
+[node name="Damages" type="Node2D" parent="."]
+z_index = -1
 
 [node name="Flags" type="Node2D" parent="."]
 

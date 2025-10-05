@@ -110,29 +110,14 @@ flat = true
 
 [node name="ShovelButton" type="Button" parent="ToolbeltSprite"]
 anchors_preset = -1
-anchor_left = 0.23148148
+anchor_left = 0.19444445
 anchor_top = 0.005050505
 anchor_right = 0.5639259
-anchor_bottom = 0.7373737
+anchor_bottom = 0.7676768
 offset_left = -40.0
 offset_top = -15.0
 offset_right = -28.904
 offset_bottom = -118.0
-focus_mode = 0
-shortcut = SubResource("Shortcut_8mm7a")
-flat = true
-metadata/_edit_use_anchors_ = true
-
-[node name="ShovelButton2" type="Button" parent="ToolbeltSprite"]
-anchors_preset = -1
-anchor_left = 0.28703704
-anchor_top = 0.005050505
-anchor_right = 0.5639259
-anchor_bottom = 0.7373737
-offset_left = -82.0
-offset_top = 24.0
-offset_right = -70.904
-offset_bottom = -79.0
 focus_mode = 0
 shortcut = SubResource("Shortcut_8mm7a")
 flat = true
@@ -184,6 +169,7 @@ flat = true
 metadata/_edit_use_anchors_ = true
 
 [node name="RotationButton" type="Button" parent="ToolbeltSprite"]
+visible = false
 anchors_preset = -1
 anchor_left = 0.998
 anchor_top = 0.32323232
@@ -201,12 +187,13 @@ flat = true
 metadata/_edit_use_anchors_ = true
 
 [node name="ToggleButton" type="Button" parent="ToolbeltSprite"]
-offset_left = -166.0
-offset_top = 66.0
-offset_right = -107.0
-offset_bottom = 97.0
+offset_left = -15.0
+offset_top = 37.0
+offset_right = 12.0
+offset_bottom = 86.0
+tooltip_text = "Switch Shop/Dig Site"
+focus_mode = 0
 shortcut = SubResource("Shortcut_3rmt6")
-text = "Toggle"
 flat = true
 
 [node name="ShovelSound" type="AudioStreamPlayer" parent="ToolbeltSprite"]
@@ -223,9 +210,6 @@ stream = ExtResource("10_pesch")
 [connection signal="mouse_entered" from="ToolbeltSprite/ShovelButton" to="." method="highlight_shove"]
 [connection signal="mouse_exited" from="ToolbeltSprite/ShovelButton" to="." method="reset_highlight"]
 [connection signal="pressed" from="ToolbeltSprite/ShovelButton" to="." method="switch_to_shovel"]
-[connection signal="mouse_entered" from="ToolbeltSprite/ShovelButton2" to="." method="highlight_shove"]
-[connection signal="mouse_exited" from="ToolbeltSprite/ShovelButton2" to="." method="reset_highlight"]
-[connection signal="pressed" from="ToolbeltSprite/ShovelButton2" to="." method="switch_to_shovel"]
 [connection signal="mouse_entered" from="ToolbeltSprite/TrowelButton" to="." method="highlight_trowel"]
 [connection signal="mouse_exited" from="ToolbeltSprite/TrowelButton" to="." method="reset_highlight"]
 [connection signal="pressed" from="ToolbeltSprite/TrowelButton" to="." method="switch_to_trowel"]

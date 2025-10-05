@@ -41,6 +41,11 @@ func revalDinoBone(boneName: String):
     else:
         var entry = boneDict[boneName]
         var cells = entry['boneCells']
+        
+        # Get damages
+        var gameState = $/root/MainScene/GameState as GameState
+        var damages = gameState.get_damages_for_bone(boneName)
+        print(str(len(damages)) + " Damages on Bone " + boneName)
         for cell in cells:
             var index: Vector2i = cell["index"]
             var sourcId: int = cell["sourcId"]
@@ -48,12 +53,27 @@ func revalDinoBone(boneName: String):
             var atlasCoords: Vector2i = cell["atlasCoords"]
             var found: bool = cell["found"]
             
+            # look up damages
+            var dmgIndex = damages.find_custom(func(d): return d.atlas_id == sourcId and d.atlas_pos == atlasCoords)
+            if dmgIndex != -1:
+                var dmg = damages[dmgIndex]
+                create_damage_viz(index, dmg.damage_type)
+            
             if !found:
                 tileMap.set_cell(index, sourcId, atlasCoords, alternativeTile)
                 cell.found = true
                 
+                
     checkIfCompleted()
 
+func create_damage_viz(pos: Vector2i, damage_type: int):
+    var damageviz = Sprite2D.new()
+    var damage_sprites = $/root/MainScene/DigSite.damage_sprites
+    var tex = damage_sprites[damage_type]
+    damageviz.texture = tex
+    damageviz.position = tileMap.map_to_local(pos)
+    add_child(damageviz)
+    
 func checkIfCompleted():
     var isComplete: bool = true;
     for keys in boneDict.keys():

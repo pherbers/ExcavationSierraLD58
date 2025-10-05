@@ -10,6 +10,7 @@ var object_layers: Array[TileMapLayer]
 @export var shovel_masks: Array[Texture2D]
 @export var trowel_masks: Array[Texture2D]
 @export var brush_mask: Texture2D
+@export var damage_sprites: Array[Texture2D]
 var _shovel_cells_west: Array[Vector3i]
 var _shovel_cells_north: Array[Vector3i]
 var _shovel_cells_east: Array[Vector3i]
@@ -232,8 +233,19 @@ func dig_tile(pos: Vector2i, max_depth=-1) -> DigResult:
             
         if object_layers.size() > layer_index:
             var obj_layer = object_layers[layer_index]
-            if obj_layer.get_cell_tile_data(pos):
+            var obj_data = obj_layer.get_cell_tile_data(pos)
+            if obj_data:
                 hitBone = true
+                var bone_name = obj_data.get_custom_data("ObjectID") if obj_data.has_custom_data("ObjectID") else ""
+                var gamestate = $/root/MainScene/GameState as GameState
+                var damage = GameState.BoneDamage.new()
+                damage.atlas_pos = obj_layer.get_cell_atlas_coords(pos)
+                damage.atlas_id = obj_layer.get_cell_source_id(pos)
+                damage.bone_name = bone_name
+                if gamestate.bone_damages.find_custom(func(d): return damage.equals(d)) == -1:
+                    var damage_type = create_damage(pos, damage.bone_name)
+                    damage.damage_type = damage_type
+                    gamestate.add_bone_damage(damage)
         var layer = dig_layers[layer_index]
         if layer.get_cell_tile_data(pos):
             dig_layer_index = layer_index
@@ -251,6 +263,17 @@ func dig_tile(pos: Vector2i, max_depth=-1) -> DigResult:
     if hitBone:
         return DigResult.HitBone
     return DigResult.OK
+
+func create_damage(pos: Vector2i, bone_name: String) -> int:
+    var damageviz = Sprite2D.new()
+    var randint = randi_range(0,damage_sprites.size()-1)
+    var tex = damage_sprites[randint]
+    damageviz.texture = tex
+    damageviz.position = dig_layers[0].map_to_local(pos)
+    damageviz.name = bone_name + "_" + str(pos.x) + "_" + str(pos.y)
+    $Damages.add_child(damageviz)
+    damageviz.owner = $Damages
+    return randint
 
 func take_object(pos: Vector2i) -> String:
     if not bounds.has_point(pos):
@@ -296,10 +319,17 @@ func take_object(pos: Vector2i) -> String:
     
     print(str(theObj) + " is free to be picked up")
     
+    # erase cells
     for obj_pos in closed:
         var obj_layer = object_layers[obj_pos.z]
         obj_layer.erase_cell(Vector2i(obj_pos.x, obj_pos.y))
     
+    # remove damages
+    var damages = $Damages.find_children(theObj + "*")
+    for d in damages:
+        d.queue_free()
+    
+    # remove from gpr
     _bone_positions.erase(theObj)
     
     return theObj
