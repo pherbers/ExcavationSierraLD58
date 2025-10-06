@@ -61,7 +61,7 @@ func _process(_delta: float):
                 4:
                     gpr_state = 8
                 _:
-                    gpr_state = 8
+                    gpr_state = 4
         elif dist < 5.:
             gpr_state = 3
         elif dist < 15.:

@@ -12,7 +12,8 @@ texture_filter = 1
 script = ExtResource("1_08q4v")
 
 [node name="Camp" type="Sprite2D" parent="."]
-position = Vector2(135, 178)
+z_index = -1
+position = Vector2(231, 187)
 texture = ExtResource("3_kvjff")
 
 [node name="ShopUI" type="Control" parent="."]
