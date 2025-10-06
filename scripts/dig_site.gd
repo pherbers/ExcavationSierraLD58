@@ -50,7 +50,7 @@ class DigInstruction:
     var pos: Vector2i
     var time: float
     var max_depth: int
-    var safety: bool
+    var safety: bool = false
     var flag: bool = false
     
 enum DigResult {
@@ -128,7 +128,7 @@ func _process(_delta: float) -> void:
             if di.flag:
                 place_flag(di.pos)
             else:
-                var result = dig_tile(di.pos, di.max_depth)
+                var result = dig_tile(di.pos, di.max_depth, di.safety)
                 if result == DigResult.HitBone:
                     print("Hit Bone at " + str(di.pos))
                     _hitBone = true
