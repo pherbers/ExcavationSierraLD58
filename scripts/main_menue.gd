@@ -7,7 +7,9 @@ func _ready() -> void:
     window_update()
 
 func play_game():
-    get_tree().change_scene_to_file("res://main_scene.tscn")
+    _FADE.time_to_fade = 1.5
+    _FADE.FadeTo("res://main_scene.tscn")
+    $Button.disabled = true
 
 func window_update():
     var zoom = max(floor(get_viewport().get_visible_rect().size.y / 250), 1.)

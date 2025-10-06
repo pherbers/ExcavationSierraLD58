@@ -53,7 +53,8 @@ func get_damages_for_bone(bone_name: String) -> Array[BoneDamage]:
     return BoneCollectionState.get_damages_for_bone(bone_name)
 
 func jump_to_end():
-    get_tree().change_scene_to_file("res://ending_sceme.tscn")     
+    _FADE.time_to_fade = 5
+    _FADE.FadeTo("res://ending_sceme.tscn")  
 
 func setCollectionCompleted():
     if !isCollectionComplete:

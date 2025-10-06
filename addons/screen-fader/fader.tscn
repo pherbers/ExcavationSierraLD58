@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://6syj8smwctkv"]
+
+[ext_resource type="Script" path="res://addons/screen-fader/fader.gd" id="1_xtb3l"]
+
+[node name="Fader" type="CanvasLayer"]
+process_mode = 3
+layer = 128
+script = ExtResource("1_xtb3l")
+time_to_fade = 0.333
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)
