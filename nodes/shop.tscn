@@ -136,6 +136,7 @@ theme = ExtResource("2_kvjff")
 text = "Deeper GPR $299"
 
 [node name="Add" type="Button" parent="ShopUI"]
+visible = false
 layout_mode = 0
 offset_left = 335.0
 offset_top = 6.0
