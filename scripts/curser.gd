@@ -109,3 +109,16 @@ func changeToGPR():
     label.text = "GPR"
     label.visible = false
     Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+
+
+func _on_toolbelt_direction_has_changed(newDir: int) -> void:
+    if newDir == 0:
+        self.rotation_degrees = 45
+    elif newDir == 1:
+        self.rotation_degrees = 135
+    elif newDir == 2:
+        self.rotation_degrees = 225
+    elif newDir == 3:
+       self.rotation_degrees = 315
+    else:
+        self.rotation_degrees = 0 

@@ -76,7 +76,10 @@ func change_tool(newTool:Tools):
             return
     currentTool = newTool
     direction = 0
+    if currentTool == Tools.GPR or currentTool == Tools.Brush:
+        direction = 5
     tool_has_changed.emit(currentTool)
+    direction_has_changed.emit(direction)
 
 func switch_to_shovel():
     change_tool(Tools.Shovel)
@@ -90,11 +93,15 @@ func switch_to_hand():
     change_tool(Tools.Hand)
 
 func change_direction_up():
+    if !(currentTool == Tools.Shovel or currentTool == Tools.Trowel):
+        return 
     direction += 1
     direction = direction % tool_dic_mod[currentTool]
     direction_has_changed.emit(direction)
     
 func change_direction_down():
+    if !(currentTool == Tools.Shovel or currentTool == Tools.Trowel):
+        return
     direction -= 1
     if direction < 0: 
         direction = tool_dic_mod[currentTool] - 1
