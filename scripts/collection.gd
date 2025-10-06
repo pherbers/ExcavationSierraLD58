@@ -53,3 +53,7 @@ func _process(_delta: float) -> void:
     
 func _on_dino_area_on_bone_number_chaneg(currentBones: int, maxBones: int) -> void:
     on_bone_number_change.emit(currentBones, maxBones)
+    
+func skip_all():
+    for dinoArea in dinoAreas:
+        dinoArea.revalAll()

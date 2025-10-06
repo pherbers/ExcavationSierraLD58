@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://lscs07ilg14g"]
+[gd_scene load_steps=11 format=3 uid="uid://lscs07ilg14g"]
 
 [ext_resource type="PackedScene" uid="uid://do4voo658ul1u" path="res://nodes/toolbelt.tscn" id="1_hq1ik"]
 [ext_resource type="Script" uid="uid://bs0dqoje38owq" path="res://scripts/game_state.gd" id="1_nfk4m"]
@@ -10,12 +10,11 @@
 [ext_resource type="AudioStream" uid="uid://15wtdmr71jgl" path="res://assets/sounds/desert_ambience.ogg" id="8_66tet"]
 [ext_resource type="PackedScene" uid="uid://dlliy8iqort6s" path="res://nodes/collection.tscn" id="9_7ycvg"]
 [ext_resource type="PackedScene" uid="uid://bqx1kbnooinrg" path="res://nodes/shop.tscn" id="9_wr18j"]
-[ext_resource type="Texture2D" uid="uid://cwieed5t23esi" path="res://assets/ui/tutorial.png" id="11_qwutr"]
 
 [node name="MainScene" type="Node2D"]
 texture_filter = 1
 
-[node name="GameState" type="Node2D" parent="." node_paths=PackedStringArray("toolbelt")]
+[node name="GameState" type="Node" parent="." node_paths=PackedStringArray("toolbelt")]
 script = ExtResource("1_nfk4m")
 toolbelt = NodePath("../Toolbelt")
 
@@ -49,7 +48,7 @@ volume_db = -6.0
 [node name="DigSite" parent="." instance=ExtResource("6_nfk4m")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(-121, 309)
+position = Vector2(58, 51)
 zoom = Vector2(6, 6)
 limit_enabled = false
 limit_left = -285
@@ -69,11 +68,11 @@ gameState = NodePath("../GameState")
 position = Vector2(-158, 330)
 
 [node name="ShopSpawnPoint" type="Node2D" parent="."]
-position = Vector2(-181, 104)
+position = Vector2(-181, 105)
 
 [node name="Node" type="Node" parent="."]
 
-[node name="Ambiance" type="AudioStreamPlayer" parent="Node"]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node"]
 stream = ExtResource("8_66tet")
 autoplay = true
 parameters/looping = true
@@ -81,21 +80,11 @@ parameters/looping = true
 [node name="Shop" parent="." instance=ExtResource("9_wr18j")]
 position = Vector2(-398, 8)
 
-[node name="Tutorial" type="Sprite2D" parent="."]
-modulate = Color(1, 1, 1, 0.27058825)
-position = Vector2(-305, 335)
-texture = ExtResource("11_qwutr")
-
 [connection signal="bone_collected" from="GameState" to="Collection" method="_on_game_state_bone_collected"]
 [connection signal="direction_has_changed" from="Toolbelt" to="Curser" method="_on_toolbelt_direction_has_changed"]
 [connection signal="finished" from="Curser/BeepSound" to="Curser" method="gpr_beep"]
-[connection signal="bone_stuck" from="DigSite" to="GameState" method="_on_dig_site_bone_stuck"]
-[connection signal="hit_bone" from="DigSite" to="GameState" method="_on_dig_site_hit_bone"]
 [connection signal="on_bone_number_change" from="Collection" to="Toolbelt" method="_on_collection_on_bone_number_change"]
-[connection signal="finished" from="Node/Ambiance" to="Node/Ambiance" method="play"]
+[connection signal="finished" from="Node/AudioStreamPlayer" to="Node/AudioStreamPlayer" method="play"]
 [connection signal="coins_delter" from="Shop" to="GameState" method="_on_shop_coins_delter"]
 [connection signal="coins_has_changed" from="Shop" to="Toolbelt" method="_on_shop_coins_has_changed"]
 [connection signal="shop_has_changed" from="Shop" to="GameState" method="update_tool_state"]
-[connection signal="pressed" from="Shop/ShopUI/Button" to="Collection" method="skip_all"]
-
-[editable path="Shop"]

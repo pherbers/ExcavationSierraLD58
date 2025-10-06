@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://yf0rfqgkr3h2"]
+
+[ext_resource type="Theme" uid="uid://bvt2oxur0aj5e" path="res://assets/ui/ui_theme.tres" id="1_1lyqc"]
+[ext_resource type="Script" path="res://indicator.gd" id="1_xpphr"]
+
+[node name="Indicator" type="Label"]
+offset_right = 40.0
+offset_bottom = 23.0
+theme = ExtResource("1_1lyqc")
+script = ExtResource("1_xpphr")

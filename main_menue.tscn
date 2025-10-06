@@ -1,29 +1,38 @@
-[gd_scene load_steps=2 format=3 uid="uid://dj3gh6hvhj8ka"]
+[gd_scene load_steps=4 format=3 uid="uid://dj3gh6hvhj8ka"]
 
 [ext_resource type="Script" uid="uid://ci3ntjh4helve" path="res://scripts/main_menue.gd" id="1_ldtmt"]
+[ext_resource type="Theme" uid="uid://bvt2oxur0aj5e" path="res://assets/ui/ui_theme.tres" id="2_6jjk0"]
+[ext_resource type="Texture2D" uid="uid://0nkn1na5jw11" path="res://assets/Exhibit_empty.png" id="3_7k14n"]
 
 [node name="MainMenue" type="Node2D"]
+texture_filter = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(96, 54)
 scale = Vector2(0.99999994, 0.99999994)
 zoom = Vector2(6, 6)
-limit_left = -485
-limit_top = -130
-limit_right = 655
-limit_bottom = 555
+limit_left = -100000000
+limit_top = -100000000
+limit_right = 100000
+limit_bottom = 100000
 
 [node name="Menue" type="Node2D" parent="Camera2D"]
-scale = Vector2(0.4, 0.4)
 script = ExtResource("1_ldtmt")
 
 [node name="Button" type="Button" parent="Camera2D/Menue"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 119.0
+offset_right = 233.0
+offset_bottom = 42.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Start"
+theme = ExtResource("2_6jjk0")
+text = "Start
+Excavation"
 
 [node name="Title" type="Label" parent="Camera2D/Menue"]
 anchors_preset = 8
@@ -31,28 +40,41 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -57.0
-offset_top = -72.0
-offset_right = 61.0
-offset_bottom = -49.0
+offset_left = 137.00002
+offset_top = -59.000004
+offset_right = 215.00002
+offset_bottom = -14.000004
 grow_horizontal = 2
 grow_vertical = 2
-text = "Ich bin ein Titel"
+theme = ExtResource("2_6jjk0")
+text = "Excavation
+Sierra"
+horizontal_alignment = 1
 
-[node name="Impressum" type="Label" parent="Camera2D/Menue"]
+[node name="Impressum2" type="Label" parent="Camera2D/Menue"]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -230.00003
-offset_top = 47.500008
-offset_right = 225.0
-offset_bottom = 126.00001
+offset_left = -228.00002
+offset_top = -66.99999
+offset_right = -146.0
+offset_bottom = 93.99999
 grow_horizontal = 2
 grow_vertical = 0
-text = "Created for the  Ludum Dare 58.
-Created by Adrian Herbers, and Patrick Herbers, and Patrick Quiskamp"
+theme = ExtResource("2_6jjk0")
+text = "Created for Ludum Dare 58.
+
+Credits
+Adrian H.
+Patrick H.
+Patrick Q."
+horizontal_alignment = 1
 autowrap_mode = 2
+
+[node name="ExhibitEmpty" type="Sprite2D" parent="Camera2D/Menue"]
+z_index = -2
+texture = ExtResource("3_7k14n")
 
 [connection signal="pressed" from="Camera2D/Menue/Button" to="Camera2D/Menue" method="play_game"]

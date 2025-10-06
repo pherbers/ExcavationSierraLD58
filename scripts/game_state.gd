@@ -1,4 +1,4 @@
-extends Node
+extends Node2D
 
 class_name GameState
 
@@ -13,6 +13,9 @@ var item_has_gpr = false
 var item_gpr_width = 2  # 0, 1, 2
 var item_gpr_depth = 2  # max 6
 
+var indicatorQueue: Array[String] = []
+var timer: float = 0;
+
 @onready var shop: Shop = $/root/MainScene/Shop as Shop
 
 @export var toolbelt: Toolbelt
@@ -22,20 +25,38 @@ var item_gpr_depth = 2  # max 6
 
 @export var isCollectionComplete = false
 
+@onready var feedbackPrefab:PackedScene = preload("res://nodes/indicator.tscn")
+
+func _process(delta: float) -> void:
+    if timer > 0:
+            timer -= delta
+            
+    if indicatorQueue.size() > 0:
+        if timer <= 0:
+            var text = indicatorQueue.pop_front()
+            spawn_feedback_text(text)
+            timer = 1
+            
+
 func collect_bone(bone_name: String, numberOfUnBoneDamagedTiles: int, numberOfDamagedBoneTiles:int):
     print("Bone collected: " + bone_name)
     shop.update_coins(numberOfUnBoneDamagedTiles * valueOfUndamgedBone + numberOfDamagedBoneTiles * valueOfDamgedBone)
+    if numberOfDamagedBoneTiles <= 0:
+        queue_feedback_text("PRISTINE!")
     bone_collected.emit(bone_name)
 
 func get_damages_for_bone(bone_name: String) -> Array[BoneDamage]:
     return BoneCollectionState.get_damages_for_bone(bone_name)
+
+func jump_to_end():
+    get_tree().change_scene_to_file("res://ending_sceme.tscn")     
 
 func setCollectionCompleted():
     if !isCollectionComplete:
         print("Collection is completed!")
         isCollectionComplete = true
         collection_completed.emit()
-        get_tree().change_scene_to_file("res://ending_sceme.tscn")
+        jump_to_end()
         
 func add_bone_damage(damage: BoneDamage):
     BoneCollectionState.add_bone_damage(damage)
@@ -90,4 +111,27 @@ func is_tool_available(tool: Toolbelt.Tools) -> bool:
     if tool == Toolbelt.Tools.GPR:
         return item_has_gpr
     return false
-    
+ 
+func queue_feedback_text(value: String):
+    indicatorQueue.append(value)
+   
+func spawn_feedback_text(value: String):
+    var node = feedbackPrefab.instantiate()
+    node.lifetime = 5
+    node.global_position = get_global_mouse_position()
+    node.z_index = 50
+    node.text = value
+    add_child(node)
+
+func _on_shop_coins_delter(value: int) -> void:
+    if value > 0:
+        queue_feedback_text("+$" + str(value))
+    else:
+        queue_feedback_text("$" + str(value))
+
+func _on_dig_site_hit_bone() -> void:
+    queue_feedback_text("Bone DAMAGED!")
+
+
+func _on_dig_site_bone_stuck() -> void:
+    queue_feedback_text("Stuck!")
