@@ -12,147 +12,141 @@ texture_filter = 1
 script = ExtResource("1_08q4v")
 
 [node name="Camp" type="Sprite2D" parent="."]
-position = Vector2(-238, -36)
+position = Vector2(135, 178)
 texture = ExtResource("3_kvjff")
 
 [node name="ShopUI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 390.0
+offset_bottom = 178.0
 focus_behavior_recursive = 1
 
 [node name="Purse" type="Label" parent="ShopUI"]
 layout_mode = 0
-offset_left = -172.0
-offset_top = -218.0
-offset_right = -101.0
-offset_bottom = -191.0
+offset_left = 260.0
+offset_top = 5.0
+offset_right = 331.0
+offset_bottom = 32.0
 theme = ExtResource("2_kvjff")
 text = "$0"
 horizontal_alignment = 1
 
 [node name="Label" type="Label" parent="ShopUI"]
 layout_mode = 0
-offset_left = -428.0
-offset_top = -219.0
-offset_right = -195.0
-offset_bottom = -192.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 237.0
+offset_bottom = 31.0
 theme = ExtResource("2_kvjff")
 text = "Requisitions"
 horizontal_alignment = 1
 
 [node name="Shovel" type="Button" parent="ShopUI"]
 layout_mode = 0
-offset_left = -427.0
-offset_top = -149.0
-offset_right = -334.0
-offset_bottom = -122.0
+offset_left = 5.0
+offset_top = 74.0
+offset_right = 98.0
+offset_bottom = 101.0
 tooltip_text = "The Shovel digs large areas. Careful to not hit any valuable items!"
 theme = ExtResource("2_kvjff")
 text = "Shovel $25"
 
 [node name="Shovel2" type="Button" parent="ShopUI"]
-visible = false
 layout_mode = 0
-offset_left = -329.0
-offset_top = -149.0
-offset_right = -198.0
-offset_bottom = -122.0
+offset_left = 103.0
+offset_top = 74.0
+offset_right = 234.0
+offset_bottom = 101.0
 tooltip_text = "The Shovel digs large areas. Careful to not hit any valuable items!"
 theme = ExtResource("2_kvjff")
 text = "Big Shovel $250"
 
 [node name="Trowel" type="Button" parent="ShopUI"]
 layout_mode = 0
-offset_left = -428.0
-offset_top = -183.0
-offset_right = -334.0
-offset_bottom = -156.0
+offset_left = 4.0
+offset_top = 40.0
+offset_right = 98.0
+offset_bottom = 67.0
 tooltip_text = "Use the trowel for precise digging."
 theme = ExtResource("2_kvjff")
 text = "Trowel $10"
 
 [node name="Trowel2" type="Button" parent="ShopUI"]
-visible = false
 layout_mode = 0
-offset_left = -329.0
-offset_top = -183.0
-offset_right = -198.0
-offset_bottom = -156.0
+offset_left = 103.0
+offset_top = 40.0
+offset_right = 234.0
+offset_bottom = 67.0
 tooltip_text = "This high-tech trowel avoids damaging bones when digging."
 theme = ExtResource("2_kvjff")
 text = "Safety Trowel $400"
 
 [node name="GPR" type="Button" parent="ShopUI"]
 layout_mode = 0
-offset_left = -427.0
-offset_top = -115.0
-offset_right = -334.0
-offset_bottom = -88.0
+offset_left = 5.0
+offset_top = 108.0
+offset_right = 98.0
+offset_bottom = 135.0
 tooltip_text = "The Ground Penetrating Radar can be used for detecting items at depth and flagging dig spots."
 theme = ExtResource("2_kvjff")
 text = "GPR $50"
 
 [node name="GPRWidth" type="Button" parent="ShopUI"]
-visible = false
 layout_mode = 0
-offset_left = -328.0
-offset_top = -80.0
-offset_right = -198.0
-offset_bottom = -53.0
+offset_left = 104.0
+offset_top = 143.0
+offset_right = 234.0
+offset_bottom = 170.0
 tooltip_text = "Upgrades the flagging area of the Ground Penetrating Radar."
 theme = ExtResource("2_kvjff")
 text = "Wide Area GPR $300"
 
 [node name="GPRWidth2" type="Button" parent="ShopUI"]
-visible = false
 layout_mode = 0
-offset_left = -188.0
-offset_top = -80.0
-offset_right = -50.0
-offset_bottom = -53.0
+offset_left = 244.0
+offset_top = 143.0
+offset_right = 382.0
+offset_bottom = 170.0
 tooltip_text = "Further upgrades the flagging area of the Ground Penetrating Radar."
 theme = ExtResource("2_kvjff")
 text = "Wider Area GPR $750"
 
 [node name="GPRDepth" type="Button" parent="ShopUI"]
-visible = false
 layout_mode = 0
-offset_left = -329.0
-offset_top = -115.0
-offset_right = -198.0
-offset_bottom = -88.0
+offset_left = 103.0
+offset_top = 108.0
+offset_right = 234.0
+offset_bottom = 135.0
 tooltip_text = "Upgrades the detection depth of the Ground Penetrating Radar to 4 feet."
 theme = ExtResource("2_kvjff")
 text = "Deep GPR $200"
 
 [node name="GPRDepth2" type="Button" parent="ShopUI"]
-visible = false
 layout_mode = 0
-offset_left = -188.0
-offset_top = -115.0
-offset_right = -50.0
-offset_bottom = -88.0
+offset_left = 244.0
+offset_top = 108.0
+offset_right = 382.0
+offset_bottom = 135.0
 tooltip_text = "Upgrades the detection depth of the Ground Penetrating Radar to 6 feet."
 theme = ExtResource("2_kvjff")
 text = "Deeper GPR $1000"
 
 [node name="Add" type="Button" parent="ShopUI"]
 layout_mode = 0
-offset_left = -97.0
-offset_top = -217.0
-offset_right = -79.0
-offset_bottom = -190.0
+offset_left = 335.0
+offset_top = 6.0
+offset_right = 353.0
+offset_bottom = 33.0
 theme = ExtResource("2_kvjff")
 text = "+"
 
 [node name="Remove" type="Button" parent="ShopUI"]
 layout_mode = 0
-offset_left = -192.0
-offset_top = -218.0
-offset_right = -176.0
-offset_bottom = -191.0
+offset_left = 240.0
+offset_top = 5.0
+offset_right = 256.0
+offset_bottom = 32.0
 theme = ExtResource("2_kvjff")
 text = "-"
 
