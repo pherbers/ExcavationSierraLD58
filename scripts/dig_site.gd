@@ -312,10 +312,10 @@ func take_object(pos: Vector2i) -> String:
     var obj_layer: TileMapLayer
     var obj_depth = -1
     for layer_index in dig_layers.size():
-        if object_layers.size() > layer_index:
+        if object_layers.size() >= layer_index:
             obj_layer = object_layers[layer_index]
             if obj_layer == null:
-                break
+                continue
             var tile_data = obj_layer.get_cell_tile_data(pos)
             if tile_data and tile_data.has_custom_data("ObjectID"):
                 theObj = tile_data.get_custom_data("ObjectID")
@@ -403,7 +403,7 @@ func find_top_dig_layer(pos: Vector2i) -> Vector3i:
         var layer = dig_layers[layer_index]
         if layer.get_cell_tile_data(pos):
             return Vector3i(pos.x, pos.y, layer_index)
-    return Vector3i(pos.x, pos.y, -1)
+    return Vector3i(pos.x, pos.y, 7)
 
 func get_closest_bone_pos(pos: Vector2i, max_depth: int) -> Vector3i:
     var top_obj = find_top_object(pos, true)

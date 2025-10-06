@@ -48,7 +48,7 @@ volume_db = -6.0
 [node name="DigSite" parent="." instance=ExtResource("6_nfk4m")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(58, 51)
+position = Vector2(-121, 309)
 zoom = Vector2(6, 6)
 limit_enabled = false
 limit_left = -285
@@ -69,11 +69,11 @@ gameState = NodePath("../GameState")
 position = Vector2(-158, 330)
 
 [node name="ShopSpawnPoint" type="Node2D" parent="."]
-position = Vector2(-181, 105)
+position = Vector2(-181, 104)
 
 [node name="Node" type="Node" parent="."]
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Node"]
+[node name="Ambiance" type="AudioStreamPlayer" parent="Node"]
 stream = ExtResource("8_66tet")
 autoplay = true
 parameters/looping = true
@@ -84,5 +84,5 @@ position = Vector2(-398, 8)
 [connection signal="bone_collected" from="GameState" to="Collection" method="_on_game_state_bone_collected"]
 [connection signal="direction_has_changed" from="Toolbelt" to="Curser" method="_on_toolbelt_direction_has_changed"]
 [connection signal="finished" from="Curser/BeepSound" to="Curser" method="gpr_beep"]
-[connection signal="finished" from="Node/AudioStreamPlayer" to="Node/AudioStreamPlayer" method="play"]
+[connection signal="finished" from="Node/Ambiance" to="Node/Ambiance" method="play"]
 [connection signal="shop_has_changed" from="Shop" to="GameState" method="update_tool_state"]
