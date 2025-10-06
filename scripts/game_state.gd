@@ -47,6 +47,7 @@ func setCollectionCompleted():
         print("Collection is completed!")
         isCollectionComplete = true
         collection_completed.emit()
+        get_tree().change_scene_to_file("res://ending_sceme.tscn")
         
 func add_bone_damage(damage: BoneDamage):
     bone_damages.append(damage)
