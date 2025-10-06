@@ -77,6 +77,8 @@ func change_tool(newTool:Tools):
         else:
             change_tool(Tools.Hand)
             return
+    if !gameState.is_tool_available(newTool):
+        return
     currentTool = newTool
     direction = 0
     if currentTool == Tools.GPR or currentTool == Tools.Brush:
@@ -118,7 +120,11 @@ func digSiteAktion(pressed:bool):
             Tools.Hand:
                 var boneName = digSite.take_object(digSite.getTileForMousePos())
                 if boneName != "":
-                    gameState.collect_bone(boneName, digSite.lastTakenBone)
+                    gameState.collect_bone(
+                        boneName, 
+                        digSite.lastTakenBoneUndamaged,
+                        digSite.lastTakenBoneDamaged
+                        )
             Tools.Shovel:
                 var result = digSite.dig_shovel(digSite.getTileForMousePos(), direction, gameState.item_shovel_big)
                 if result == DigSite.DigResult.OK:
@@ -179,17 +185,15 @@ func _process(_delta: float) -> void:
     trowelSprite.visible = true
     brushSprite.visible = true
     gprSprite.visible = true
-    if currentTool == Tools.Shovel:
+    if currentTool == Tools.Shovel or !gameState.is_tool_available(Tools.Shovel):
         shovelSprite.visible = false
-    if currentTool == Tools.Trowel:
+    if currentTool == Tools.Trowel or !gameState.is_tool_available(Tools.Trowel):
         trowelSprite.visible = false
-    if currentTool == Tools.Brush:
+    if currentTool == Tools.Brush or !gameState.is_tool_available(Tools.Brush):
         brushSprite.visible = false
-    if currentTool == Tools.GPR:
+    if currentTool == Tools.GPR or !gameState.is_tool_available(Tools.GPR):
         gprSprite.visible = false
         
-    
-    
 func reset_highlight():
     highlightTool = Tools.Hand    
     
