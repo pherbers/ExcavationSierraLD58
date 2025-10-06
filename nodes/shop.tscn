@@ -152,6 +152,15 @@ offset_bottom = 32.0
 theme = ExtResource("2_kvjff")
 text = "-"
 
+[node name="Button" type="Button" parent="ShopUI"]
+layout_mode = 0
+offset_left = 260.0
+offset_top = 37.0
+offset_right = 334.0
+offset_bottom = 64.0
+theme = ExtResource("2_kvjff")
+text = "SKIP!"
+
 [node name="CoinGain" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_fxcnm")
 

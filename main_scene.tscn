@@ -90,3 +90,6 @@ position = Vector2(-398, 8)
 [connection signal="coins_delter" from="Shop" to="GameState" method="_on_shop_coins_delter"]
 [connection signal="coins_has_changed" from="Shop" to="Toolbelt" method="_on_shop_coins_has_changed"]
 [connection signal="shop_has_changed" from="Shop" to="GameState" method="update_tool_state"]
+[connection signal="pressed" from="Shop/ShopUI/Button" to="Collection" method="skip_all"]
+
+[editable path="Shop"]
