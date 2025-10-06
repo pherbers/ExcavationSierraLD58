@@ -150,6 +150,8 @@ func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventKey:
         if event.pressed and event.keycode == KEY_1:
             change_tool(Tools.Hand)
+        if event.pressed and event.keycode == KEY_R:
+            change_direction_up()
     if event is InputEventMouseButton:
         if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
             change_tool(Tools.Hand)
