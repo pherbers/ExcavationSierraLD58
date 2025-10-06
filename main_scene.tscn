@@ -55,7 +55,7 @@ scrollSpeed = 200.0
 
 [node name="Collection" parent="." node_paths=PackedStringArray("gameState") instance=ExtResource("9_7ycvg")]
 z_index = -1
-position = Vector2(-286, 0)
+position = Vector2(-286, 232)
 gameState = NodePath("../GameState")
 
 [node name="CollectionSpawnPoint" type="Node2D" parent="."]
@@ -69,7 +69,7 @@ autoplay = true
 parameters/looping = true
 
 [node name="Shop" parent="." instance=ExtResource("9_wr18j")]
-position = Vector2(101, 410)
+position = Vector2(101, 211)
 
 [connection signal="bone_collected" from="GameState" to="Collection" method="_on_game_state_bone_collected"]
 [connection signal="direction_has_changed" from="Toolbelt" to="Curser" method="_on_toolbelt_direction_has_changed"]
