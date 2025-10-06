@@ -122,8 +122,9 @@ func _ready() -> void:
     
     shop_has_changed.emit(shopItems)
 
-func collect_bone(bone_name: String):
+func collect_bone(bone_name: String, numberOfBoneTiles: int):
     print("Bone collected: " + bone_name)
+    update_coins(numberOfBoneTiles * 5)
     bone_collected.emit(bone_name)
 
 func get_damages_for_bone(bone_name: String) -> Array[BoneDamage]:
