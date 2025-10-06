@@ -58,6 +58,8 @@ enum DigResult {
     HitBone = 2
 }
 
+var lastTakenBone:int = 0
+
 func _ready() -> void:
     _shovel_cells_west  = read_mask(shovel_masks[0])
     _shovel_cells_south = read_mask(shovel_masks[1])
@@ -342,6 +344,8 @@ func take_object(pos: Vector2i) -> String:
     # erase cells
     for obj_pos in bone_cells:
         obj_layer.erase_cell(Vector2i(obj_pos.x, obj_pos.y))
+    
+    lastTakenBone = bone_cells.size()
     
     # remove damages
     var damages = $Damages.find_children(theObj + "*")

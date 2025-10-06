@@ -115,7 +115,7 @@ func digSiteAktion(pressed:bool):
             Tools.Hand:
                 var boneName = digSite.take_object(digSite.getTileForMousePos())
                 if boneName != "":
-                    gameState.collect_bone(boneName)
+                    gameState.collect_bone(boneName, digSite.lastTakenBone)
             Tools.Shovel:
                 var result = digSite.dig_shovel(digSite.getTileForMousePos(), direction, gameState.item_shovel_big)
                 if result == DigSite.DigResult.OK:
