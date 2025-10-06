@@ -7,12 +7,12 @@ extends Node2D
 func _ready() -> void:
     get_viewport().size_changed.connect(window_update)
     window_update()
-    labelScore.text = "SOLD: " + str(Global.get_score()) + "$"
+    labelScore.text = "$" + str(Global.get_score()) + "00"
 
 func play_game():
     get_tree().change_scene_to_file("res://main_menue.tscn")
 
 func window_update():
-    var zoom = max(floor(get_viewport().get_visible_rect().size.y / 200), 1.)
+    var zoom = max(floor(get_viewport().get_visible_rect().size.y / 250), 1.)
     print("Setting zoom to " + str(zoom))
     camera.zoom = Vector2i(zoom, zoom)

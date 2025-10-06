@@ -17,7 +17,7 @@
 [ext_resource type="AudioStream" uid="uid://bn14y7heekuy0" path="res://assets/sounds/handleSmallLeather.ogg" id="10_pesch"]
 [ext_resource type="Texture2D" uid="uid://bjck1lfyl2cmc" path="res://assets/curser/Rotate.png" id="12_8rgmw"]
 [ext_resource type="Texture2D" uid="uid://cjwjnfqoudgud" path="res://assets/curser/Map.png" id="13_5uf1e"]
-[ext_resource type="Script" uid="uid://uxsdqjntl7mc" path="res://scripts/highlight.gd" id="14_1fs5o"]
+[ext_resource type="Script" path="res://scripts/highlight.gd" id="14_1fs5o"]
 [ext_resource type="Texture2D" uid="uid://bdxtf17kii2mb" path="res://assets/Tools/Rotate.png" id="14_3fax5"]
 [ext_resource type="Texture2D" uid="uid://brhm0rhbba0pb" path="res://assets/curser/Rotate_Highlight.png" id="15_3fax5"]
 [ext_resource type="Texture2D" uid="uid://c57uqib16mgb3" path="res://assets/curser/Map_Highlight.png" id="15_5uf1e"]
@@ -205,6 +205,7 @@ scale = Vector2(0.99999994, 0.99999994)
 texture = ExtResource("7_2oiap")
 
 [node name="RotationButton" type="Button" parent="ToolbeltSprite"]
+visible = false
 anchors_preset = -1
 anchor_left = 0.284
 anchor_top = 0.070151515
@@ -220,6 +221,7 @@ flat = true
 metadata/_edit_use_anchors_ = true
 
 [node name="Rotation" type="Sprite2D" parent="ToolbeltSprite" node_paths=PackedStringArray("sprite")]
+visible = false
 position = Vector2(33, -65)
 scale = Vector2(0.4375003, 0.4375003)
 texture = ExtResource("12_8rgmw")

@@ -115,7 +115,7 @@ func buy_gpr_depth():
         
 func _ready() -> void:
     coins = 0
-    coins_has_changed.emit()
+    coins_has_changed.emit(0)
     shopItems = {}
     #Shovel 
     var shopItemShovel: ShopItem = ShopItem.new()

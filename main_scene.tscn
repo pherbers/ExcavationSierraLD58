@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://lscs07ilg14g"]
+[gd_scene load_steps=12 format=3 uid="uid://lscs07ilg14g"]
 
 [ext_resource type="PackedScene" uid="uid://do4voo658ul1u" path="res://nodes/toolbelt.tscn" id="1_hq1ik"]
 [ext_resource type="Script" uid="uid://bs0dqoje38owq" path="res://scripts/game_state.gd" id="1_nfk4m"]
@@ -10,6 +10,7 @@
 [ext_resource type="AudioStream" uid="uid://15wtdmr71jgl" path="res://assets/sounds/desert_ambience.ogg" id="8_66tet"]
 [ext_resource type="PackedScene" uid="uid://dlliy8iqort6s" path="res://nodes/collection.tscn" id="9_7ycvg"]
 [ext_resource type="PackedScene" uid="uid://bqx1kbnooinrg" path="res://nodes/shop.tscn" id="9_wr18j"]
+[ext_resource type="Texture2D" uid="uid://cwieed5t23esi" path="res://assets/ui/tutorial.png" id="11_qwutr"]
 
 [node name="MainScene" type="Node2D"]
 texture_filter = 1
@@ -79,6 +80,11 @@ parameters/looping = true
 
 [node name="Shop" parent="." instance=ExtResource("9_wr18j")]
 position = Vector2(-398, 8)
+
+[node name="Tutorial" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.27058825)
+position = Vector2(-305, 335)
+texture = ExtResource("11_qwutr")
 
 [connection signal="bone_collected" from="GameState" to="Collection" method="_on_game_state_bone_collected"]
 [connection signal="direction_has_changed" from="Toolbelt" to="Curser" method="_on_toolbelt_direction_has_changed"]
