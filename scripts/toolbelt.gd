@@ -11,19 +11,22 @@ signal direction_has_changed(newDir:int)
 @onready var gameState = $/root/MainScene/GameState as GameState
 
 @export var toolSprite: Sprite2D
-@export var defaultTexture: Texture2D
 
+@export var shovelSprite: Sprite2D
+@export var shovelDefaultTexture: Texture2D
 @export var shovelHighlightedTexture: Texture2D
-@export var shovelUsedTexture: Texture2D
 
+@export var trowelSprite: Sprite2D
+@export var trowelDefaultTexture: Texture2D
 @export var trowelHighlightedTexture: Texture2D
-@export var trowelUsedTexture: Texture2D
 
+@export var brushSprite: Sprite2D
+@export var brushDefaultTexture: Texture2D
 @export var brushHighlightedTexture: Texture2D
-@export var brushUsedTexture: Texture2D
 
+@export var gprSprite: Sprite2D
+@export var gprDefaultTexture: Texture2D
 @export var gprHighlightedTexture: Texture2D
-@export var gprUsedTexture: Texture2D
 
 var direction: int = 0;
 var highlightTool: Tools = Tools.Hand
@@ -158,25 +161,33 @@ func _process(_delta: float) -> void:
     else: 
         playerPosOnField = camera.global_position
     
-    if currentTool == Tools.Hand:
-        if highlightTool == Tools.Hand:
-            toolSprite.texture = defaultTexture
-        elif highlightTool == Tools.Shovel:
-            toolSprite.texture = shovelHighlightedTexture
-        elif highlightTool == Tools.Trowel:
-            toolSprite.texture = trowelHighlightedTexture
-        elif highlightTool == Tools.Brush:
-            toolSprite.texture = brushHighlightedTexture
-        elif highlightTool == Tools.GPR:
-            toolSprite.texture = gprHighlightedTexture
-    elif currentTool == Tools.Shovel:
-        toolSprite.texture = shovelUsedTexture
-    elif currentTool == Tools.Trowel:
-        toolSprite.texture = trowelUsedTexture
-    elif currentTool == Tools.Brush:
-        toolSprite.texture = brushUsedTexture
-    elif currentTool == Tools.GPR:
-        toolSprite.texture = gprUsedTexture
+    shovelSprite.texture = shovelDefaultTexture
+    trowelSprite.texture = trowelDefaultTexture
+    brushSprite.texture = brushDefaultTexture
+    gprSprite.texture = gprDefaultTexture
+    
+    if highlightTool == Tools.Shovel:
+        shovelSprite.texture = shovelHighlightedTexture
+    if highlightTool == Tools.Trowel:
+        trowelSprite.texture = trowelHighlightedTexture
+    if highlightTool == Tools.Brush:
+        brushSprite.texture = brushHighlightedTexture
+    if highlightTool == Tools.GPR:
+        gprSprite.texture = gprHighlightedTexture
+        
+    shovelSprite.visible = true
+    trowelSprite.visible = true
+    brushSprite.visible = true
+    gprSprite.visible = true
+    if currentTool == Tools.Shovel:
+        shovelSprite.visible = false
+    if currentTool == Tools.Trowel:
+        trowelSprite.visible = false
+    if currentTool == Tools.Brush:
+        brushSprite.visible = false
+    if currentTool == Tools.GPR:
+        gprSprite.visible = false
+        
     
     
 func reset_highlight():

@@ -1,19 +1,26 @@
-[gd_scene load_steps=29 format=3 uid="uid://do4voo658ul1u"]
+[gd_scene load_steps=36 format=3 uid="uid://do4voo658ul1u"]
 
 [ext_resource type="Script" uid="uid://m4i2y4jyj8ia" path="res://scripts/toolbelt.gd" id="1_4glvr"]
-[ext_resource type="Texture2D" uid="uid://5yjp68srfj2g" path="res://assets/items/Toolbelt6.png" id="3_78dcd"]
-[ext_resource type="Texture2D" uid="uid://i5d0m330hc58" path="res://assets/items/Toolbelt11.png" id="4_vtogy"]
-[ext_resource type="Texture2D" uid="uid://cxplykkdq8iaj" path="res://assets/items/Toolbelt2.png" id="5_4glvr"]
-[ext_resource type="Texture2D" uid="uid://cs6hd1jjf8auq" path="res://assets/items/Toolbelt10.png" id="6_8tfvg"]
-[ext_resource type="Texture2D" uid="uid://dmejhyj2c5n2p" path="res://assets/items/Toolbelt3.png" id="7_3rmt6"]
-[ext_resource type="Texture2D" uid="uid://cuvs60ci4w2n2" path="res://assets/items/Toolbelt.png" id="7_b14al"]
+[ext_resource type="Texture2D" uid="uid://c8d6icwqe1i6o" path="res://assets/items/Toolbelt12.png" id="2_txb6w"]
+[ext_resource type="Texture2D" uid="uid://cg5nshmamao23" path="res://assets/items/Shove_Highlightl.png" id="3_78dcd"]
+[ext_resource type="Texture2D" uid="uid://bdnqd81j7usnq" path="res://assets/items/Shovel.png" id="3_b14al"]
+[ext_resource type="Texture2D" uid="uid://chdlxed3qavfp" path="res://assets/items/Trowel.png" id="4_wk75a"]
+[ext_resource type="Texture2D" uid="uid://b4d0fo4xbormh" path="res://assets/items/Trowe_Highlightl.png" id="5_2oiap"]
+[ext_resource type="Texture2D" uid="uid://dg52whqf7mm38" path="res://assets/items/Brush.png" id="6_nhjvs"]
+[ext_resource type="Texture2D" uid="uid://c6qaqwflabsi1" path="res://assets/items/Bonefiinder.png" id="7_2oiap"]
+[ext_resource type="Texture2D" uid="uid://cxsg0a7lmv61v" path="res://assets/items/Bonefinder0.png" id="7_4glvr"]
+[ext_resource type="Texture2D" uid="uid://18urp85kv0d0" path="res://assets/items/Brush_Highlight.png" id="7_8tfvg"]
 [ext_resource type="AudioStream" uid="uid://cpxcs4yew7vr0" path="res://assets/sounds/shovel1.ogg" id="7_vtogy"]
-[ext_resource type="Texture2D" uid="uid://s5gq6ax32bop" path="res://assets/items/Toolbelt8.png" id="8_7hktt"]
+[ext_resource type="Texture2D" uid="uid://sheyw8jg5ex0" path="res://assets/items/Bonefiinder_Highlight.png" id="8_8tfvg"]
 [ext_resource type="AudioStream" uid="uid://crqb2rl1m2ild" path="res://assets/sounds/shovel2.ogg" id="8_pesch"]
-[ext_resource type="Texture2D" uid="uid://bnl7vhoaddyjl" path="res://assets/items/Toolbelt5.png" id="9_4glvr"]
 [ext_resource type="AudioStream" uid="uid://co7k0p00id68b" path="res://assets/sounds/shovel3.ogg" id="9_wk75a"]
-[ext_resource type="Texture2D" uid="uid://luryell26ruo" path="res://assets/items/Toolbelt9.png" id="10_5uf1e"]
 [ext_resource type="AudioStream" uid="uid://bn14y7heekuy0" path="res://assets/sounds/handleSmallLeather.ogg" id="10_pesch"]
+[ext_resource type="Texture2D" uid="uid://bjck1lfyl2cmc" path="res://assets/curser/Rotate.png" id="12_8rgmw"]
+[ext_resource type="Texture2D" uid="uid://cjwjnfqoudgud" path="res://assets/curser/Map.png" id="13_5uf1e"]
+[ext_resource type="Script" uid="uid://uxsdqjntl7mc" path="res://scripts/highlight.gd" id="14_1fs5o"]
+[ext_resource type="Texture2D" uid="uid://bdxtf17kii2mb" path="res://assets/Tools/Rotate.png" id="14_3fax5"]
+[ext_resource type="Texture2D" uid="uid://brhm0rhbba0pb" path="res://assets/curser/Rotate_Highlight.png" id="15_3fax5"]
+[ext_resource type="Texture2D" uid="uid://c57uqib16mgb3" path="res://assets/curser/Map_Highlight.png" id="15_5uf1e"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_4v4l6"]
 device = -1
@@ -76,24 +83,27 @@ stream_0/stream = ExtResource("7_vtogy")
 stream_1/stream = ExtResource("8_pesch")
 stream_2/stream = ExtResource("9_wk75a")
 
-[node name="Toolbelt" type="Node2D" node_paths=PackedStringArray("collectionSpawnPoint", "toolSprite")]
+[node name="Toolbelt" type="Node2D" node_paths=PackedStringArray("collectionSpawnPoint", "toolSprite", "shovelSprite", "trowelSprite", "brushSprite", "gprSprite")]
 script = ExtResource("1_4glvr")
 collectionSpawnPoint = NodePath("ToolbeltSprite")
 toolSprite = NodePath("ToolbeltSprite")
-defaultTexture = ExtResource("7_b14al")
+shovelSprite = NodePath("ToolbeltSprite/Shovel")
+shovelDefaultTexture = ExtResource("3_b14al")
 shovelHighlightedTexture = ExtResource("3_78dcd")
-shovelUsedTexture = ExtResource("4_vtogy")
-trowelHighlightedTexture = ExtResource("5_4glvr")
-trowelUsedTexture = ExtResource("6_8tfvg")
-brushHighlightedTexture = ExtResource("7_3rmt6")
-brushUsedTexture = ExtResource("8_7hktt")
-gprHighlightedTexture = ExtResource("9_4glvr")
-gprUsedTexture = ExtResource("10_5uf1e")
+trowelSprite = NodePath("ToolbeltSprite/Trowel")
+trowelDefaultTexture = ExtResource("4_wk75a")
+trowelHighlightedTexture = ExtResource("5_2oiap")
+brushSprite = NodePath("ToolbeltSprite/Brush")
+brushDefaultTexture = ExtResource("6_nhjvs")
+brushHighlightedTexture = ExtResource("7_8tfvg")
+gprSprite = NodePath("ToolbeltSprite/GPR")
+gprDefaultTexture = ExtResource("7_4glvr")
+gprHighlightedTexture = ExtResource("8_8tfvg")
 
 [node name="ToolbeltSprite" type="Sprite2D" parent="."]
 texture_filter = 1
 position = Vector2(-57, -100)
-texture = ExtResource("7_b14al")
+texture = ExtResource("2_txb6w")
 
 [node name="Button" type="Button" parent="ToolbeltSprite"]
 z_index = -1
@@ -112,88 +122,130 @@ flat = true
 anchors_preset = -1
 anchor_left = 0.19444445
 anchor_top = 0.005050505
-anchor_right = 0.5639259
+anchor_right = 0.98985183
 anchor_bottom = 0.7676768
-offset_left = -40.0
-offset_top = -15.0
-offset_right = -28.904
-offset_bottom = -118.0
+offset_left = -36.070145
+offset_top = 37.263313
+offset_right = -24.974144
+offset_bottom = -65.73669
 focus_mode = 0
 shortcut = SubResource("Shortcut_8mm7a")
 flat = true
 metadata/_edit_use_anchors_ = true
 
+[node name="Shovel" type="Sprite2D" parent="ToolbeltSprite"]
+position = Vector2(34.929855, 66.26331)
+rotation = -0.54736906
+texture = ExtResource("3_b14al")
+
 [node name="TrowelButton" type="Button" parent="ToolbeltSprite"]
 anchors_preset = -1
 anchor_left = 0.24537037
-anchor_top = 0.27295345
-anchor_right = 0.56049997
+anchor_top = 0.051000003
+anchor_right = 0.98
 anchor_bottom = 1.0149254
-offset_left = -16.5
-offset_top = -113.04478
-offset_right = -3.4039993
-offset_bottom = -216.04477
+offset_left = -11.5
+offset_top = -62.097992
+offset_right = -43.710007
+offset_bottom = -209.04477
 focus_mode = 0
 shortcut = SubResource("Shortcut_hq1ik")
 flat = true
 metadata/_edit_use_anchors_ = true
 
+[node name="Trowel" type="Sprite2D" parent="ToolbeltSprite"]
+position = Vector2(40, -30)
+rotation = -1.5807668
+texture = ExtResource("4_wk75a")
+
 [node name="BrushButton" type="Button" parent="ToolbeltSprite"]
 anchors_preset = -1
-anchor_left = -0.0046296297
-anchor_top = -0.0072365194
-anchor_right = 0.2167037
-anchor_bottom = 0.68686867
-offset_left = -23.5
-offset_top = -72.56717
-offset_right = -17.404
-offset_bottom = -175.56717
+anchor_left = 0.259
+anchor_top = 0.044000003
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -45.972
+offset_top = -78.712
+offset_right = -106.0
+offset_bottom = -247.0
+grow_horizontal = 0
+grow_vertical = 0
 focus_mode = 0
 shortcut = SubResource("Shortcut_8tfvg")
 flat = true
-metadata/_edit_use_anchors_ = true
+
+[node name="Brush" type="Sprite2D" parent="ToolbeltSprite"]
+position = Vector2(-7, -59)
+rotation = 0.5302865
+texture = ExtResource("6_nhjvs")
 
 [node name="GPRButton" type="Button" parent="ToolbeltSprite"]
 anchors_preset = -1
-anchor_left = -0.041666668
-anchor_top = -0.022388054
-anchor_right = 0.17040741
-anchor_bottom = 0.7907433
-offset_left = 21.5
-offset_top = 28.43283
-offset_right = 27.595999
-offset_bottom = -74.56717
+anchor_left = 0.28300002
+anchor_top = 0.053000003
+anchor_right = 1.0
+anchor_bottom = 0.95800006
+offset_left = -46.564003
+offset_top = -46.494003
+offset_right = -95.0
+offset_bottom = -171.684
 focus_mode = 0
 shortcut = SubResource("Shortcut_nfk4m")
 flat = true
 metadata/_edit_use_anchors_ = true
 
+[node name="GPR" type="Sprite2D" parent="ToolbeltSprite"]
+position = Vector2(-1.9999999, -9)
+rotation = 1.5569605
+scale = Vector2(0.99999994, 0.99999994)
+texture = ExtResource("7_2oiap")
+
 [node name="RotationButton" type="Button" parent="ToolbeltSprite"]
 anchors_preset = -1
-anchor_left = 0.998
-anchor_top = 0.32323232
-anchor_right = 0.998
-anchor_bottom = 1.0
-offset_left = -211.784
-offset_top = 4.0
-offset_right = -136.784
-offset_bottom = -99.0
+anchor_left = 0.284
+anchor_top = 0.070151515
+anchor_right = 0.9814815
+anchor_bottom = 0.9848485
+offset_left = -9.672001
+offset_top = -91.89
+offset_right = -61.0
+offset_bottom = -248.0
 focus_mode = 0
 shortcut = SubResource("Shortcut_pesch")
-text = "Rotation
-"
 flat = true
 metadata/_edit_use_anchors_ = true
 
+[node name="Rotation" type="Sprite2D" parent="ToolbeltSprite" node_paths=PackedStringArray("sprite")]
+position = Vector2(33, -65)
+scale = Vector2(0.4375003, 0.4375003)
+texture = ExtResource("12_8rgmw")
+script = ExtResource("14_1fs5o")
+sprite = NodePath(".")
+defaultTexture = ExtResource("14_3fax5")
+highlightedTexture = ExtResource("15_3fax5")
+
 [node name="ToggleButton" type="Button" parent="ToolbeltSprite"]
-offset_left = -15.0
-offset_top = 37.0
-offset_right = 12.0
-offset_bottom = 86.0
+anchors_preset = -1
+anchor_left = 0.316
+anchor_top = 0.071
+anchor_right = 0.96900004
+anchor_bottom = 0.95100003
+offset_left = -11.128002
+offset_top = -20.058
+offset_right = -58.652008
+offset_bottom = -151.298
 tooltip_text = "Switch Shop/Dig Site"
 focus_mode = 0
 shortcut = SubResource("Shortcut_3rmt6")
 flat = true
+
+[node name="Toggle" type="Sprite2D" parent="ToolbeltSprite" node_paths=PackedStringArray("sprite")]
+position = Vector2(33, 16)
+texture = ExtResource("13_5uf1e")
+script = ExtResource("14_1fs5o")
+sprite = NodePath(".")
+defaultTexture = ExtResource("13_5uf1e")
+highlightedTexture = ExtResource("15_5uf1e")
 
 [node name="ShovelSound" type="AudioStreamPlayer" parent="ToolbeltSprite"]
 stream = SubResource("AudioStreamRandomizer_2oiap")
@@ -218,5 +270,9 @@ stream = ExtResource("10_pesch")
 [connection signal="mouse_entered" from="ToolbeltSprite/GPRButton" to="." method="highlight_gpr"]
 [connection signal="mouse_exited" from="ToolbeltSprite/GPRButton" to="." method="reset_highlight"]
 [connection signal="pressed" from="ToolbeltSprite/GPRButton" to="." method="switch_to_GPR"]
+[connection signal="mouse_entered" from="ToolbeltSprite/RotationButton" to="ToolbeltSprite/Rotation" method="aktive"]
+[connection signal="mouse_exited" from="ToolbeltSprite/RotationButton" to="ToolbeltSprite/Rotation" method="deaktive"]
 [connection signal="pressed" from="ToolbeltSprite/RotationButton" to="." method="change_direction_up"]
+[connection signal="mouse_entered" from="ToolbeltSprite/ToggleButton" to="ToolbeltSprite/Toggle" method="aktive"]
+[connection signal="mouse_exited" from="ToolbeltSprite/ToggleButton" to="ToolbeltSprite/Toggle" method="deaktive"]
 [connection signal="pressed" from="ToolbeltSprite/ToggleButton" to="." method="toggle_collection"]
