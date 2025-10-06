@@ -18,10 +18,11 @@ texture_filter = 1
 script = ExtResource("1_nfk4m")
 toolbelt = NodePath("../Toolbelt")
 
-[node name="Toolbelt" parent="." node_paths=PackedStringArray("digSite", "collectionSpawnPoint") instance=ExtResource("1_hq1ik")]
+[node name="Toolbelt" parent="." node_paths=PackedStringArray("digSite", "collectionSpawnPoint", "shopSpawnPoint") instance=ExtResource("1_hq1ik")]
 z_index = 10
 digSite = NodePath("../DigSite")
 collectionSpawnPoint = NodePath("../CollectionSpawnPoint")
+shopSpawnPoint = NodePath("../ShopSpawnPoint")
 
 [node name="Curser" type="Node2D" parent="." node_paths=PackedStringArray("curserAnimator", "toolbelt", "label")]
 z_index = 50
@@ -58,13 +59,17 @@ position_smoothing_enabled = true
 script = ExtResource("7_66tet")
 scrollSpeed = 200.0
 
-[node name="Collection" parent="." node_paths=PackedStringArray("gameState") instance=ExtResource("9_7ycvg")]
+[node name="Collection" parent="." node_paths=PackedStringArray("dinoAreas", "gameState") instance=ExtResource("9_7ycvg")]
 z_index = -1
 position = Vector2(-286, 232)
+dinoAreas = []
 gameState = NodePath("../GameState")
 
 [node name="CollectionSpawnPoint" type="Node2D" parent="."]
-position = Vector2(-158, 98)
+position = Vector2(-158, 330)
+
+[node name="ShopSpawnPoint" type="Node2D" parent="."]
+position = Vector2(-181, 105)
 
 [node name="Node" type="Node" parent="."]
 

@@ -6,6 +6,7 @@ signal direction_has_changed(newDir:int)
 
 @export var digSite: DigSite
 @export var collectionSpawnPoint: Node2D
+@export var shopSpawnPoint: Node2D
 
 @onready var camera = $/root/MainScene/Camera2D as Camera2D
 @onready var gameState = $/root/MainScene/GameState as GameState
@@ -54,13 +55,14 @@ var tool_dic_mod = {
 
 static var currentTool: Tools = Tools.Hand
 
-var isInCollection: bool = false
 var playerPosOnField: Vector2
+var playerPosOnShop: Vector2
 var playerPosOnCollection: Vector2
 
 func _ready() -> void:
     playerPosOnField = camera.global_position
     playerPosOnCollection = collectionSpawnPoint.global_position
+    playerPosOnShop = shopSpawnPoint.global_position
     
     get_viewport().size_changed.connect(window_update)
     window_update()
@@ -161,12 +163,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _process(_delta: float) -> void:
     var camBottomRight = camera.get_screen_center_position() + Vector2(get_viewport_rect().size / camera.zoom / 2)
     global_position = camBottomRight
-    
-    if isInCollection:
-        playerPosOnCollection = camera.global_position
-    else: 
-        playerPosOnField = camera.global_position
-    
+        
     shovelSprite.texture = shovelDefaultTexture
     trowelSprite.texture = trowelDefaultTexture
     brushSprite.texture = brushDefaultTexture
@@ -210,15 +207,15 @@ func highlight_gpr():
     highlightTool = Tools.GPR
     
 func toggle_collection():
-    if isInCollection:
-        camera.global_position = playerPosOnField
-        isInCollection = false
-    else: 
+    if (playerPosOnShop - camera.global_position).length() < 200:
         camera.global_position = playerPosOnCollection
-        isInCollection = true
+    elif (playerPosOnCollection - camera.global_position).length() < 200:
+        camera.global_position = playerPosOnField
+    else:
+        playerPosOnField = camera.global_position
+        camera.global_position = playerPosOnShop
+
         
 func forcePlayerToCollectionSpawnPoint():
-    if isInCollection:
-       toggle_collection()
     playerPosOnCollection = collectionSpawnPoint.global_position
     toggle_collection()
