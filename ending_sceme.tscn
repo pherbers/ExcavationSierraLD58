@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://dog8cbdxed6ix"]
+[gd_scene load_steps=13 format=4 uid="uid://dog8cbdxed6ix"]
 
 [ext_resource type="Script" uid="uid://b61syqeeu1r52" path="res://scripts/end_menue.gd" id="1_6k6fx"]
 [ext_resource type="FontFile" uid="uid://cg2nyph7fexsd" path="res://Pixolde.ttf" id="2_abto6"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://umc1ieqsv2k" path="res://assets/bones/Dmaged Bones/Bonefragments4.png" id="6_h10fv"]
 [ext_resource type="Texture2D" uid="uid://8owu3ycc3elf" path="res://assets/bones/Dmaged Bones/Bonefragments5.png" id="7_wqeml"]
 [ext_resource type="Texture2D" uid="uid://iqafa4htfxub" path="res://assets/Exhibit.png" id="9_y8465"]
+[ext_resource type="AudioStream" uid="uid://btprf3kvspsvu" path="res://assets/sounds/museum_ambiance.ogg" id="12_wqeml"]
 
 [node name="EndingSceme" type="Node2D"]
 texture_filter = 1
@@ -89,4 +90,9 @@ tile_set = ExtResource("3_ra1jj")
 z_index = -2
 texture = ExtResource("9_y8465")
 
+[node name="Ambiance" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_wqeml")
+autoplay = true
+
 [connection signal="pressed" from="Camera2D/Menue/Button" to="Camera2D/Menue" method="play_game"]
+[connection signal="finished" from="Ambiance" to="Ambiance" method="play"]
