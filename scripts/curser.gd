@@ -92,7 +92,6 @@ func changeToShovel():
     curserAnimator.frame = 0
     label.text = "Shovel"
     label.visible = false
-    Input.set_default_cursor_shape(Input.CURSOR_ARROW)
     
 func changeToTrowel():
     curserAnimator.visible = true
@@ -101,7 +100,6 @@ func changeToTrowel():
     curserAnimator.frame = 0
     label.text = "Trowel"
     label.visible = false
-    Input.set_default_cursor_shape(Input.CURSOR_ARROW)
     
 func changeToBrush():
     curserAnimator.visible = true
@@ -110,7 +108,6 @@ func changeToBrush():
     curserAnimator.frame = 0
     label.text = "Brush"
     label.visible = false
-    Input.set_default_cursor_shape(Input.CURSOR_ARROW)
     
 func changeToHand():
     curserAnimator.visible = false
@@ -118,7 +115,6 @@ func changeToHand():
     curserAnimator.frame = 0
     label.text = "Hand"
     label.visible = false
-    Input.set_default_cursor_shape(Input.CURSOR_POINTING_HAND)
     
 func changeToGPR():
     curserAnimator.visible = true
@@ -127,11 +123,9 @@ func changeToGPR():
     curserAnimator.frame = 0
     label.text = "GPR"
     label.visible = false
-    Input.set_default_cursor_shape(Input.CURSOR_ARROW)
     
     gpr_state = 0
     gpr_beep()
-
 
 func _on_toolbelt_direction_has_changed(newDir: int) -> void:
     if newDir == 0:
@@ -143,4 +137,4 @@ func _on_toolbelt_direction_has_changed(newDir: int) -> void:
     elif newDir == 3:
        self.rotation_degrees = 315
     else:
-        self.rotation_degrees = 0 
+        self.rotation_degrees = 0

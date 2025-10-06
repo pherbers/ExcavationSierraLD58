@@ -14,7 +14,7 @@
 [node name="MainScene" type="Node2D"]
 texture_filter = 1
 
-[node name="GameState" type="Node2D" parent="." node_paths=PackedStringArray("toolbelt")]
+[node name="GameState" type="Node" parent="." node_paths=PackedStringArray("toolbelt")]
 script = ExtResource("1_nfk4m")
 toolbelt = NodePath("../Toolbelt")
 
@@ -62,7 +62,7 @@ scrollSpeed = 200.0
 [node name="Collection" parent="." node_paths=PackedStringArray("gameState") instance=ExtResource("9_7ycvg")]
 z_index = -1
 position = Vector2(-286, 232)
-gameState = NodePath("")
+gameState = NodePath("../GameState")
 
 [node name="CollectionSpawnPoint" type="Node2D" parent="."]
 position = Vector2(-158, 330)
@@ -83,8 +83,6 @@ position = Vector2(-398, 8)
 [connection signal="bone_collected" from="GameState" to="Collection" method="_on_game_state_bone_collected"]
 [connection signal="direction_has_changed" from="Toolbelt" to="Curser" method="_on_toolbelt_direction_has_changed"]
 [connection signal="finished" from="Curser/BeepSound" to="Curser" method="gpr_beep"]
-[connection signal="bone_stuck" from="DigSite" to="GameState" method="_on_dig_site_bone_stuck"]
-[connection signal="hit_bone" from="DigSite" to="GameState" method="_on_dig_site_hit_bone"]
 [connection signal="on_bone_number_change" from="Collection" to="Toolbelt" method="_on_collection_on_bone_number_change"]
 [connection signal="finished" from="Node/AudioStreamPlayer" to="Node/AudioStreamPlayer" method="play"]
 [connection signal="coins_delter" from="Shop" to="GameState" method="_on_shop_coins_delter"]

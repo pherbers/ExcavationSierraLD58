@@ -78,10 +78,11 @@ offset_bottom = -114.500015
 scale = Vector2(1, 0.9902482)
 size_flags_horizontal = 4
 
-[node name="DinoDisplay" type="Node2D" parent="."]
+[node name="DinoDisplay" type="Node2D" parent="." node_paths=PackedStringArray("tileMap")]
 position = Vector2(44, 16)
 scale = Vector2(0.5, 0.5)
 script = ExtResource("2_nw0q0")
+tileMap = NodePath("TileMapLayer")
 damageTexture = Array[Texture2D]([ExtResource("3_84eta"), ExtResource("4_y8465"), ExtResource("5_abto6"), ExtResource("6_h10fv"), ExtResource("7_wqeml")])
 
 [node name="TileMapLayer" type="TileMapLayer" parent="DinoDisplay"]

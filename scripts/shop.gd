@@ -12,6 +12,7 @@ signal coins_has_changed(newValue:int)
 signal coins_gained()
 signal coins_spent()
 signal insufficient_money()
+signal coins_delter(value:int)
 
 class ShopItem:
     var id: int
@@ -56,6 +57,7 @@ func update_coins(amount: int):
     labelPurse.text = "$" + str(self.coins)
     coins_has_changed.emit(self.coins)
     Global.set_score(self.coins)
+    coins_delter.emit(amount)
     if amount > 0:
         coins_gained.emit()
     elif amount < 0:

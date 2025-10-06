@@ -43,6 +43,7 @@ var _bone_positions: Dictionary[String, Vector3i]
 signal hit_bone
 signal brush_used
 signal flag_planted
+signal bone_stuck
 
 @onready var brush_sound = $BrushSound as AudioStreamPlayer
 
@@ -266,7 +267,6 @@ func dig_tile(pos: Vector2i, max_depth=-1, safety=false) -> DigResult:
                 hitBone = true
                 if not safety:
                     var bone_name = obj_data.get_custom_data("ObjectID") if obj_data.has_custom_data("ObjectID") else ""
-                    var gamestate = $/root/MainScene/GameState as GameState
                     var damage = BoneDamage.new()
                     damage.atlas_pos = obj_layer.get_cell_atlas_coords(pos)
                     damage.atlas_id = obj_layer.get_cell_source_id(pos)
@@ -341,6 +341,7 @@ func take_object(pos: Vector2i) -> String:
     # check if bone is still dug in
     for obj_pos in bone_cells:
         if find_top_dig_layer(obj_pos).z <= obj_depth:
+            bone_stuck.emit()
             return ""
     
     # erase cells
