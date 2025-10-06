@@ -109,12 +109,12 @@ func digSiteAktion(pressed:bool):
                 var boneName = digSite.take_object(digSite.getTileForMousePos())
                 if boneName != "":
                     gameState.collect_bone(boneName)
-            Tools.Shovel: 
-                var result = digSite.dig_shovel(digSite.getTileForMousePos(), direction)
+            Tools.Shovel:
+                var result = digSite.dig_shovel(digSite.getTileForMousePos(), direction, gameState.item_shovel_big)
                 if result == DigSite.DigResult.OK:
                     shovel_used.emit()
             Tools.Trowel:
-                var result = digSite.dig_trowel(digSite.getTileForMousePos(), direction)
+                var result = digSite.dig_trowel(digSite.getTileForMousePos(), direction, gameState.item_trowel_safe)
                 if result == DigSite.DigResult.OK:
                     trowel_used.emit()
             Tools.Brush:

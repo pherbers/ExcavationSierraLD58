@@ -2,6 +2,7 @@ extends Node2D
 
 @onready var dig_site = $/root/MainScene/DigSite as DigSite
 @onready var toolbelt = $/root/MainScene/Toolbelt as Toolbelt
+@onready var game_state = $/root/MainScene/GameState as GameState
 
 @export var tile_sprite: Texture2D
 
@@ -12,13 +13,13 @@ func _ready() -> void:
 func tool_changed():
     match toolbelt.currentTool:
         Toolbelt.Tools.Shovel:
-            change_visuals(dig_site.get_shovel_tiles(toolbelt.direction))
+            change_visuals(dig_site.get_shovel_tiles(toolbelt.direction, 1 if game_state.item_shovel_big else 0))
         Toolbelt.Tools.Trowel:
             change_visuals(dig_site.get_trowel_tiles(toolbelt.direction))
         Toolbelt.Tools.Brush:
             change_visuals(dig_site.get_brush_tiles())
         Toolbelt.Tools.GPR:
-            change_visuals([Vector3i.ZERO])
+            change_visuals(dig_site.get_gpr_tiles(game_state.item_gpr_width))
         _:
             change_visuals([])
 

@@ -5,6 +5,7 @@ class_name Curser
 
 @export var toolbelt: Toolbelt
 @onready var dig_site: DigSite = $/root/MainScene/DigSite
+@onready var game_state: GameState = $/root/MainScene/GameState as GameState
 @export var label:Label
 
 var lastTool: Toolbelt.Tools = Toolbelt.Tools.Hand
@@ -39,11 +40,12 @@ func _process(_delta: float):
             
     if currentTool == Toolbelt.Tools.GPR:
         var mouseTile = dig_site.getTileForMousePos()
-        var closest_bone_pos = dig_site.get_closest_bone_pos(mouseTile)
+        var closest_bone_pos = dig_site.get_closest_bone_pos(mouseTile, game_state.item_gpr_depth)
         var pos = Vector2i(closest_bone_pos.x, closest_bone_pos.y)
-        var depth = closest_bone_pos.z
         var dist = (pos - mouseTile).length()
         if dist < 0.5:
+            var soil_layer = dig_site.find_top_dig_layer(pos)
+            var depth = closest_bone_pos.z - soil_layer.z
             match depth:
                 0: 
                     curserAnimator.frame = 4
