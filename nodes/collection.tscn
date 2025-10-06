@@ -6,8 +6,12 @@
 [ext_resource type="TileSet" uid="uid://6445fnwhdw4f" path="res://assets/tilesets/layer5.tres" id="6_w13us"]
 [ext_resource type="TileSet" uid="uid://b1ohmhog885ai" path="res://assets/bones/dino_tiles.tres" id="7_io8vq"]
 
-[node name="Collection" type="Node2D"]
+[node name="Collection" type="Node2D" node_paths=PackedStringArray("dinoAreas", "infoBox", "priceLabel", "damagedLabel")]
 script = ExtResource("1_8bw5n")
+dinoAreas = [NodePath("DinoArea")]
+infoBox = NodePath("IndoBox")
+priceLabel = NodePath("IndoBox/Price")
+damagedLabel = NodePath("IndoBox/Damaged")
 numberOfDinoAreas = 1
 
 [node name="BaseWorkArea" type="TileMapLayer" parent="."]
@@ -35,6 +39,31 @@ offset_top = 148.0
 offset_right = 67.0
 offset_bottom = 171.0
 text = "Dino 1"
+
+[node name="IndoBox" type="Node2D" parent="."]
+visible = false
+position = Vector2(76, 19)
+scale = Vector2(0.4, 0.4)
+
+[node name="Price" type="Label" parent="IndoBox"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 70.0
+offset_bottom = 3.0
+grow_vertical = 2
+text = "Price 10$"
+
+[node name="Damaged" type="Label" parent="IndoBox"]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -37.0
+offset_right = 74.0
+offset_bottom = -14.0
+grow_vertical = 2
+text = "Damaged Bone"
 
 [connection signal="bone_collected" from="." to="DinoArea" method="_on_collection_bone_collected"]
 [connection signal="on_area_complete" from="DinoArea" to="." method="_on_dino_area_on_area_complete"]

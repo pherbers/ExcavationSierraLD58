@@ -30,7 +30,8 @@ func _ready() -> void:
             "sourcId": tileMap.get_cell_source_id(index),
             "alternativeTile": tileMap.get_cell_alternative_tile(index),
             "atlasCoords": tileMap.get_cell_atlas_coords(index),
-            "found": false
+            "found": false,
+            "damaged": false
         })
         
         tileMap.set_cell(index, -1)
@@ -58,6 +59,7 @@ func revalDinoBone(boneName: String):
             if dmgIndex != -1:
                 var dmg = damages[dmgIndex]
                 create_damage_viz(index, dmg.damage_type)
+                cell["damaged"] = true
             
             if !found:
                 tileMap.set_cell(index, sourcId, atlasCoords, alternativeTile)
@@ -86,7 +88,42 @@ func checkIfCompleted():
                 
     if isComplete:
         setComplete()
-            
+   
+class Bone:
+    var name:String
+    var countOfBonesUndamaged: int
+    var countOfBonesDamaged: int
+
+func get_bone_at_world_pos(globlePos: Vector2) -> Bone:
+    var index: Vector2i = tileMap.local_to_map(tileMap.to_local(globlePos))
+    var cell: TileData = tileMap.get_cell_tile_data(index)
+    if cell == null:
+        return null
+    if !cell.has_custom_data("ObjectID"):
+        return null
+    var cellCustomData = cell.get_custom_data("ObjectID")
+    var boneNamer = str(cellCustomData)
+    
+    if boneDict.keys().has(boneNamer):
+        var entry = boneDict[boneNamer]
+        var countOfBonesUndamaged: int = 0
+        var countOfBonesDamaged: int = 0
+        var boneCells = entry["boneCells"]
+        for boneCell in boneCells:
+            if boneCell["damaged"] == true:
+                countOfBonesDamaged += 1
+            else:
+                countOfBonesUndamaged += 1
+        
+        var bone = Bone.new()
+        bone.name = boneNamer
+        bone.countOfBonesDamaged = countOfBonesDamaged
+        bone.countOfBonesUndamaged = countOfBonesUndamaged
+        
+        return bone
+    
+    return null
+    
 func setComplete():
     label.text = dinoName
     label.visible = true
