@@ -29,6 +29,9 @@ signal direction_has_changed(newDir:int)
 @export var gprDefaultTexture: Texture2D
 @export var gprHighlightedTexture: Texture2D
 
+@export var boneCounter: Label
+@export var coinCounter: Label
+
 var direction: int = 0;
 var highlightTool: Tools = Tools.Hand
 
@@ -159,7 +162,6 @@ func _unhandled_input(event: InputEvent) -> void:
         elif event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
             change_direction_down()
         
-
 func _process(_delta: float) -> void:
     var camBottomRight = camera.get_screen_center_position() + Vector2(get_viewport_rect().size / camera.zoom / 2)
     global_position = camBottomRight
@@ -214,8 +216,13 @@ func toggle_collection():
     else:
         playerPosOnField = camera.global_position
         camera.global_position = playerPosOnShop
-
-        
+       
 func forcePlayerToCollectionSpawnPoint():
     playerPosOnCollection = collectionSpawnPoint.global_position
     toggle_collection()
+
+func _on_shop_coins_has_changed(newValue: int) -> void:
+    coinCounter.text = "$" + str(newValue)
+
+func _on_collection_on_bone_number_change(currentBones: int, maxBones: int) -> void:
+    boneCounter.text = "Bones: " + str(currentBones) + "/" + str(maxBones)

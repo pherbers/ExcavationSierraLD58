@@ -47,6 +47,7 @@ theme = ExtResource("6_ymia4")
 text = "Dino 1"
 
 [node name="IndoBox" type="Node2D" parent="."]
+z_index = 10
 position = Vector2(76, 19)
 
 [node name="Price" type="Label" parent="IndoBox"]
@@ -73,3 +74,4 @@ text = "Damaged Bone"
 
 [connection signal="bone_collected" from="." to="DinoArea" method="_on_collection_bone_collected"]
 [connection signal="on_area_complete" from="DinoArea" to="." method="_on_dino_area_on_area_complete"]
+[connection signal="on_bone_number_chaneg" from="DinoArea" to="." method="_on_dino_area_on_bone_number_chaneg"]

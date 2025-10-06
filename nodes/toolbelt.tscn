@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://do4voo658ul1u"]
+[gd_scene load_steps=37 format=3 uid="uid://do4voo658ul1u"]
 
 [ext_resource type="Script" uid="uid://m4i2y4jyj8ia" path="res://scripts/toolbelt.gd" id="1_4glvr"]
 [ext_resource type="Texture2D" uid="uid://c8d6icwqe1i6o" path="res://assets/items/Toolbelt12.png" id="2_txb6w"]
@@ -17,10 +17,11 @@
 [ext_resource type="AudioStream" uid="uid://bn14y7heekuy0" path="res://assets/sounds/handleSmallLeather.ogg" id="10_pesch"]
 [ext_resource type="Texture2D" uid="uid://bjck1lfyl2cmc" path="res://assets/curser/Rotate.png" id="12_8rgmw"]
 [ext_resource type="Texture2D" uid="uid://cjwjnfqoudgud" path="res://assets/curser/Map.png" id="13_5uf1e"]
-[ext_resource type="Script" path="res://scripts/highlight.gd" id="14_1fs5o"]
+[ext_resource type="Script" uid="uid://uxsdqjntl7mc" path="res://scripts/highlight.gd" id="14_1fs5o"]
 [ext_resource type="Texture2D" uid="uid://bdxtf17kii2mb" path="res://assets/Tools/Rotate.png" id="14_3fax5"]
 [ext_resource type="Texture2D" uid="uid://brhm0rhbba0pb" path="res://assets/curser/Rotate_Highlight.png" id="15_3fax5"]
 [ext_resource type="Texture2D" uid="uid://c57uqib16mgb3" path="res://assets/curser/Map_Highlight.png" id="15_5uf1e"]
+[ext_resource type="Theme" uid="uid://bvt2oxur0aj5e" path="res://assets/ui/ui_theme.tres" id="22_36e5w"]
 
 [sub_resource type="InputEventKey" id="InputEventKey_4v4l6"]
 device = -1
@@ -83,7 +84,8 @@ stream_0/stream = ExtResource("7_vtogy")
 stream_1/stream = ExtResource("8_pesch")
 stream_2/stream = ExtResource("9_wk75a")
 
-[node name="Toolbelt" type="Node2D" node_paths=PackedStringArray("collectionSpawnPoint", "toolSprite", "shovelSprite", "trowelSprite", "brushSprite", "gprSprite")]
+[node name="Toolbelt" type="Node2D" node_paths=PackedStringArray("collectionSpawnPoint", "toolSprite", "shovelSprite", "trowelSprite", "brushSprite", "gprSprite", "boneCounter", "coinCounter")]
+position = Vector2(0, -1)
 script = ExtResource("1_4glvr")
 collectionSpawnPoint = NodePath("ToolbeltSprite")
 toolSprite = NodePath("ToolbeltSprite")
@@ -99,6 +101,8 @@ brushHighlightedTexture = ExtResource("7_8tfvg")
 gprSprite = NodePath("ToolbeltSprite/GPR")
 gprDefaultTexture = ExtResource("7_4glvr")
 gprHighlightedTexture = ExtResource("8_8tfvg")
+boneCounter = NodePath("ToolbeltSprite/Bones")
+coinCounter = NodePath("ToolbeltSprite/Coins")
 
 [node name="ToolbeltSprite" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -257,6 +261,31 @@ pitch_scale = 1.3
 [node name="EquipChangeSound" type="AudioStreamPlayer" parent="ToolbeltSprite"]
 stream = ExtResource("10_pesch")
 volume_db = -14.054
+
+[node name="Bones" type="Label" parent="ToolbeltSprite"]
+offset_left = -25.0
+offset_top = -129.0
+offset_right = 54.0
+offset_bottom = -102.0
+theme = ExtResource("22_36e5w")
+text = "Bones: 0/16"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Coins" type="Label" parent="ToolbeltSprite"]
+anchors_preset = -1
+anchor_left = 0.287
+anchor_top = 0.058000002
+anchor_right = 1.034
+anchor_bottom = 1.0
+offset_left = -54.996002
+offset_top = -167.484
+offset_right = -59.672005
+offset_bottom = -327.0
+theme = ExtResource("22_36e5w")
+text = "10$"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="shovel_used" from="." to="ToolbeltSprite/ShovelSound" method="play"]
 [connection signal="tool_has_changed" from="." to="ToolbeltSprite/EquipChangeSound" method="play"]
