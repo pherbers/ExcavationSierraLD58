@@ -15,7 +15,7 @@ class BoneDamage:
     
     func equals(d: BoneDamage) -> bool:
         return d.atlas_id == atlas_id and d.atlas_pos == atlas_pos and d.bone_name == bone_name
-       
+
 @export var isCollectionComplete = false
 
 func collect_bone(bone_name: String):
@@ -33,3 +33,15 @@ func setCollectionCompleted():
         
 func add_bone_damage(damage: BoneDamage):
     bone_damages.append(damage)
+    
+func buy_shovel():
+    print("Buy Shovel")
+
+func buy_trowel():
+    print("Buy Trowel")
+    
+func buy_brush():
+    print("Buy Brush")
+
+func buy_gpr():
+    print("Buy GPR")

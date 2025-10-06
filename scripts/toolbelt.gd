@@ -3,6 +3,7 @@ class_name Toolbelt
 
 signal tool_has_changed(newTool:Tools)
 signal direction_has_changed(newDir:int)
+signal tool_upgraded(changedTool:Tools)
 
 @export var digSite: DigSite
 @export var collectionSpawnPoint: Node2D
@@ -54,6 +55,22 @@ static var currentTool: Tools = Tools.Hand
 var isInCollection: bool = false
 var playerPosOnField: Vector2
 var playerPosOnCollection: Vector2
+
+var toolStates: Array[ToolState]
+     
+class ToolState:
+    var isPurchased: bool
+    var maxLevel: int
+    var currentLevel: int 
+    var price: Array[int]
+    
+    func updateOne():
+        if self.currentLevel < self.maxLevel and price.has(self.currentLevel):
+            var levelPrice = price[self.currentLevel]
+            self.currentLevel += 1
+            return levelPrice
+        else:
+            return -1
 
 func _ready() -> void:
     playerPosOnField = camera.global_position
@@ -200,3 +217,15 @@ func forcePlayerToCollectionSpawnPoint():
        toggle_collection()
     playerPosOnCollection = collectionSpawnPoint.global_position
     toggle_collection()
+    
+func buy_shovel():
+    print("Buy Shovel")
+
+func buy_trowel():
+    print("Buy Trowel")
+    
+func buy_brush():
+    print("Buy Brush")
+
+func buy_gpr():
+    print("Buy GPR")
