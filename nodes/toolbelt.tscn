@@ -120,6 +120,9 @@ offset_left = -53.916
 offset_top = -102.078
 offset_right = -55.0
 offset_bottom = -102.0
+focus_mode = 0
+theme = ExtResource("22_36e5w")
+shortcut_in_tooltip = false
 flat = true
 
 [node name="ShovelButton" type="Button" parent="ToolbeltSprite"]
@@ -132,7 +135,11 @@ offset_left = -36.070145
 offset_top = 37.263313
 offset_right = -24.974144
 offset_bottom = -65.73669
+tooltip_text = "Shovel
+Digs in a large area.
+[R] to rotate."
 focus_mode = 0
+theme = ExtResource("22_36e5w")
 shortcut = SubResource("Shortcut_8mm7a")
 flat = true
 metadata/_edit_use_anchors_ = true
@@ -152,7 +159,11 @@ offset_left = -11.5
 offset_top = -62.097992
 offset_right = -43.710007
 offset_bottom = -209.04477
+tooltip_text = "Trowel
+Digs in a small area.
+[R] to rotate."
 focus_mode = 0
+theme = ExtResource("22_36e5w")
 shortcut = SubResource("Shortcut_hq1ik")
 flat = true
 metadata/_edit_use_anchors_ = true
@@ -174,7 +185,11 @@ offset_right = -106.0
 offset_bottom = -247.0
 grow_horizontal = 0
 grow_vertical = 0
+tooltip_text = "Brush
+Carefully exhumes bones directly beneath the soil. Not very good at digging.
+Wiggle for more efficient brushing."
 focus_mode = 0
+theme = ExtResource("22_36e5w")
 shortcut = SubResource("Shortcut_8tfvg")
 flat = true
 
@@ -193,7 +208,10 @@ offset_left = -46.564003
 offset_top = -46.494003
 offset_right = -95.0
 offset_bottom = -171.684
+tooltip_text = "Ground Penetrating Radar
+Detects bones under the soil. Left click to place flags."
 focus_mode = 0
+theme = ExtResource("22_36e5w")
 shortcut = SubResource("Shortcut_nfk4m")
 flat = true
 metadata/_edit_use_anchors_ = true
@@ -216,6 +234,7 @@ offset_top = -91.89
 offset_right = -61.0
 offset_bottom = -248.0
 focus_mode = 0
+theme = ExtResource("22_36e5w")
 shortcut = SubResource("Shortcut_pesch")
 flat = true
 metadata/_edit_use_anchors_ = true
@@ -242,6 +261,7 @@ offset_right = -58.652008
 offset_bottom = -151.298
 tooltip_text = "Switch Shop/Dig Site"
 focus_mode = 0
+theme = ExtResource("22_36e5w")
 shortcut = SubResource("Shortcut_3rmt6")
 flat = true
 
