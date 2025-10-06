@@ -41,7 +41,7 @@ func _process(_delta: float) -> void:
         infoBox.visible = true
         var price = dinoPointer.countOfBonesDamaged * gameState.valueOfDamgedBone  
         price += dinoPointer.countOfBonesUndamaged * gameState.valueOfUndamgedBone
-        priceLabel.text = "Price: " + str(price) + "$"
+        priceLabel.text = "Value: " + str(price) + "$"
         
         if dinoPointer.countOfBonesDamaged > 0:
             damagedLabel.text = "Damaged" + " Bone"
