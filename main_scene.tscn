@@ -150,6 +150,7 @@ text = "-"
 [connection signal="bone_collected" from="GameState" to="Collection" method="_on_game_state_bone_collected"]
 [connection signal="coins_has_changed" from="GameState" to="Shop" method="coins_has_changed"]
 [connection signal="shop_has_changed" from="GameState" to="Shop" method="_on_game_state_shop_has_changed"]
+[connection signal="direction_has_changed" from="Toolbelt" to="Curser" method="_on_toolbelt_direction_has_changed"]
 [connection signal="finished" from="Node/AudioStreamPlayer" to="Node/AudioStreamPlayer" method="play"]
 [connection signal="pressed" from="Shop/Shovel" to="GameState" method="buy_shovel"]
 [connection signal="pressed" from="Shop/Trowel" to="GameState" method="buy_trowel"]
