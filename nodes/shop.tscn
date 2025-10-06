@@ -1,0 +1,174 @@
+[gd_scene load_steps=7 format=3 uid="uid://bqx1kbnooinrg"]
+
+[ext_resource type="Script" uid="uid://cop4gvff6gwjd" path="res://scripts/shop.gd" id="1_08q4v"]
+[ext_resource type="Theme" uid="uid://bvt2oxur0aj5e" path="res://assets/ui/ui_theme.tres" id="2_kvjff"]
+[ext_resource type="Texture2D" uid="uid://bhun81kl6iq7m" path="res://assets/ui/camp.png" id="3_kvjff"]
+[ext_resource type="AudioStream" uid="uid://c88g3hne68x4m" path="res://assets/sounds/coins_gain.wav" id="4_fxcnm"]
+[ext_resource type="AudioStream" uid="uid://xci2xt8v4nq5" path="res://assets/sounds/coins_spend.wav" id="5_kjls5"]
+[ext_resource type="AudioStream" uid="uid://b445u7aq1xaff" path="res://assets/sounds/switch9.ogg" id="6_kjls5"]
+
+[node name="Shop" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_08q4v")
+
+[node name="Camp" type="Sprite2D" parent="."]
+position = Vector2(-238, -36)
+texture = ExtResource("3_kvjff")
+
+[node name="ShopUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+focus_behavior_recursive = 1
+
+[node name="Purse" type="Label" parent="ShopUI"]
+layout_mode = 0
+offset_left = -172.0
+offset_top = -218.0
+offset_right = -101.0
+offset_bottom = -191.0
+theme = ExtResource("2_kvjff")
+text = "$0"
+horizontal_alignment = 1
+
+[node name="Label" type="Label" parent="ShopUI"]
+layout_mode = 0
+offset_left = -428.0
+offset_top = -219.0
+offset_right = -195.0
+offset_bottom = -192.0
+theme = ExtResource("2_kvjff")
+text = "Requisitions"
+horizontal_alignment = 1
+
+[node name="Shovel" type="Button" parent="ShopUI"]
+layout_mode = 0
+offset_left = -427.0
+offset_top = -149.0
+offset_right = -334.0
+offset_bottom = -122.0
+tooltip_text = "The Shovel digs large areas. Careful to not hit any valuable items!"
+theme = ExtResource("2_kvjff")
+text = "Shovel $25"
+
+[node name="Shovel2" type="Button" parent="ShopUI"]
+visible = false
+layout_mode = 0
+offset_left = -329.0
+offset_top = -149.0
+offset_right = -198.0
+offset_bottom = -122.0
+tooltip_text = "The Shovel digs large areas. Careful to not hit any valuable items!"
+theme = ExtResource("2_kvjff")
+text = "Big Shovel $250"
+
+[node name="Trowel" type="Button" parent="ShopUI"]
+layout_mode = 0
+offset_left = -428.0
+offset_top = -183.0
+offset_right = -334.0
+offset_bottom = -156.0
+theme = ExtResource("2_kvjff")
+text = "Trowel $10"
+
+[node name="Trowel2" type="Button" parent="ShopUI"]
+visible = false
+layout_mode = 0
+offset_left = -329.0
+offset_top = -183.0
+offset_right = -198.0
+offset_bottom = -156.0
+theme = ExtResource("2_kvjff")
+text = "Safety Trowel $400"
+
+[node name="GPR" type="Button" parent="ShopUI"]
+layout_mode = 0
+offset_left = -427.0
+offset_top = -115.0
+offset_right = -334.0
+offset_bottom = -88.0
+theme = ExtResource("2_kvjff")
+text = "GPR $50"
+
+[node name="GPRWidth" type="Button" parent="ShopUI"]
+visible = false
+layout_mode = 0
+offset_left = -328.0
+offset_top = -80.0
+offset_right = -198.0
+offset_bottom = -53.0
+theme = ExtResource("2_kvjff")
+text = "Wide Area GPR $300"
+
+[node name="GPRWidth2" type="Button" parent="ShopUI"]
+visible = false
+layout_mode = 0
+offset_left = -188.0
+offset_top = -80.0
+offset_right = -50.0
+offset_bottom = -53.0
+theme = ExtResource("2_kvjff")
+text = "Wider Area GPR $750"
+
+[node name="GPRDepth" type="Button" parent="ShopUI"]
+visible = false
+layout_mode = 0
+offset_left = -329.0
+offset_top = -115.0
+offset_right = -198.0
+offset_bottom = -88.0
+theme = ExtResource("2_kvjff")
+text = "Deep GPR $200"
+
+[node name="GPRDepth2" type="Button" parent="ShopUI"]
+visible = false
+layout_mode = 0
+offset_left = -188.0
+offset_top = -115.0
+offset_right = -50.0
+offset_bottom = -88.0
+theme = ExtResource("2_kvjff")
+text = "Deeper GPR $1000"
+
+[node name="Add" type="Button" parent="ShopUI"]
+layout_mode = 0
+offset_left = -97.0
+offset_top = -217.0
+offset_right = -79.0
+offset_bottom = -190.0
+theme = ExtResource("2_kvjff")
+text = "+"
+
+[node name="Remove" type="Button" parent="ShopUI"]
+layout_mode = 0
+offset_left = -192.0
+offset_top = -218.0
+offset_right = -176.0
+offset_bottom = -191.0
+theme = ExtResource("2_kvjff")
+text = "-"
+
+[node name="CoinGain" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_fxcnm")
+
+[node name="CoinSpend" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_kjls5")
+
+[node name="NoMoney" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_kjls5")
+
+[connection signal="coins_gained" from="." to="CoinGain" method="play"]
+[connection signal="coins_spent" from="." to="CoinSpend" method="play"]
+[connection signal="insufficient_money" from="." to="NoMoney" method="play"]
+[connection signal="pressed" from="ShopUI/Shovel" to="." method="buy_shovel"]
+[connection signal="pressed" from="ShopUI/Shovel2" to="." method="buy_shovel"]
+[connection signal="pressed" from="ShopUI/Trowel" to="." method="buy_trowel"]
+[connection signal="pressed" from="ShopUI/Trowel2" to="." method="buy_trowel"]
+[connection signal="pressed" from="ShopUI/GPR" to="." method="buy_gpr"]
+[connection signal="pressed" from="ShopUI/GPRWidth" to="." method="buy_gpr_wight"]
+[connection signal="pressed" from="ShopUI/GPRWidth2" to="." method="buy_gpr_wight"]
+[connection signal="pressed" from="ShopUI/GPRDepth" to="." method="buy_gpr_depth"]
+[connection signal="pressed" from="ShopUI/GPRDepth2" to="." method="buy_gpr_depth"]
+[connection signal="pressed" from="ShopUI/Add" to="." method="add_100_coin"]
+[connection signal="pressed" from="ShopUI/Remove" to="." method="remove_100_coin"]
