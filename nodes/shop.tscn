@@ -51,7 +51,7 @@ offset_right = 98.0
 offset_bottom = 101.0
 tooltip_text = "The Shovel digs large areas. Careful to not hit any valuable items!"
 theme = ExtResource("2_kvjff")
-text = "Shovel $25"
+text = "Shovel $19"
 
 [node name="Shovel2" type="Button" parent="ShopUI"]
 layout_mode = 0
@@ -61,7 +61,7 @@ offset_right = 234.0
 offset_bottom = 101.0
 tooltip_text = "The Shovel digs large areas. Careful to not hit any valuable items!"
 theme = ExtResource("2_kvjff")
-text = "Big Shovel $250"
+text = "Big Shovel $45"
 
 [node name="Trowel" type="Button" parent="ShopUI"]
 layout_mode = 0
@@ -71,7 +71,7 @@ offset_right = 98.0
 offset_bottom = 67.0
 tooltip_text = "Use the trowel for precise digging."
 theme = ExtResource("2_kvjff")
-text = "Trowel $10"
+text = "Trowel $9"
 
 [node name="Trowel2" type="Button" parent="ShopUI"]
 layout_mode = 0
@@ -81,7 +81,7 @@ offset_right = 234.0
 offset_bottom = 67.0
 tooltip_text = "This high-tech trowel avoids damaging bones when digging."
 theme = ExtResource("2_kvjff")
-text = "Safety Trowel $400"
+text = "Safety Trowel $199"
 
 [node name="GPR" type="Button" parent="ShopUI"]
 layout_mode = 0
@@ -91,7 +91,7 @@ offset_right = 98.0
 offset_bottom = 135.0
 tooltip_text = "The Ground Penetrating Radar can be used for detecting items at depth and flagging dig spots."
 theme = ExtResource("2_kvjff")
-text = "GPR $50"
+text = "GPR $49"
 
 [node name="GPRWidth" type="Button" parent="ShopUI"]
 layout_mode = 0
@@ -101,7 +101,7 @@ offset_right = 234.0
 offset_bottom = 170.0
 tooltip_text = "Upgrades the flagging area of the Ground Penetrating Radar."
 theme = ExtResource("2_kvjff")
-text = "Wide Area GPR $300"
+text = "Wide Area GPR $149"
 
 [node name="GPRWidth2" type="Button" parent="ShopUI"]
 layout_mode = 0
@@ -111,7 +111,7 @@ offset_right = 382.0
 offset_bottom = 170.0
 tooltip_text = "Further upgrades the flagging area of the Ground Penetrating Radar."
 theme = ExtResource("2_kvjff")
-text = "Wider Area GPR $750"
+text = "Wider Area GPR $399"
 
 [node name="GPRDepth" type="Button" parent="ShopUI"]
 layout_mode = 0
@@ -121,7 +121,7 @@ offset_right = 234.0
 offset_bottom = 135.0
 tooltip_text = "Upgrades the detection depth of the Ground Penetrating Radar to 4 feet."
 theme = ExtResource("2_kvjff")
-text = "Deep GPR $200"
+text = "Deep GPR $99"
 
 [node name="GPRDepth2" type="Button" parent="ShopUI"]
 layout_mode = 0
@@ -131,7 +131,7 @@ offset_right = 382.0
 offset_bottom = 135.0
 tooltip_text = "Upgrades the detection depth of the Ground Penetrating Radar to 6 feet."
 theme = ExtResource("2_kvjff")
-text = "Deeper GPR $1000"
+text = "Deeper GPR $299"
 
 [node name="Add" type="Button" parent="ShopUI"]
 layout_mode = 0
