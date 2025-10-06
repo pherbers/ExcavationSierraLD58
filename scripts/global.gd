@@ -7,3 +7,6 @@ func get_score() -> int:
     
 func set_score(new_score:int):
     _player_score = new_score
+    
+func _ready() -> void:
+    _player_score = 0

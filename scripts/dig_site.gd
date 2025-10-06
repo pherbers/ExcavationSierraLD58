@@ -266,14 +266,14 @@ func dig_tile(pos: Vector2i, max_depth=-1, safety=false) -> DigResult:
                 if not safety:
                     var bone_name = obj_data.get_custom_data("ObjectID") if obj_data.has_custom_data("ObjectID") else ""
                     var gamestate = $/root/MainScene/GameState as GameState
-                    var damage = GameState.BoneDamage.new()
+                    var damage = BoneDamage.new()
                     damage.atlas_pos = obj_layer.get_cell_atlas_coords(pos)
                     damage.atlas_id = obj_layer.get_cell_source_id(pos)
                     damage.bone_name = bone_name
-                    if gamestate.bone_damages.find_custom(func(d): return damage.equals(d)) == -1:
+                    if BoneCollectionState.bone_damages.find_custom(func(d): return damage.equals(d)) == -1:
                         var damage_type = create_damage(pos, damage.bone_name)
                         damage.damage_type = damage_type
-                        gamestate.add_bone_damage(damage)
+                        BoneCollectionState.add_bone_damage(damage)
         var layer = dig_layers[layer_index]
         if layer.get_cell_tile_data(pos):
             dig_layer_index = layer_index
