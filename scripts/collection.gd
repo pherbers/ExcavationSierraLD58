@@ -2,6 +2,7 @@ extends Node2D
 class_name Collection
 
 signal bone_collected(bone_name: String)
+signal on_bone_number_change(current:int, max:int)
 
 @export var dinoAreas: Array[DinoArea]
 @export var infoBox: Node2D
@@ -50,4 +51,5 @@ func _process(_delta: float) -> void:
     
     infoBox.global_position = posMouse
     
-    
+func _on_dino_area_on_bone_number_chaneg(currentBones: int, maxBones: int) -> void:
+    on_bone_number_change.emit(currentBones, maxBones)

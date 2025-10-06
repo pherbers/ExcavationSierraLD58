@@ -2,6 +2,7 @@ extends Node2D
 class_name DinoArea
 
 signal on_area_complete()
+signal on_bone_number_chaneg(current:int, max:int)
 
 @export var tileMap: TileMapLayer
 @export var label: Label
@@ -35,6 +36,8 @@ func _ready() -> void:
         })
         
         tileMap.set_cell(index, -1)
+    
+    update_bone_collected()
     
 func revalDinoBone(boneName: String):
     if !boneDict.has(boneName):     
@@ -77,6 +80,7 @@ func create_damage_viz(pos: Vector2i, damage_type: int):
     add_child(damageviz)
     
 func checkIfCompleted():
+    update_bone_collected()
     var isComplete: bool = true;
     for keys in boneDict.keys():
         var entry = boneDict[keys]
@@ -132,6 +136,29 @@ func setComplete():
 func revalAll():
     for keys in boneDict.keys():
         revalDinoBone(keys)
+
+func update_bone_collected():
+    var maxBones = self.get_bone_count_max()
+    var currentCount = self.get_bone_count_found()
+    on_bone_number_chaneg.emit(currentCount, maxBones)
             
 func _on_collection_bone_collected(bone_name: String) -> void:
     revalDinoBone(bone_name)
+
+func get_bone_count_max() -> int:
+    return boneDict.keys().size()
+
+func get_bone_count_found() -> int:
+    var countFound:int = 0
+    for keys in boneDict.keys():
+        var entryFound = true
+        var entry = boneDict[keys]
+        var cells = entry['boneCells']
+        for cell in cells:
+            var found: bool = cell["found"]
+            if !found:
+                entryFound = false
+        if entryFound:
+           countFound += 1
+    return  countFound
+                

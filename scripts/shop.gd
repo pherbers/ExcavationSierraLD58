@@ -122,7 +122,7 @@ func _ready() -> void:
     shopItemShovel.id = 0;
     shopItemShovel.maxLevel = 2
     shopItemShovel.currentLevel = 0
-    shopItemShovel.price = [20, 250]
+    shopItemShovel.price = [19, 45]
     shopItems["shovel"] = shopItemShovel
 
     #Trowel 
@@ -130,7 +130,7 @@ func _ready() -> void:
     shopItemTrowel.id = 1;
     shopItemTrowel.maxLevel = 2
     shopItemTrowel.currentLevel = 0
-    shopItemTrowel.price = [10, 400]
+    shopItemTrowel.price = [9, 199]
     shopItems["trowel"] = shopItemTrowel 
      
     #GPR
@@ -138,7 +138,7 @@ func _ready() -> void:
     shopItemGPR.id = 2;
     shopItemGPR.maxLevel = 1
     shopItemGPR.currentLevel = 0
-    shopItemGPR.price = [50]
+    shopItemGPR.price = [49]
     shopItems["gpr"] = shopItemGPR 
     
     #GPR width
@@ -146,7 +146,7 @@ func _ready() -> void:
     shopItemGPRWidth.id = 3;
     shopItemGPRWidth.maxLevel = 2
     shopItemGPRWidth.currentLevel = 0
-    shopItemGPRWidth.price = [300, 1000]
+    shopItemGPRWidth.price = [149, 399]
     shopItems["gpr_width"] = shopItemGPRWidth 
     
     #GPR depth
@@ -154,11 +154,12 @@ func _ready() -> void:
     shopItemGPRDepth.id = 4;
     shopItemGPRDepth.maxLevel = 2
     shopItemGPRDepth.currentLevel = 0
-    shopItemGPRDepth.price = [200, 750]
+    shopItemGPRDepth.price = [99, 299]
     shopItems["gpr_depth"] = shopItemGPRDepth 
     
     shop_has_changed.connect(update_buttons)
     shop_has_changed.emit(shopItems)
+    coins_has_changed.emit(coins)
     
 func update_buttons(_shopItems):
     $ShopUI/Shovel.disabled = _shopItems["shovel"].currentLevel >= 1

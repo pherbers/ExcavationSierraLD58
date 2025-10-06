@@ -59,10 +59,9 @@ position_smoothing_enabled = true
 script = ExtResource("7_66tet")
 scrollSpeed = 200.0
 
-[node name="Collection" parent="." node_paths=PackedStringArray("dinoAreas", "gameState") instance=ExtResource("9_7ycvg")]
+[node name="Collection" parent="." node_paths=PackedStringArray("gameState") instance=ExtResource("9_7ycvg")]
 z_index = -1
 position = Vector2(-286, 232)
-dinoAreas = []
 gameState = NodePath("../GameState")
 
 [node name="CollectionSpawnPoint" type="Node2D" parent="."]
@@ -84,5 +83,7 @@ position = Vector2(-398, 8)
 [connection signal="bone_collected" from="GameState" to="Collection" method="_on_game_state_bone_collected"]
 [connection signal="direction_has_changed" from="Toolbelt" to="Curser" method="_on_toolbelt_direction_has_changed"]
 [connection signal="finished" from="Curser/BeepSound" to="Curser" method="gpr_beep"]
+[connection signal="on_bone_number_change" from="Collection" to="Toolbelt" method="_on_collection_on_bone_number_change"]
 [connection signal="finished" from="Node/Ambiance" to="Node/Ambiance" method="play"]
+[connection signal="coins_has_changed" from="Shop" to="Toolbelt" method="_on_shop_coins_has_changed"]
 [connection signal="shop_has_changed" from="Shop" to="GameState" method="update_tool_state"]
