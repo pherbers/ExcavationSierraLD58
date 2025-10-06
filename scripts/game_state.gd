@@ -5,20 +5,20 @@ class_name GameState
 signal bone_collected(bone_name: String)
 signal collection_completed()
 
-
-var item_has_shovel = true
-var item_has_trowel = true
-var item_shovel_big = true
-var item_trowel_safe = true
-var item_has_gpr = true
+var item_has_shovel = false
+var item_has_trowel = false
+var item_shovel_big = false
+var item_trowel_safe = false
+var item_has_gpr = false
 var item_gpr_width = 2  # 0, 1, 2
 var item_gpr_depth = 2  # max 6
 
 @onready var shop: Shop = $/root/MainScene/Shop as Shop
 
-
 @export var toolbelt: Toolbelt
 
+@export var valueOfUndamgedBone = 10
+@export var valueOfDamgedBone = 2
 
 var bone_damages: Array[BoneDamage]
 
@@ -34,9 +34,9 @@ class BoneDamage:
 
 @export var isCollectionComplete = false
 
-func collect_bone(bone_name: String, numberOfBoneTiles: int):
+func collect_bone(bone_name: String, numberOfUnBoneDamagedTiles: int, numberOfDamagedBoneTiles:int):
     print("Bone collected: " + bone_name)
-    shop.update_coins(numberOfBoneTiles * 5)
+    shop.update_coins(numberOfUnBoneDamagedTiles * valueOfUndamgedBone + numberOfDamagedBoneTiles * valueOfDamgedBone)
     bone_collected.emit(bone_name)
 
 func get_damages_for_bone(bone_name: String) -> Array[BoneDamage]:
@@ -47,6 +47,7 @@ func setCollectionCompleted():
         print("Collection is completed!")
         isCollectionComplete = true
         collection_completed.emit()
+        get_tree().change_scene_to_file("res://ending_sceme.tscn")
         
 func add_bone_damage(damage: BoneDamage):
     bone_damages.append(damage)
@@ -88,4 +89,17 @@ func update_tool_state(shopItems: Dictionary[String, Shop.ShopItem]):
     var shopItemGprD = shopItems["gpr_depth"] as Shop.ShopItem
     item_gpr_depth = 3 + shopItemGprD.currentLevel
     
+    
+func is_tool_available(tool: Toolbelt.Tools) -> bool:
+    if tool == Toolbelt.Tools.Hand:
+        return true
+    if tool == Toolbelt.Tools.Brush:
+        return true
+    if tool == Toolbelt.Tools.Trowel:
+        return item_has_trowel
+    if tool == Toolbelt.Tools.Shovel:
+        return item_has_shovel
+    if tool == Toolbelt.Tools.GPR:
+        return item_has_gpr
+    return false
     

@@ -1,0 +1,74 @@
+[gd_scene load_steps=2 format=3 uid="uid://ddc7tbauhaka0"]
+
+[ext_resource type="Script" uid="uid://b61syqeeu1r52" path="res://scripts/end_menue.gd" id="1_6k6fx"]
+
+[node name="EndingSceme" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(96, 54)
+scale = Vector2(0.99999994, 0.99999994)
+zoom = Vector2(6, 6)
+limit_left = -485
+limit_top = -130
+limit_right = 655
+limit_bottom = 555
+
+[node name="Menue" type="Node2D" parent="Camera2D" node_paths=PackedStringArray("labelScore")]
+scale = Vector2(0.4, 0.4)
+script = ExtResource("1_6k6fx")
+labelScore = NodePath("PriceTag")
+
+[node name="Button" type="Button" parent="Camera2D/Menue"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 332.50003
+offset_top = 202.50003
+offset_right = 377.50003
+offset_bottom = 233.50003
+grow_horizontal = 2
+grow_vertical = 2
+text = "Back"
+
+[node name="Title" type="Label" parent="Camera2D/Menue"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -202.50002
+offset_top = -215.00002
+offset_right = 205.00002
+offset_bottom = -160.00002
+grow_horizontal = 2
+grow_vertical = 2
+text = "Thanks for taking your time and playing our game. We hope you have a great day."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Impressum" type="Label" parent="Camera2D/Menue"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -432.50003
+offset_top = 155.00002
+offset_right = 22.5
+offset_bottom = 233.50002
+grow_horizontal = 2
+grow_vertical = 0
+text = "Created for the  Ludum Dare 58.
+Created by Adrian Herbers, and Patrick Herbers, and Patrick Quiskamp"
+autowrap_mode = 2
+
+[node name="PriceTag" type="Label" parent="Camera2D/Menue"]
+offset_left = -27.5
+offset_top = -137.50002
+offset_right = 12.5
+offset_bottom = -114.500015
+scale = Vector2(1, 0.9902482)
+size_flags_horizontal = 4
+
+[connection signal="pressed" from="Camera2D/Menue/Button" to="Camera2D/Menue" method="play_game"]

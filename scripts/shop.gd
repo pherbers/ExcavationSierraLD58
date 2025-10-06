@@ -55,6 +55,7 @@ func update_coins(amount: int):
     self.coins += amount
     labelPurse.text = "$" + str(self.coins)
     coins_has_changed.emit(self.coins)
+    Global.set_score(self.coins)
     if amount > 0:
         coins_gained.emit()
     elif amount < 0:

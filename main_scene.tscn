@@ -8,7 +8,7 @@
 [ext_resource type="Script" uid="uid://c5ha2v27vo41y" path="res://scripts/CameraControl.gd" id="7_66tet"]
 [ext_resource type="AudioStream" uid="uid://15wtdmr71jgl" path="res://assets/sounds/desert_ambience.ogg" id="8_66tet"]
 [ext_resource type="PackedScene" uid="uid://dlliy8iqort6s" path="res://nodes/collection.tscn" id="9_7ycvg"]
-[ext_resource type="PackedScene" uid="uid://bqx1kbnooinrg" path="res://nodes/shop.tscn" id="9_wr18j"]
+[ext_resource type="PackedScene" path="res://nodes/shop.tscn" id="9_wr18j"]
 
 [node name="MainScene" type="Node2D"]
 texture_filter = 1
