@@ -20,18 +20,6 @@ var item_gpr_depth = 2  # max 6
 @export var valueOfUndamgedBone = 10
 @export var valueOfDamgedBone = 2
 
-var bone_damages: Array[BoneDamage]
-
-class BoneDamage:
-    var atlas_id: int
-    var atlas_pos: Vector2i
-    var bone_name: String
-    var damage_type: int
-    
-    func equals(d: BoneDamage) -> bool:
-        return d.atlas_id == atlas_id and d.atlas_pos == atlas_pos and d.bone_name == bone_name
-
-
 @export var isCollectionComplete = false
 
 func collect_bone(bone_name: String, numberOfUnBoneDamagedTiles: int, numberOfDamagedBoneTiles:int):
@@ -40,7 +28,7 @@ func collect_bone(bone_name: String, numberOfUnBoneDamagedTiles: int, numberOfDa
     bone_collected.emit(bone_name)
 
 func get_damages_for_bone(bone_name: String) -> Array[BoneDamage]:
-    return bone_damages.filter(func(d): return d.bone_name == bone_name)
+    return BoneCollectionState.get_damages_for_bone(bone_name)
 
 func setCollectionCompleted():
     if !isCollectionComplete:
@@ -50,7 +38,7 @@ func setCollectionCompleted():
         get_tree().change_scene_to_file("res://ending_sceme.tscn")
         
 func add_bone_damage(damage: BoneDamage):
-    bone_damages.append(damage)
+    BoneCollectionState.add_bone_damage(damage)
 
 func update_tool_state(shopItems: Dictionary[String, Shop.ShopItem]):
     if Toolbelt.currentTool != Toolbelt.Tools.Hand:

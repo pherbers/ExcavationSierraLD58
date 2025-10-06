@@ -18,14 +18,14 @@ func _ready() -> void:
     for index: Vector2i in cells:
         var cell: TileData = tileMap.get_cell_tile_data(index)
         var cellCustomData = cell.get_custom_data("ObjectID")
-        var boneNamer = str(cellCustomData)
+        var boneName = str(cellCustomData)
         
-        if !boneDict.has(boneNamer) :
-            boneDict[boneNamer] = {
+        if !boneDict.has(boneName) :
+            boneDict[boneName] = {
                 "boneCells": [] 
             }
         
-        boneDict[boneNamer]["boneCells"].push_back({
+        boneDict[boneName]["boneCells"].push_back({
             "index": index,
             "sourcId": tileMap.get_cell_source_id(index),
             "alternativeTile": tileMap.get_cell_alternative_tile(index),
