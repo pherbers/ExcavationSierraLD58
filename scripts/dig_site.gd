@@ -57,7 +57,8 @@ class DigInstruction:
 enum DigResult {
     NoOp = 0,
     OK = 1,
-    HitBone = 2
+    HitBone = 2,
+    HitBoneSafe = 3
 }
 
 var lastTakenBoneUndamaged:int = 0
@@ -290,7 +291,10 @@ func dig_tile(pos: Vector2i, max_depth=-1, safety=false) -> DigResult:
     flag_layer.set_cell(pos, -1)
     
     if hitBone:
-        return DigResult.HitBone
+        if safety:
+            return DigResult.HitBoneSafe
+        else:
+            return DigResult.HitBone
     return DigResult.OK
 
 func create_damage(pos: Vector2i, bone_name: String) -> int:

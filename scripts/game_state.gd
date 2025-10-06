@@ -13,7 +13,7 @@ var item_has_gpr = false
 var item_gpr_width = 2  # 0, 1, 2
 var item_gpr_depth = 2  # max 6
 
-var indicatorQueue: Array[String] = []
+var indicatorQueue: Array[Message] = []
 var timer: float = 0;
 
 @onready var shop: Shop = $/root/MainScene/Shop as Shop
@@ -27,6 +27,10 @@ var timer: float = 0;
 
 @onready var feedbackPrefab:PackedScene = preload("res://nodes/indicator.tscn")
 
+class Message:
+    var text: String
+    var pos: Vector2
+
 func _process(delta: float) -> void:
     if timer > 0:
             timer -= delta
@@ -35,7 +39,7 @@ func _process(delta: float) -> void:
         if timer <= 0:
             var text = indicatorQueue.pop_front()
             spawn_feedback_text(text)
-            timer = 1
+            timer = 1.4
             
 
 func collect_bone(bone_name: String, numberOfUnBoneDamagedTiles: int, numberOfDamagedBoneTiles:int):
@@ -113,14 +117,18 @@ func is_tool_available(tool: Toolbelt.Tools) -> bool:
     return false
  
 func queue_feedback_text(value: String):
-    indicatorQueue.append(value)
+    var msg = Message.new()
+    msg.pos = get_global_mouse_position()
+    msg.text = value
+
+    indicatorQueue.append(msg)
    
-func spawn_feedback_text(value: String):
+func spawn_feedback_text(msg: Message):
     var node = feedbackPrefab.instantiate()
     node.lifetime = 5
-    node.global_position = get_global_mouse_position()
+    node.global_position = msg.pos
     node.z_index = 50
-    node.text = value
+    node.text = msg.text
     add_child(node)
 
 func _on_shop_coins_delter(value: int) -> void:

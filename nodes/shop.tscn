@@ -25,6 +25,7 @@ focus_behavior_recursive = 1
 mouse_filter = 1
 
 [node name="Purse" type="Label" parent="ShopUI"]
+visible = false
 layout_mode = 0
 offset_left = 260.0
 offset_top = 5.0
@@ -144,6 +145,7 @@ theme = ExtResource("2_kvjff")
 text = "+"
 
 [node name="Remove" type="Button" parent="ShopUI"]
+visible = false
 layout_mode = 0
 offset_left = 240.0
 offset_top = 5.0
@@ -153,6 +155,7 @@ theme = ExtResource("2_kvjff")
 text = "-"
 
 [node name="Button" type="Button" parent="ShopUI"]
+visible = false
 layout_mode = 0
 offset_left = 260.0
 offset_top = 37.0
