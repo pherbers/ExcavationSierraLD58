@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://lscs07ilg14g"]
+[gd_scene load_steps=11 format=3 uid="uid://lscs07ilg14g"]
 
 [ext_resource type="PackedScene" uid="uid://do4voo658ul1u" path="res://nodes/toolbelt.tscn" id="1_hq1ik"]
 [ext_resource type="Script" uid="uid://bs0dqoje38owq" path="res://scripts/game_state.gd" id="1_nfk4m"]
@@ -8,12 +8,15 @@
 [ext_resource type="Script" uid="uid://c5ha2v27vo41y" path="res://scripts/CameraControl.gd" id="7_66tet"]
 [ext_resource type="AudioStream" uid="uid://15wtdmr71jgl" path="res://assets/sounds/desert_ambience.ogg" id="8_66tet"]
 [ext_resource type="PackedScene" uid="uid://dlliy8iqort6s" path="res://nodes/collection.tscn" id="9_7ycvg"]
+[ext_resource type="Script" path="res://scripts/shop.gd" id="9_wr18j"]
+[ext_resource type="Theme" uid="uid://bvt2oxur0aj5e" path="res://assets/ui/ui_theme.tres" id="10_wr18j"]
 
 [node name="MainScene" type="Node2D"]
 texture_filter = 1
 
-[node name="GameState" type="Node" parent="."]
+[node name="GameState" type="Node" parent="." node_paths=PackedStringArray("toolbelt")]
 script = ExtResource("1_nfk4m")
+toolbelt = NodePath("../Toolbelt")
 
 [node name="Toolbelt" parent="." node_paths=PackedStringArray("digSite", "collectionSpawnPoint") instance=ExtResource("1_hq1ik")]
 z_index = 10
@@ -66,5 +69,92 @@ stream = ExtResource("8_66tet")
 autoplay = true
 parameters/looping = true
 
+[node name="Shop" type="Node2D" parent="." node_paths=PackedStringArray("labelPurse")]
+position = Vector2(101, 410)
+script = ExtResource("9_wr18j")
+labelPurse = NodePath("Purse")
+
+[node name="Purse" type="Label" parent="Shop"]
+offset_left = -376.0
+offset_top = -174.0
+offset_right = -305.0
+offset_bottom = -151.0
+theme = ExtResource("10_wr18j")
+text = "Coints : 0"
+
+[node name="Label" type="Label" parent="Shop"]
+offset_left = -221.0
+offset_top = -206.0
+offset_right = -181.0
+offset_bottom = -183.0
+theme = ExtResource("10_wr18j")
+text = "Shop"
+
+[node name="Shovel" type="Button" parent="Shop"]
+offset_left = -224.0
+offset_top = -176.0
+offset_right = -131.0
+offset_bottom = -145.0
+tooltip_text = "The Shovel digs large areas. Careful to not hit any valuable items!"
+theme = ExtResource("10_wr18j")
+text = "Buy Shovel"
+
+[node name="Trowel" type="Button" parent="Shop"]
+offset_left = -224.0
+offset_top = -138.0
+offset_right = -130.0
+offset_bottom = -107.0
+theme = ExtResource("10_wr18j")
+text = "Buy Trowel"
+
+[node name="GPR" type="Button" parent="Shop"]
+offset_left = -203.0
+offset_top = -98.0
+offset_right = -129.0
+offset_bottom = -67.0
+theme = ExtResource("10_wr18j")
+text = "Buy GPR"
+
+[node name="GPRWight" type="Button" parent="Shop"]
+offset_left = -250.0
+offset_top = -62.0
+offset_right = -124.0
+offset_bottom = -31.0
+theme = ExtResource("10_wr18j")
+text = "Buy GPR Wight"
+
+[node name="GPRDepth" type="Button" parent="Shop"]
+offset_left = -249.0
+offset_top = -25.0
+offset_right = -124.0
+offset_bottom = 6.0
+theme = ExtResource("10_wr18j")
+text = "Buy GPR Depth"
+
+[node name="Add" type="Button" parent="Shop"]
+offset_left = -300.0
+offset_top = -177.0
+offset_right = -259.0
+offset_bottom = -146.0
+theme = ExtResource("10_wr18j")
+text = "+"
+
+[node name="Remove" type="Button" parent="Shop"]
+offset_left = -427.0
+offset_top = -178.0
+offset_right = -386.0
+offset_bottom = -147.0
+theme = ExtResource("10_wr18j")
+text = "-"
+
 [connection signal="bone_collected" from="GameState" to="Collection" method="_on_game_state_bone_collected"]
+[connection signal="coins_has_changed" from="GameState" to="Shop" method="coins_has_changed"]
+[connection signal="shop_has_changed" from="GameState" to="Shop" method="_on_game_state_shop_has_changed"]
 [connection signal="finished" from="Node/AudioStreamPlayer" to="Node/AudioStreamPlayer" method="play"]
+[connection signal="pressed" from="Shop/Shovel" to="GameState" method="buy_shovel"]
+[connection signal="pressed" from="Shop/Trowel" to="GameState" method="buy_trowel"]
+[connection signal="pressed" from="Shop/GPR" to="GameState" method="buy_gpr"]
+[connection signal="pressed" from="Shop/GPRWight" to="GameState" method="buy_gpr_wight"]
+[connection signal="pressed" from="Shop/GPRDepth" to="GameState" method="buy_gpr_depth"]
+[connection signal="pressed" from="Shop/Add" to="GameState" method="add_100_coin"]
+[connection signal="pressed" from="Shop/Remove" to="GameState" method="remove_100_coin"]
