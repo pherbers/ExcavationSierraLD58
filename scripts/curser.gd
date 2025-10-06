@@ -10,6 +10,8 @@ class_name Curser
 
 var lastTool: Toolbelt.Tools = Toolbelt.Tools.Hand
 
+var gpr_state: int = -1
+
 func _ready() -> void:
     changeToHand()
 
@@ -38,6 +40,7 @@ func _process(_delta: float):
         elif currentTool == Toolbelt.Tools.GPR:
             changeToGPR()
             
+    gpr_state = -1
     if currentTool == Toolbelt.Tools.GPR:
         var mouseTile = dig_site.getTileForMousePos()
         var closest_bone_pos = dig_site.get_closest_bone_pos(mouseTile, game_state.item_gpr_depth)
@@ -48,25 +51,39 @@ func _process(_delta: float):
             var depth = closest_bone_pos.z - soil_layer.z
             match depth:
                 0: 
-                    curserAnimator.frame = 4
+                    gpr_state = 4
                 1:
-                    curserAnimator.frame = 5
+                    gpr_state = 5
                 2:
-                    curserAnimator.frame = 6
+                    gpr_state = 6
                 3:
-                    curserAnimator.frame = 7
+                    gpr_state = 7
                 4:
-                    curserAnimator.frame = 8
+                    gpr_state = 8
                 _:
-                    curserAnimator.frame = 8
+                    gpr_state = 8
         elif dist < 5.:
-            curserAnimator.frame = 3
+            gpr_state = 3
         elif dist < 15.:
-            curserAnimator.frame = 2
+            gpr_state = 2
         elif dist < 25.:
-            curserAnimator.frame = 1
+            gpr_state = 1
         else:
-            curserAnimator.frame = 0
+            gpr_state = 0
+        curserAnimator.frame = gpr_state
+
+func gpr_beep():
+    print("Beep")
+    var pitch = 1.
+    match gpr_state:
+        -1: return
+        0: pitch = 1.
+        1: pitch = 1.1
+        2: pitch = 1.3
+        3: pitch = 1.5
+        4,5,6,7,8,_: pitch = 1.7
+    $BeepSound.pitch_scale = pitch
+    $BeepSound.play()
 
 func changeToShovel():
     curserAnimator.visible = true
@@ -111,6 +128,9 @@ func changeToGPR():
     label.text = "GPR"
     label.visible = false
     Input.set_default_cursor_shape(Input.CURSOR_ARROW)
+    
+    gpr_state = 0
+    gpr_beep()
 
 
 func _on_toolbelt_direction_has_changed(newDir: int) -> void:

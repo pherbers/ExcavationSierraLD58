@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=4 uid="uid://cu74g7pawm2av"]
+[gd_scene load_steps=51 format=4 uid="uid://cu74g7pawm2av"]
 
 [ext_resource type="Script" uid="uid://767dwy333a7k" path="res://scripts/dig_site.gd" id="1_5h2ie"]
 [ext_resource type="TileSet" uid="uid://c1kjxdb7xjtdf" path="res://assets/tilesets/layer1.tres" id="2_s4e4a"]
@@ -30,6 +30,8 @@
 [ext_resource type="Texture2D" uid="uid://cgpmhhpwean2b" path="res://assets/items/Fahne1.png" id="16_repa7"]
 [ext_resource type="AudioStream" uid="uid://cwkc0jjn8st4x" path="res://assets/sounds/bone_hit.wav" id="24_jlg6n"]
 [ext_resource type="AudioStream" uid="uid://bp423yhfn6bxr" path="res://assets/sounds/brush4.wav" id="28_qcj6o"]
+[ext_resource type="AudioStream" uid="uid://dx4oak6vhqaj4" path="res://assets/sounds/sand_rieseln.wav" id="30_qcj6o"]
+[ext_resource type="AudioStream" uid="uid://drjsubjpuh3m0" path="res://assets/sounds/drawKnife1.ogg" id="31_qcj6o"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_65ref"]
 atlas = ExtResource("2_v4sw2")
@@ -94,11 +96,23 @@ random_pitch = 1.18
 streams_count = 1
 stream_0/stream = ExtResource("24_jlg6n")
 
-[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_1dt4h"]
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_45d8p"]
 random_pitch = 1.1
 random_volume_offset_db = 0.5
 streams_count = 1
 stream_0/stream = ExtResource("28_qcj6o")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_1dt4h"]
+random_pitch = 1.1
+random_volume_offset_db = 0.5
+streams_count = 1
+stream_0/stream = ExtResource("30_qcj6o")
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_8tiaw"]
+random_pitch = 1.2
+random_volume_offset_db = 0.56
+streams_count = 1
+stream_0/stream = ExtResource("31_qcj6o")
 
 [node name="DigSite" type="Node2D"]
 texture_filter = 1
@@ -286,7 +300,19 @@ stream = SubResource("AudioStreamRandomizer_jlfsm")
 volume_db = -5.643
 
 [node name="BrushSound" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_45d8p")
+max_polyphony = 2
+playback_type = 2
+
+[node name="BrushSoundSand" type="AudioStreamPlayer" parent="."]
 stream = SubResource("AudioStreamRandomizer_1dt4h")
 playback_type = 2
 
+[node name="FlagPlantSound" type="AudioStreamPlayer" parent="."]
+stream = SubResource("AudioStreamRandomizer_8tiaw")
+volume_db = -5.0
+playback_type = 2
+
+[connection signal="brush_used" from="." to="BrushSoundSand" method="play"]
+[connection signal="flag_planted" from="." to="FlagPlantSound" method="play"]
 [connection signal="hit_bone" from="." to="BoneHitSound" method="play"]

@@ -42,6 +42,7 @@ var _bone_positions: Dictionary[String, Vector3i]
 
 signal hit_bone
 signal brush_used
+signal flag_planted
 
 @onready var brush_sound = $BrushSound as AudioStreamPlayer
 
@@ -111,7 +112,6 @@ func _process(_delta: float) -> void:
     if is_brushing and _brush_timer > brush_time:
         dig_brush(dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position()))
         _brush_timer = 0
-        brush_used.emit()
         if !brush_sound.playing:
             brush_sound.play()
                 
@@ -234,6 +234,7 @@ func brush_tile(p: Vector3i) -> DigResult:
         layer.set_cells_terrain_connect([pos], 0, -1, false)
         flag_layer.set_cell(pos, -1)
         _brush_chance = 0.
+        brush_used.emit()
         return DigResult.OK
     else:
         return DigResult.NoOp
@@ -382,6 +383,7 @@ func place_flag(pos: Vector2i):
         flag_layer.set_cell(pos, 0, Vector2i.ZERO)
     else:
         flag_layer.set_cell(pos, 0, Vector2i(1,0))
+    flag_planted.emit()
     return DigResult.OK
 
 func find_top_object(pos: Vector2i, ignore_dig_layer=false) -> Vector3i:

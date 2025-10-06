@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://lscs07ilg14g"]
+[gd_scene load_steps=11 format=3 uid="uid://lscs07ilg14g"]
 
 [ext_resource type="PackedScene" uid="uid://do4voo658ul1u" path="res://nodes/toolbelt.tscn" id="1_hq1ik"]
 [ext_resource type="Script" uid="uid://bs0dqoje38owq" path="res://scripts/game_state.gd" id="1_nfk4m"]
 [ext_resource type="Script" uid="uid://dg6spvn56tg0o" path="res://scripts/curser.gd" id="5_8mm7a"]
+[ext_resource type="AudioStream" uid="uid://c0sl8ces1ekc2" path="res://assets/sounds/tone1.ogg" id="5_wr18j"]
 [ext_resource type="SpriteFrames" uid="uid://cjj8bqaba3c5l" path="res://assets/shovel_sprite_frames.tres" id="6_66tet"]
 [ext_resource type="PackedScene" uid="uid://cu74g7pawm2av" path="res://nodes/dig_site.tscn" id="6_nfk4m"]
 [ext_resource type="Script" uid="uid://c5ha2v27vo41y" path="res://scripts/CameraControl.gd" id="7_66tet"]
@@ -39,6 +40,10 @@ offset_right = 40.0
 offset_bottom = 23.0
 text = "Shovel"
 
+[node name="BeepSound" type="AudioStreamPlayer" parent="Curser"]
+stream = ExtResource("5_wr18j")
+volume_db = -6.0
+
 [node name="DigSite" parent="." instance=ExtResource("6_nfk4m")]
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -73,5 +78,6 @@ position = Vector2(-398, 8)
 
 [connection signal="bone_collected" from="GameState" to="Collection" method="_on_game_state_bone_collected"]
 [connection signal="direction_has_changed" from="Toolbelt" to="Curser" method="_on_toolbelt_direction_has_changed"]
+[connection signal="finished" from="Curser/BeepSound" to="Curser" method="gpr_beep"]
 [connection signal="finished" from="Node/AudioStreamPlayer" to="Node/AudioStreamPlayer" method="play"]
 [connection signal="shop_has_changed" from="Shop" to="GameState" method="update_tool_state"]
