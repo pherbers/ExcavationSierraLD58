@@ -1,0 +1,29 @@
+[gd_resource type="Theme" load_steps=6 format=3 uid="uid://bvt2oxur0aj5e"]
+
+[ext_resource type="Texture2D" uid="uid://ij46sbvxy1e5" path="res://assets/ui/button.png" id="1_q4r4s"]
+[ext_resource type="Texture2D" uid="uid://b66fw50fikkgs" path="res://assets/ui/tooltip.png" id="2_l64jj"]
+[ext_resource type="FontFile" uid="uid://cg2nyph7fexsd" path="res://Pixolde.ttf" id="2_pxcak"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l64jj"]
+texture = ExtResource("1_q4r4s")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2t3ff"]
+texture = ExtResource("2_l64jj")
+texture_margin_left = 8.0
+texture_margin_top = 8.0
+texture_margin_right = 8.0
+texture_margin_bottom = 8.0
+
+[resource]
+default_font = ExtResource("2_pxcak")
+Button/styles/disabled = SubResource("StyleBoxTexture_l64jj")
+Button/styles/hover = SubResource("StyleBoxTexture_l64jj")
+Button/styles/normal = SubResource("StyleBoxTexture_l64jj")
+PopupPanel/colors/title_color = Color(0, 0, 0, 1)
+PopupPanel/font_sizes/title_font_size = 16
+PopupPanel/styles/panel = SubResource("StyleBoxTexture_2t3ff")
+TooltipLabel/colors/font_color = Color(0, 0, 0, 1)

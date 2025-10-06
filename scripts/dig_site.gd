@@ -50,6 +50,7 @@ class DigInstruction:
     var time: float
     var max_depth: int
     var safety: bool
+    var flag: bool = false
     
 enum DigResult {
     NoOp = 0,
@@ -121,10 +122,13 @@ func _process(_delta: float) -> void:
         var di = _dig_queue.back()
         if ct > di.time:
             _dig_queue.pop_back()
-            var result = dig_tile(di.pos, di.max_depth)
-            if result == DigResult.HitBone:
-                print("Hit Bone at " + str(di.pos))
-                _hitBone = true
+            if di.flag:
+                place_flag(di.pos)
+            else:
+                var result = dig_tile(di.pos, di.max_depth)
+                if result == DigResult.HitBone:
+                    print("Hit Bone at " + str(di.pos))
+                    _hitBone = true
         else:
             break
     if _hitBone:
@@ -132,7 +136,7 @@ func _process(_delta: float) -> void:
         _dig_queue.clear()
         hit_bone.emit()
         
-func dig_shovel(pos: Vector2i, dir: int) -> DigResult:
+func dig_shovel(pos: Vector2i, dir: int, big: bool = false) -> DigResult:
     # find first available layer
     var dig_layer_index = -1
 
@@ -147,13 +151,13 @@ func dig_shovel(pos: Vector2i, dir: int) -> DigResult:
     
     print("Digging at " + str(pos) + " with shovel at depth " + str(dig_layer_index))
     
-    for pd in get_shovel_tiles(dir):
+    for pd in get_shovel_tiles(dir, 1 if big else 0):
         var p = Vector2i(pd.x, pd.y)
         var delay: float = pd.z
         queue_dig_tile(p + pos, delay / 32., dig_layer_index)
     return DigResult.OK
 
-func dig_trowel(pos: Vector2i, dir: int, safety = true) -> DigResult:
+func dig_trowel(pos: Vector2i, dir: int, safety: bool = true) -> DigResult:
     # find first available layer
     var dig_layer_index = -1
 
@@ -301,14 +305,17 @@ func take_object(pos: Vector2i) -> String:
         return ""
     
     var theObj = ""
+    var obj_layer: TileMapLayer
+    var obj_depth = -1
     for layer_index in dig_layers.size():
         if object_layers.size() > layer_index:
-            var obj_layer = object_layers[layer_index]
+            obj_layer = object_layers[layer_index]
             if obj_layer == null:
                 break
             var tile_data = obj_layer.get_cell_tile_data(pos)
             if tile_data and tile_data.has_custom_data("ObjectID"):
                 theObj = tile_data.get_custom_data("ObjectID")
+                obj_depth = layer_index
                 break
         var layer = dig_layers[layer_index]
         if layer.get_cell_tile_data(pos):
@@ -317,32 +324,23 @@ func take_object(pos: Vector2i) -> String:
     if theObj == "":
         return ""
     
-    var closed = []
-    var take_q = [pos]
-    while not take_q.is_empty():
-        var currentPos = take_q.pop_back()
-        
-        var obj_pos = find_top_object(currentPos)
-        if obj_pos.z == -1:
-            continue
-        if obj_pos in closed:
-            continue
-        var obj_layer = object_layers[obj_pos.z]
-        var obj_data = obj_layer.get_cell_tile_data(Vector2i(obj_pos.x, obj_pos.y))
-        if obj_data.has_custom_data("ObjectID"):
-            if theObj != obj_data.get_custom_data("ObjectID"):
-                continue
-        if dig_layers[obj_pos.z].get_cell_tile_data(Vector2i(obj_pos.x, obj_pos.y)):
-            print(str(theObj) + " is stuck...")
-            return ""
-        closed.append(obj_pos)
-        take_q.append_array(obj_layer.get_surrounding_cells(currentPos))
+    # get all bone cells
+    var obj_cells = obj_layer.get_used_cells()
+    var bone_cells = obj_cells.filter(
+        func(c): 
+            var d = obj_layer.get_cell_tile_data(c)
+            if d != null:
+                return d.get_custom_data("ObjectID") == theObj
+            return false
+    )
     
-    print(str(theObj) + " is free to be picked up")
+    # check if bone is still dug in
+    for obj_pos in bone_cells:
+        if find_top_dig_layer(obj_pos).z <= obj_depth:
+            return ""
     
     # erase cells
-    for obj_pos in closed:
-        var obj_layer = object_layers[obj_pos.z]
+    for obj_pos in bone_cells:
         obj_layer.erase_cell(Vector2i(obj_pos.x, obj_pos.y))
     
     # remove damages
@@ -355,16 +353,26 @@ func take_object(pos: Vector2i) -> String:
     
     return theObj
 
-func place_multi_flag(pos: Vector2i, level: int = 0):
+func place_multi_flag(pos: Vector2i, level: int = 2):
     var cells = get_gpr_tiles(level)
     for c in cells:
-        place_flag(Vector2i(c.x, c.y) + pos)
+        var ct = Time.get_ticks_msec()
+        var di = DigInstruction.new()
+        var delay = c.z / 4.
+        di.time = ct + (delay * 1000.)
+        di.pos = Vector2i(c.x, c.y) + pos
+        di.flag = true
+        _dig_queue.append(di)
+    _dig_queue_dirty = true
     
 func place_flag(pos: Vector2i):
     if not bounds.has_point(pos):
         return DigResult.NoOp
     var top_obj = find_top_object(pos, true)
+    var top_layer = find_top_dig_layer(pos)
     if top_obj.z >= 0:
+        if top_obj.z < top_layer.z:
+            return DigResult.NoOp
         flag_layer.set_cell(pos, 0, Vector2i.ZERO)
     else:
         flag_layer.set_cell(pos, 0, Vector2i(1,0))
@@ -381,15 +389,25 @@ func find_top_object(pos: Vector2i, ignore_dig_layer=false) -> Vector3i:
         if layer.get_cell_tile_data(pos) and not ignore_dig_layer:
             break
     return Vector3i(pos.x, pos.y, -1)
+    
+func find_top_dig_layer(pos: Vector2i) -> Vector3i:
+    for layer_index in dig_layers.size():
+        var layer = dig_layers[layer_index]
+        if layer.get_cell_tile_data(pos):
+            return Vector3i(pos.x, pos.y, layer_index)
+    return Vector3i(pos.x, pos.y, -1)
 
-func get_closest_bone_pos(pos: Vector2i) -> Vector3i:
+func get_closest_bone_pos(pos: Vector2i, max_depth: int) -> Vector3i:
     var top_obj = find_top_object(pos, true)
-    if top_obj.z >= 0:
+    var current_depth = find_top_dig_layer(pos).z
+    if top_obj.z >= 0 and top_obj.z < (max_depth + current_depth):
         return top_obj
     var closest_pos = Vector3i(-1,-1,-1)
     var closest_dist = INF
     for bone_name in _bone_positions:
         var bone_pos = _bone_positions[bone_name]
+        if bone_pos.z > (max_depth + current_depth):
+            continue
         var dist = (pos - Vector2i(bone_pos.x, bone_pos.y)).length()
         if dist < closest_dist:
             closest_pos = bone_pos
