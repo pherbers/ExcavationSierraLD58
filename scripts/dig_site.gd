@@ -8,18 +8,27 @@ var object_layers: Array[TileMapLayer]
 @export var bounds: Rect2i
 
 @export var shovel_masks: Array[Texture2D]
+@export var shovel_masks_big: Array[Texture2D]
 @export var trowel_masks: Array[Texture2D]
 @export var brush_mask: Texture2D
+@export var gpr_masks: Array[Texture2D]
 @export var damage_sprites: Array[Texture2D]
 var _shovel_cells_west: Array[Vector3i]
 var _shovel_cells_north: Array[Vector3i]
 var _shovel_cells_east: Array[Vector3i]
 var _shovel_cells_south: Array[Vector3i]
+var _shovel_cells_west_big: Array[Vector3i]
+var _shovel_cells_north_big: Array[Vector3i]
+var _shovel_cells_east_big: Array[Vector3i]
+var _shovel_cells_south_big: Array[Vector3i]
 var _trowel_cells_e: Array[Vector3i]
 var _trowel_cells_s: Array[Vector3i]
 var _trowel_cells_w: Array[Vector3i]
 var _trowel_cells_n: Array[Vector3i]
 var _brush_cells: Array[Vector3i]
+var _gpr_cells_1: Array[Vector3i]
+var _gpr_cells_2: Array[Vector3i]
+var _gpr_cells_3: Array[Vector3i]
 
 var _dig_queue: Array[DigInstruction] = []
 var _dig_queue_dirty = false
@@ -40,6 +49,7 @@ class DigInstruction:
     var pos: Vector2i
     var time: float
     var max_depth: int
+    var safety: bool
     
 enum DigResult {
     NoOp = 0,
@@ -53,12 +63,21 @@ func _ready() -> void:
     _shovel_cells_east  = read_mask(shovel_masks[2])
     _shovel_cells_north = read_mask(shovel_masks[3])
     
+    _shovel_cells_west_big  = read_mask(shovel_masks_big[0])
+    _shovel_cells_south_big = read_mask(shovel_masks_big[1])
+    _shovel_cells_east_big  = read_mask(shovel_masks_big[2])
+    _shovel_cells_north_big = read_mask(shovel_masks_big[3])
+    
     _trowel_cells_e = read_mask(trowel_masks[0])
     _trowel_cells_s = read_mask(trowel_masks[1])
     _trowel_cells_w = read_mask(trowel_masks[2])
     _trowel_cells_n = read_mask(trowel_masks[3])
     
     _brush_cells = read_mask(brush_mask)
+    
+    _gpr_cells_1  = read_mask(gpr_masks[0])
+    _gpr_cells_2  = read_mask(gpr_masks[1])
+    _gpr_cells_3  = read_mask(gpr_masks[2])
     
     for t in $DigLayers.find_children("*", "TileMapLayer"):
         dig_layers.append(t)
@@ -134,7 +153,7 @@ func dig_shovel(pos: Vector2i, dir: int) -> DigResult:
         queue_dig_tile(p + pos, delay / 32., dig_layer_index)
     return DigResult.OK
 
-func dig_trowel(pos: Vector2i, dir: int) -> DigResult:
+func dig_trowel(pos: Vector2i, dir: int, safety = true) -> DigResult:
     # find first available layer
     var dig_layer_index = -1
 
@@ -152,7 +171,7 @@ func dig_trowel(pos: Vector2i, dir: int) -> DigResult:
     for pd in get_trowel_tiles(dir):
         var p = Vector2i(pd.x, pd.y)
         var delay: float = pd.z
-        queue_dig_tile(p + pos, delay / 32., dig_layer_index)
+        queue_dig_tile(p + pos, delay / 32., dig_layer_index, safety)
     return DigResult.OK
 
 func dig_brush(pos: Vector2i):
@@ -212,16 +231,17 @@ func brush_tile(p: Vector3i) -> DigResult:
     else:
         return DigResult.NoOp
 
-func queue_dig_tile(pos, time=0., max_depth=-1):
+func queue_dig_tile(pos, time=0., max_depth=-1, safety=false):
     var ct = Time.get_ticks_msec()
     var di = DigInstruction.new()
     di.time = ct + (time * 1000.)
     di.pos = pos
     di.max_depth = max_depth
+    di.safety = safety
     _dig_queue_dirty = true
     _dig_queue.append(di)
 
-func dig_tile(pos: Vector2i, max_depth=-1) -> DigResult:
+func dig_tile(pos: Vector2i, max_depth=-1, safety=false) -> DigResult:
     if not bounds.has_point(pos):
         return DigResult.NoOp
     var dig_layer_index = -1
@@ -236,16 +256,17 @@ func dig_tile(pos: Vector2i, max_depth=-1) -> DigResult:
             var obj_data = obj_layer.get_cell_tile_data(pos)
             if obj_data:
                 hitBone = true
-                var bone_name = obj_data.get_custom_data("ObjectID") if obj_data.has_custom_data("ObjectID") else ""
-                var gamestate = $/root/MainScene/GameState as GameState
-                var damage = GameState.BoneDamage.new()
-                damage.atlas_pos = obj_layer.get_cell_atlas_coords(pos)
-                damage.atlas_id = obj_layer.get_cell_source_id(pos)
-                damage.bone_name = bone_name
-                if gamestate.bone_damages.find_custom(func(d): return damage.equals(d)) == -1:
-                    var damage_type = create_damage(pos, damage.bone_name)
-                    damage.damage_type = damage_type
-                    gamestate.add_bone_damage(damage)
+                if not safety:
+                    var bone_name = obj_data.get_custom_data("ObjectID") if obj_data.has_custom_data("ObjectID") else ""
+                    var gamestate = $/root/MainScene/GameState as GameState
+                    var damage = GameState.BoneDamage.new()
+                    damage.atlas_pos = obj_layer.get_cell_atlas_coords(pos)
+                    damage.atlas_id = obj_layer.get_cell_source_id(pos)
+                    damage.bone_name = bone_name
+                    if gamestate.bone_damages.find_custom(func(d): return damage.equals(d)) == -1:
+                        var damage_type = create_damage(pos, damage.bone_name)
+                        damage.damage_type = damage_type
+                        gamestate.add_bone_damage(damage)
         var layer = dig_layers[layer_index]
         if layer.get_cell_tile_data(pos):
             dig_layer_index = layer_index
@@ -334,8 +355,8 @@ func take_object(pos: Vector2i) -> String:
     
     return theObj
 
-func place_multi_flag(pos: Vector2i):
-    var cells = get_brush_tiles()
+func place_multi_flag(pos: Vector2i, level: int = 0):
+    var cells = get_gpr_tiles(level)
     for c in cells:
         place_flag(Vector2i(c.x, c.y) + pos)
     
@@ -389,16 +410,19 @@ func read_mask(mask: Texture2D) -> Array[Vector3i]:
                 mask_tiles.append(t)
     return mask_tiles
 
-func get_shovel_tiles(shovel_dir: int) -> Array[Vector3i]:
-    match(shovel_dir):
-        0:
-            return _shovel_cells_north
-        1:
-            return _shovel_cells_west
-        2:
-            return _shovel_cells_south
-        3:
-            return _shovel_cells_east
+func get_shovel_tiles(shovel_dir: int, size: int = 0) -> Array[Vector3i]:
+    if size == 0:
+        match(shovel_dir):
+            0: return _shovel_cells_north
+            1: return _shovel_cells_west
+            2: return _shovel_cells_south
+            3: return _shovel_cells_east
+    else:
+        match(shovel_dir):
+            0: return _shovel_cells_north_big
+            1: return _shovel_cells_west_big
+            2: return _shovel_cells_south_big
+            3: return _shovel_cells_east_big
     return _shovel_cells_north
     
 func get_trowel_tiles(trowel_dir: int) -> Array[Vector3i]:
@@ -411,6 +435,12 @@ func get_trowel_tiles(trowel_dir: int) -> Array[Vector3i]:
 
 func get_brush_tiles() -> Array[Vector3i]:
     return _brush_cells
+    
+func get_gpr_tiles(level: int) -> Array[Vector3i]:
+    match level:
+        2: return _gpr_cells_3
+        1: return _gpr_cells_2
+        0,_: return _gpr_cells_1
 
 func getTileForMousePos() -> Vector2i:
     return dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position())
