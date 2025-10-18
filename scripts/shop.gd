@@ -5,7 +5,7 @@ class_name Shop
 @onready var gamestate: GameState = $/root/MainScene/GameState
 
 var shopItems: Dictionary[String, ShopItem]
-var coins: int
+@export var coins: int
      
 signal shop_has_changed(shopItems: Dictionary[String, ShopItem])
 signal coins_has_changed(newValue:int)
@@ -116,8 +116,7 @@ func buy_gpr_depth():
         print("No ShopItem!")
         
 func _ready() -> void:
-    coins = 0
-    coins_has_changed.emit(0)
+    coins_has_changed.emit(coins)
     shopItems = {}
     #Shovel 
     var shopItemShovel: ShopItem = ShopItem.new()

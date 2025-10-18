@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://chxgoxvmcel4w"]
+
+[ext_resource type="Script" uid="uid://b7rcocxfdkr8x" path="res://nodes/gpr.gd" id="1_f2y66"]
+[ext_resource type="Texture2D" uid="uid://b2toj1uospmsm" path="res://assets/items/Mobile-Scanner.png" id="2_y2yos"]
+
+[node name="GPR" type="Node2D"]
+texture_filter = 1
+script = ExtResource("1_f2y66")
+
+[node name="MobileScanner" type="Sprite2D" parent="."]
+texture = ExtResource("2_y2yos")
+
+[node name="TextureButton" type="TextureButton" parent="."]
+offset_left = -11.0
+offset_top = -10.0
+offset_right = 11.0
+offset_bottom = 12.0
+mouse_default_cursor_shape = 2
+
+[connection signal="pressed" from="TextureButton" to="." method="pick_up"]

@@ -115,7 +115,7 @@ func _ready() -> void:
     for i in range(20):
         var pos = Vector2i(randi_range(0, bounds.size.x), randi_range(0, bounds.size.y))
         if find_top_object(pos, true).z == -1:
-            place_flag(pos)
+            place_flag(pos, true)
     
     #for object_layer_index in object_layers.size():
     #    var object_layer = object_layers[object_layer_index]
@@ -441,7 +441,7 @@ func place_multi_flag(pos: Vector2i, level: int = 2):
         _dig_queue.append(di)
     _dig_queue_dirty = true
     
-func place_flag(pos: Vector2i):
+func place_flag(pos: Vector2i, silent:bool=false):
     if not bounds.has_point(pos):
         return DigResult.NoOp
     var top_obj = find_top_object(pos, true)
@@ -452,7 +452,8 @@ func place_flag(pos: Vector2i):
         flag_layer.set_cell(pos, 0, Vector2i.ZERO)
     else:
         flag_layer.set_cell(pos, 0, Vector2i(1,0))
-    flag_planted.emit()
+    if not silent:
+        flag_planted.emit()
     return DigResult.OK
 
 func find_top_object(pos: Vector2i, ignore_dig_layer=false) -> Vector3i:

@@ -10,6 +10,7 @@ var item_has_trowel = false
 var item_shovel_big = false
 var item_trowel_safe = false
 var item_has_gpr = false
+var item_gpr_placed = false
 var item_gpr_width = 2  # 0, 1, 2
 var item_gpr_depth = 2  # max 6
 
@@ -114,7 +115,7 @@ func is_tool_available(tool: Toolbelt.Tools) -> bool:
     if tool == Toolbelt.Tools.Shovel:
         return item_has_shovel
     if tool == Toolbelt.Tools.GPR:
-        return item_has_gpr
+        return item_has_gpr and not item_gpr_placed
     return false
  
 func queue_feedback_text(value: String):

@@ -10,6 +10,7 @@
 [node name="Shop" type="Node2D"]
 texture_filter = 1
 script = ExtResource("1_08q4v")
+coins = 50
 
 [node name="Camp" type="Sprite2D" parent="."]
 z_index = -1

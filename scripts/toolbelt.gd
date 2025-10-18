@@ -142,9 +142,15 @@ func digSiteAktion(pressed:bool):
                 digSite.is_brushing = true
                 brush_used.emit()
             Tools.GPR:
-                var result = digSite.place_multi_flag(digSite.getTileForMousePos(), gameState.item_gpr_width)
-                if result == DigSite.DigResult.OK:
-                    gpr_used.emit()
+                #var result = digSite.place_multi_flag(digSite.getTileForMousePos(), gameState.item_gpr_width)
+                #if result == DigSite.DigResult.OK:
+                #    gpr_used.emit()
+                var pos = digSite.get_local_mouse_position()
+                if digSite.bounds.has_point(digSite.dig_layers[0].local_to_map(pos)):
+                    var gpr = preload("res://nodes/gpr.tscn").instantiate()
+                    gpr.global_position = digSite.to_global(pos)
+                    digSite.add_child(gpr)
+                    change_tool(Tools.Hand)
 
 func _unhandled_input(event: InputEvent) -> void:
     if event is InputEventKey:
@@ -153,9 +159,7 @@ func _unhandled_input(event: InputEvent) -> void:
         if event.pressed and event.keycode == KEY_R:
             change_direction_up()
     if event is InputEventMouseButton:
-        if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-            change_tool(Tools.Hand)
-        elif event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+        if event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
             digSiteAktion(true)
         elif !event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
             digSiteAktion(false)
@@ -164,6 +168,11 @@ func _unhandled_input(event: InputEvent) -> void:
         elif event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
             change_direction_down()
         
+func _input(event: InputEvent) -> void:
+    if event is InputEventMouseButton:
+        if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+            change_tool(Tools.Hand)
+    
 func _process(_delta: float) -> void:
     var camBottomRight = camera.get_screen_center_position() + Vector2(get_viewport_rect().size / camera.zoom / 2)
     global_position = camBottomRight
