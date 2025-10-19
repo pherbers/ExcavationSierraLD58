@@ -223,7 +223,7 @@ func dig_shovel(pos: Vector2i, dir: int, big: bool = false) -> DigResult:
     for pd in get_shovel_tiles(dir, 1 if big else 0):
         var p = Vector2i(pd.x, pd.y)
         var delay: float = pd.z
-        queue_dig_tile(p + pos, delay / 32., dig_layer_index)
+        queue_dig_tile(p + pos, delay / 256. / 2., dig_layer_index)
     return DigResult.OK
 
 func dig_trowel(pos: Vector2i, dir: int, safety: bool = true) -> DigResult:
@@ -244,7 +244,7 @@ func dig_trowel(pos: Vector2i, dir: int, safety: bool = true) -> DigResult:
     for pd in get_trowel_tiles(dir):
         var p = Vector2i(pd.x, pd.y)
         var delay: float = pd.z
-        queue_dig_tile(p + pos, delay / 32., dig_layer_index, safety)
+        queue_dig_tile(p + pos, delay / 256. / 2., dig_layer_index, safety)
     return DigResult.OK
 
 func dig_brush(pos: Vector2i):
@@ -502,7 +502,7 @@ func read_mask(mask: Texture2D) -> Array[Vector3i]:
         for y in img.get_height():
             var c = img.get_pixel(x, y)
             if c.b < 1.:
-                var t = Vector3i(cx + x, cy + y, floor(c.b*16))
+                var t = Vector3i(cx + x, cy + y, floor(c.b*256))
                 mask_tiles.append(t)
     return mask_tiles
 

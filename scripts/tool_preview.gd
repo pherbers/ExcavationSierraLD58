@@ -30,7 +30,7 @@ func change_visuals(cells: Array[Vector3i]):
         var s = Sprite2D.new()
         s.texture = tile_sprite
         s.position = Vector2i(c.x, c.y) * 8
-        s.modulate = Color(1,1,1, 1-(c.z/16.))
+        s.modulate = Color(1,1,1, 1-(c.z/256.))
         add_child(s)
         
 

@@ -1,39 +1,36 @@
 extends Node2D
 
-@export var steps = 3
-@export var step_size = 3
-@export var step_time = 1.5
+@onready var dig_site: DigSite = $/root/MainScene/DigSite
+@onready var game_state: GameState = $/root/MainScene/GameState
 
-var _step_counter = 1
-@onready var dig_site: DigSite
+@export var gpr_speed: float = 1./6.
+
+var tiles: Array[Vector3i]
+var _t: float = 0
 
 func _ready() -> void:
-    dig_site = $/root/MainScene/DigSite
     var dig_layer = dig_site.dig_layers[0]
-    $/root/MainScene/GameState.item_gpr_placed = true
+    game_state.item_gpr_placed = true
     global_position = dig_layer.to_global(dig_layer.map_to_local(dig_layer.local_to_map(dig_layer.to_local(global_position))))
-    launch_timer()
+    tiles = dig_site.get_gpr_tiles(game_state.item_gpr_width).duplicate()
+    tiles.sort_custom(func(v1, v2): return v1.z > v2.z)
 
-func launch_timer():
-    if _step_counter > steps:
-        return
-    var timer = Timer.new()
-    timer.wait_time = step_time
-    timer.one_shot = true
-    timer.timeout.connect(plant_flag)
-    add_child(timer)
-    timer.start()
+func _process(delta: float) -> void:
+    _t += delta
+    while tiles.size() > 0:
+        if tiles.back().z / 256. / gpr_speed < _t:
+            var pd = tiles.pop_back()
+            plant_flag(Vector2i(pd.x, pd.y))
+        else:
+            break
 
-func plant_flag():
+func plant_flag(pd: Vector2i):
     var dig_layer = dig_site.dig_layers[0]
-    for v in [Vector2i.UP, Vector2i.RIGHT, Vector2i.DOWN, Vector2i.LEFT]:
-        var p = dig_layer.local_to_map(dig_layer.to_local(global_position))
-        dig_site.place_flag(p + (v * _step_counter * steps))
-    _step_counter += 1
-    launch_timer()
+    var p = dig_layer.local_to_map(dig_layer.to_local(global_position))
+    dig_site.place_flag(p + pd)
 
 func _exit_tree() -> void:
-    var gs = $/root/MainScene/GameState
+    var gs = game_state
     if gs:
         gs.item_gpr_placed = false
     var t = $/root/MainScene/Toolbelt

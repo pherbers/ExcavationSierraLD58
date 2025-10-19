@@ -71,15 +71,15 @@ region = Rect2(0, 48, 11, 11)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2rg5i"]
 atlas = ExtResource("2_v4sw2")
-region = Rect2(12, 48, 11, 11)
+region = Rect2(49, 22, 13, 13)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jx38i"]
 atlas = ExtResource("2_v4sw2")
-region = Rect2(24, 48, 11, 11)
+region = Rect2(12, 46, 25, 25)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qvqen"]
 atlas = ExtResource("2_v4sw2")
-region = Rect2(36, 48, 11, 11)
+region = Rect2(41, 47, 25, 25)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_jlg6n"]
 texture = ExtResource("16_repa7")

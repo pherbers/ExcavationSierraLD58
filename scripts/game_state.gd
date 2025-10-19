@@ -11,8 +11,8 @@ var item_shovel_big = false
 var item_trowel_safe = false
 var item_has_gpr = false
 var item_gpr_placed = false
-var item_gpr_width = 2  # 0, 1, 2
-var item_gpr_depth = 2  # max 6
+var item_gpr_width: int = 2  # 0, 1, 2
+var item_gpr_depth: int = 2  # max 6
 
 var indicatorQueue: Array[Message] = []
 var timer: float = 0;
