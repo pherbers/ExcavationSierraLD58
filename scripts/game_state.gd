@@ -21,7 +21,7 @@ var timer: float = 0;
 
 @export var toolbelt: Toolbelt
 
-@export var valueOfUndamgedBone = 10
+@export var valueOfUndamgedBone = 8
 @export var valueOfDamgedBone = 2
 
 @export var isCollectionComplete = false

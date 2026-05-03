@@ -9,6 +9,8 @@ var object_layers: Array[TileMapLayer]
 @onready var flag_layer: TileMapLayer = $Flags/TileMapLayer
 @export var bounds: Rect2i
 
+@export var brush_strength = 2.
+
 @export var dino_tile_map: TileSet
 
 @export var shovel_masks: Array[Texture2D]
@@ -44,7 +46,7 @@ var brush_time = 100
 var _brush_timer = 0.
 var _brush_chance = 0.
 
-var _bone_positions: Dictionary[String, Vector3i]
+var _bone_positions: Dictionary[String, Array]
 
 signal hit_bone
 signal brush_used
@@ -152,7 +154,9 @@ func _ready() -> void:
                 if data == null or not data.has_custom_data("ObjectID"):
                     continue
                 var objname = data.get_custom_data("ObjectID")
-                _bone_positions[objname] = Vector3i(cell.x, cell.y, object_layer_index)
+                if objname not in _bone_positions:
+                    _bone_positions[objname] = []
+                _bone_positions[objname].append(Vector3i(cell.x, cell.y, object_layer_index))
 
     print("Dig Site prepared, it is " + str(len(dig_layers)) + " layers deep")
 
@@ -229,8 +233,11 @@ func bury_bone(pattern: TileMapPattern, pos: Vector2i, depth: int) -> bool:
         if d != null:
             return false
     layer.set_pattern(pos, pattern)
-    var pname = layer.get_cell_tile_data(pos + pcells[0]).get_custom_data("ObjectID")
-    _bone_positions[pname] = Vector3i(pos.x, pos.y, depth)
+    var objname = layer.get_cell_tile_data(pos + pcells[0]).get_custom_data("ObjectID")
+
+    if objname not in _bone_positions:
+        _bone_positions[objname] = []
+    _bone_positions[objname].append(Vector3i(pos.x, pos.y, depth))
     return true
 
 func dig_shovel(pos: Vector2i, dir: int, big: bool = false) -> DigResult:
@@ -280,7 +287,7 @@ func dig_brush(pos: Vector2i):
         var p = Vector2i(pd.x,pd.y) + pos
         brush_tile(Vector3i(p.x, p.y, pd.z))
 
-    _brush_chance += 0.01
+    _brush_chance += 0.01 * brush_strength
 
 func brush_tile(p: Vector3i) -> DigResult:
     var pos = Vector2i(p.x, p.y)
@@ -521,13 +528,14 @@ func get_closest_bone_pos(pos: Vector2i, max_depth: int) -> Vector3i:
     var closest_pos = Vector3i(-1,-1,-1)
     var closest_dist = INF
     for bone_name in _bone_positions:
-        var bone_pos = _bone_positions[bone_name]
-        if bone_pos.z > (max_depth + current_depth):
-            continue
-        var dist = (pos - Vector2i(bone_pos.x, bone_pos.y)).length()
-        if dist < closest_dist:
-            closest_pos = bone_pos
-            closest_dist = dist
+        var bone_poss = _bone_positions[bone_name]
+        for bone_pos in bone_poss:
+            if bone_pos.z > (max_depth + current_depth):
+                continue
+            var dist = (pos - Vector2i(bone_pos.x, bone_pos.y)).length()
+            if dist < closest_dist:
+                closest_pos = bone_pos
+                closest_dist = dist
 
     return closest_pos
 
@@ -579,7 +587,38 @@ func get_gpr_tiles(level: int) -> Array[Vector3i]:
 func getTileForMousePos() -> Vector2i:
     return dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position())
 
+func debug_pickup_bone():
+    var bone = _bone_positions.keys().pick_random()
+    if not bone:
+        return
+    var bone_cells = _bone_positions[bone]
+
+    # erase cells
+    for obj_pos in bone_cells:
+        var obj_layer = object_layers[obj_pos.z]
+        obj_layer.erase_cell(Vector2i(obj_pos.x, obj_pos.y))
+
+    # remove damages
+    var damages = $Damages.find_children(bone + "*")
+    for d in damages:
+        d.queue_free()
+
+    lastTakenBoneUndamaged = bone_cells.size() - damages.size()
+    lastTakenBoneDamaged = damages.size()
+
+    # remove from gpr
+    _bone_positions.erase(bone)
+
+    $/root/MainScene/GameState.collect_bone(
+        bone,
+        lastTakenBoneUndamaged,
+        lastTakenBoneDamaged
+    )
+
 func _input(event: InputEvent) -> void:
     if event is InputEventMouseMotion:
         if is_brushing:
             _brush_timer += event.velocity.length() / 10.
+    if event is InputEventKey and event.is_pressed():
+        if event.keycode == Key.KEY_P and $"/root/Cheats".cheat_mode:
+            debug_pickup_bone()

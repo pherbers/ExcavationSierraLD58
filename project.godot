@@ -24,6 +24,7 @@ config/icon="res://icon.svg"
 Global="*res://scripts/global.gd"
 BoneCollectionState="*res://scripts/bone_collection_state.gd"
 _FADE="*uid://6syj8smwctkv"
+Cheats="*uid://dpv44y5vs4gee"
 
 [dotnet]
 
