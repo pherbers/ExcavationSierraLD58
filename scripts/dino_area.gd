@@ -12,20 +12,29 @@ var boneDict = {}
 var isCompleted: bool
 
 func _ready() -> void:
+
+    if ($/root/Global as ESGlobal).play_mode == ESGlobal.PlayMode.RANDOM:
+        $Dino.enabled = false
+        $DinoStego.enabled = true
+        tileMap = $DinoStego
+
     label.visible = false
     isCompleted = false
-    
+
     var cells: Array[Vector2i] = tileMap.get_used_cells()
     for index: Vector2i in cells:
         var cell: TileData = tileMap.get_cell_tile_data(index)
         var cellCustomData = cell.get_custom_data("ObjectID")
         var boneName = str(cellCustomData)
-        
+
+        if boneName.strip_edges().is_empty():
+            push_warning("Bone with empty name in Collection at " + str(cell))
+
         if !boneDict.has(boneName) :
             boneDict[boneName] = {
-                "boneCells": [] 
+                "boneCells": []
             }
-        
+
         boneDict[boneName]["boneCells"].push_back({
             "index": index,
             "sourcId": tileMap.get_cell_source_id(index),
@@ -34,18 +43,18 @@ func _ready() -> void:
             "found": false,
             "damaged": false
         })
-        
+
         tileMap.set_cell(index, -1)
-    
+
     update_bone_collected()
-    
+
 func revalDinoBone(boneName: String):
-    if !boneDict.has(boneName):     
+    if !boneDict.has(boneName):
         pass
     else:
         var entry = boneDict[boneName]
         var cells = entry['boneCells']
-        
+
         # Get damages
         var gameState = $/root/MainScene/GameState as GameState
         var damages = gameState.get_damages_for_bone(boneName)
@@ -56,19 +65,19 @@ func revalDinoBone(boneName: String):
             var alternativeTile: int = cell["alternativeTile"]
             var atlasCoords: Vector2i = cell["atlasCoords"]
             var found: bool = cell["found"]
-            
+
             # look up damages
             var dmgIndex = damages.find_custom(func(d): return d.atlas_id == sourcId and d.atlas_pos == atlasCoords)
             if dmgIndex != -1:
                 var dmg = damages[dmgIndex]
                 create_damage_viz(index, dmg.damage_type)
                 cell["damaged"] = true
-            
+
             if !found:
                 tileMap.set_cell(index, sourcId, atlasCoords, alternativeTile)
                 cell.found = true
-                
-                
+
+
     checkIfCompleted()
 
 func create_damage_viz(pos: Vector2i, damage_type: int):
@@ -78,7 +87,7 @@ func create_damage_viz(pos: Vector2i, damage_type: int):
     damageviz.texture = tex
     damageviz.position = tileMap.map_to_local(pos)
     add_child(damageviz)
-    
+
 func checkIfCompleted():
     update_bone_collected()
     var isComplete: bool = true;
@@ -87,12 +96,12 @@ func checkIfCompleted():
         var cells = entry['boneCells']
         for cell in cells:
             var found: bool = cell["found"]
-            if !found: 
+            if !found:
                 isComplete = false
-                
+
     if isComplete:
         setComplete()
-   
+
 class Bone:
     var name:String
     var countOfBonesUndamaged: int
@@ -107,7 +116,7 @@ func get_bone_at_world_pos(globlePos: Vector2) -> Bone:
         return null
     var cellCustomData = cell.get_custom_data("ObjectID")
     var boneNamer = str(cellCustomData)
-    
+
     if boneDict.keys().has(boneNamer):
         var entry = boneDict[boneNamer]
         var countOfBonesUndamaged: int = 0
@@ -118,21 +127,21 @@ func get_bone_at_world_pos(globlePos: Vector2) -> Bone:
                 countOfBonesDamaged += 1
             else:
                 countOfBonesUndamaged += 1
-        
+
         var bone = Bone.new()
         bone.name = boneNamer
         bone.countOfBonesDamaged = countOfBonesDamaged
         bone.countOfBonesUndamaged = countOfBonesUndamaged
-        
+
         return bone
-    
+
     return null
-    
+
 func setComplete():
     label.text = dinoName
     label.visible = true
     on_area_complete.emit()
-    
+
 func revalAll():
     for keys in boneDict.keys():
         revalDinoBone(keys)
@@ -141,7 +150,7 @@ func update_bone_collected():
     var maxBones = self.get_bone_count_max()
     var currentCount = self.get_bone_count_found()
     on_bone_number_chaneg.emit(currentCount, maxBones)
-            
+
 func _on_collection_bone_collected(bone_name: String) -> void:
     revalDinoBone(bone_name)
 
@@ -161,4 +170,3 @@ func get_bone_count_found() -> int:
         if entryFound:
            countFound += 1
     return  countFound
-                

@@ -1,39 +1,39 @@
 [gd_scene format=3 uid="uid://lscs07ilg14g"]
 
-[ext_resource type="PackedScene" uid="uid://do4voo658ul1u" path="res://nodes/toolbelt.tscn" id="1_hq1ik"]
-[ext_resource type="Script" uid="uid://bs0dqoje38owq" path="res://scripts/game_state.gd" id="1_nfk4m"]
-[ext_resource type="Script" uid="uid://dg6spvn56tg0o" path="res://scripts/curser.gd" id="5_8mm7a"]
-[ext_resource type="AudioStream" uid="uid://c0sl8ces1ekc2" path="res://assets/sounds/tone1.ogg" id="5_wr18j"]
-[ext_resource type="SpriteFrames" uid="uid://cjj8bqaba3c5l" path="res://assets/shovel_sprite_frames.tres" id="6_66tet"]
-[ext_resource type="PackedScene" uid="uid://cu74g7pawm2av" path="res://nodes/dig_site.tscn" id="6_nfk4m"]
-[ext_resource type="Script" uid="uid://c5ha2v27vo41y" path="res://scripts/CameraControl.gd" id="7_66tet"]
-[ext_resource type="AudioStream" uid="uid://15wtdmr71jgl" path="res://assets/sounds/desert_ambience.ogg" id="8_66tet"]
-[ext_resource type="PackedScene" uid="uid://dlliy8iqort6s" path="res://nodes/collection.tscn" id="9_7ycvg"]
-[ext_resource type="PackedScene" uid="uid://bqx1kbnooinrg" path="res://nodes/shop.tscn" id="9_wr18j"]
-[ext_resource type="Texture2D" uid="uid://cwieed5t23esi" path="res://assets/ui/tutorial.png" id="11_qwutr"]
+[ext_resource type="Script" uid="uid://bs0dqoje38owq" path="res://scripts/game_state.gd" id="1_0ab4c"]
+[ext_resource type="PackedScene" uid="uid://do4voo658ul1u" path="res://nodes/toolbelt.tscn" id="2_ti7h6"]
+[ext_resource type="Script" uid="uid://dg6spvn56tg0o" path="res://scripts/curser.gd" id="3_os3ct"]
+[ext_resource type="SpriteFrames" uid="uid://cjj8bqaba3c5l" path="res://assets/shovel_sprite_frames.tres" id="4_3p3cd"]
+[ext_resource type="AudioStream" uid="uid://c0sl8ces1ekc2" path="res://assets/sounds/tone1.ogg" id="5_s6gel"]
+[ext_resource type="PackedScene" uid="uid://cu74g7pawm2av" path="res://nodes/dig_site.tscn" id="6_7wf88"]
+[ext_resource type="Script" uid="uid://c5ha2v27vo41y" path="res://scripts/CameraControl.gd" id="7_l21dq"]
+[ext_resource type="PackedScene" uid="uid://dlliy8iqort6s" path="res://nodes/collection.tscn" id="8_hagws"]
+[ext_resource type="AudioStream" uid="uid://15wtdmr71jgl" path="res://assets/sounds/desert_ambience.ogg" id="9_5a24p"]
+[ext_resource type="PackedScene" uid="uid://bqx1kbnooinrg" path="res://nodes/shop.tscn" id="10_ecuwd"]
+[ext_resource type="Texture2D" uid="uid://cwieed5t23esi" path="res://assets/ui/tutorial.png" id="11_ucfn8"]
 
 [node name="MainScene" type="Node2D" unique_id=1986807538]
 texture_filter = 1
 
 [node name="GameState" type="Node2D" parent="." unique_id=1643525494 node_paths=PackedStringArray("toolbelt")]
-script = ExtResource("1_nfk4m")
+script = ExtResource("1_0ab4c")
 toolbelt = NodePath("../Toolbelt")
 
-[node name="Toolbelt" parent="." unique_id=963952286 node_paths=PackedStringArray("digSite", "collectionSpawnPoint", "shopSpawnPoint") instance=ExtResource("1_hq1ik")]
+[node name="Toolbelt" parent="." unique_id=963952286 node_paths=PackedStringArray("collectionSpawnPoint", "digSite", "shopSpawnPoint") instance=ExtResource("2_ti7h6")]
 z_index = 10
-digSite = NodePath("../DigSite")
 collectionSpawnPoint = NodePath("../CollectionSpawnPoint")
+digSite = NodePath("../DigSite")
 shopSpawnPoint = NodePath("../ShopSpawnPoint")
 
 [node name="Curser" type="Node2D" parent="." unique_id=1519961411 node_paths=PackedStringArray("curserAnimator", "toolbelt", "label")]
 z_index = 50
-script = ExtResource("5_8mm7a")
+script = ExtResource("3_os3ct")
 curserAnimator = NodePath("AnimatedSprite2D")
 toolbelt = NodePath("../Toolbelt")
 label = NodePath("Label")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Curser" unique_id=1342967199]
-sprite_frames = ExtResource("6_66tet")
+sprite_frames = ExtResource("4_3p3cd")
 animation = &"GPR"
 centered = false
 
@@ -43,10 +43,10 @@ offset_bottom = 23.0
 text = "Shovel"
 
 [node name="BeepSound" type="AudioStreamPlayer" parent="Curser" unique_id=1416310831]
-stream = ExtResource("5_wr18j")
+stream = ExtResource("5_s6gel")
 volume_db = -6.0
 
-[node name="DigSite" parent="." unique_id=913726557 instance=ExtResource("6_nfk4m")]
+[node name="DigSite" parent="." unique_id=913726557 instance=ExtResource("6_7wf88")]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1292895065]
 position = Vector2(-121, 309)
@@ -57,10 +57,10 @@ limit_top = -11
 limit_right = 589
 limit_bottom = 462
 position_smoothing_enabled = true
-script = ExtResource("7_66tet")
+script = ExtResource("7_l21dq")
 scrollSpeed = 200.0
 
-[node name="Collection" parent="." unique_id=200903687 node_paths=PackedStringArray("gameState") instance=ExtResource("9_7ycvg")]
+[node name="Collection" parent="." unique_id=200903687 node_paths=PackedStringArray("gameState") instance=ExtResource("8_hagws")]
 z_index = -1
 position = Vector2(-286, 232)
 gameState = NodePath("../GameState")
@@ -74,22 +74,20 @@ position = Vector2(-181, 104)
 [node name="Node" type="Node" parent="." unique_id=163945096]
 
 [node name="Ambiance" type="AudioStreamPlayer" parent="Node" unique_id=1864951520]
-stream = ExtResource("8_66tet")
+stream = ExtResource("9_5a24p")
 autoplay = true
 parameters/looping = true
 
-[node name="Shop" parent="." unique_id=2027318409 instance=ExtResource("9_wr18j")]
+[node name="Shop" parent="." unique_id=2027318409 instance=ExtResource("10_ecuwd")]
 position = Vector2(-398, 8)
 
 [node name="Tutorial" type="Sprite2D" parent="." unique_id=384859752]
 modulate = Color(1, 1, 1, 0.27058825)
 position = Vector2(-305, 335)
-texture = ExtResource("11_qwutr")
+texture = ExtResource("11_ucfn8")
 
 [connection signal="bone_collected" from="GameState" to="Collection" method="_on_game_state_bone_collected"]
 [connection signal="finished" from="Curser/BeepSound" to="Curser" method="gpr_beep"]
-[connection signal="bone_stuck" from="DigSite" to="GameState" method="_on_dig_site_bone_stuck"]
-[connection signal="hit_bone" from="DigSite" to="GameState" method="_on_dig_site_hit_bone"]
 [connection signal="on_bone_number_change" from="Collection" to="Toolbelt" method="_on_collection_on_bone_number_change"]
 [connection signal="finished" from="Node/Ambiance" to="Node/Ambiance" method="play"]
 [connection signal="coins_delter" from="Shop" to="GameState" method="_on_shop_coins_delter"]

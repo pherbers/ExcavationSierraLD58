@@ -57,3 +57,9 @@ func _on_dino_area_on_bone_number_chaneg(currentBones: int, maxBones: int) -> vo
 func skip_all():
     for dinoArea in dinoAreas:
         dinoArea.revalAll()
+
+
+func _input(event: InputEvent) -> void:
+    if event is InputEventKey and event.is_pressed():
+        if event.keycode == Key.KEY_O and $"/root/Cheats".cheat_mode:
+            skip_all()

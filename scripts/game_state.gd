@@ -55,7 +55,7 @@ func get_damages_for_bone(bone_name: String) -> Array[BoneDamage]:
 
 func jump_to_end():
     _FADE.time_to_fade = 5
-    _FADE.FadeTo("res://ending_sceme.tscn")
+    _FADE.FadeTo("res://nodes/ending_sceme.tscn")
 
 func setCollectionCompleted():
     if !isCollectionComplete:

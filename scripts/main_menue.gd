@@ -10,7 +10,7 @@ func _ready() -> void:
 func play_game():
     ($"/root/Global" as ESGlobal).play_mode = ESGlobal.PlayMode.DEFAULT
     _FADE.time_to_fade = 1.5
-    _FADE.FadeTo("res://main_scene.tscn")
+    _FADE.FadeTo("res://nodes/main_scene.tscn")
     $Button.disabled = true
     $RandomMode.disabled = true
 
@@ -18,7 +18,7 @@ func play_random_game():
     ($"/root/Global" as ESGlobal).play_mode = ESGlobal.PlayMode.RANDOM
     ($"/root/Global" as ESGlobal).random_seed = abs(hash($RandomSeed.text))
     _FADE.time_to_fade = 1.5
-    _FADE.FadeTo("res://main_scene.tscn")
+    _FADE.FadeTo("res://nodes/main_scene.tscn")
     $Button.disabled = true
     $RandomMode.disabled = true
 

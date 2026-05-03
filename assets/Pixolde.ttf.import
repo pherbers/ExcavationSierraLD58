@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://cg2nyph7fexsd"
-path="res://.godot/imported/Pixolde.ttf-a5e89c182642a5163aba8765e24dfc94.fontdata"
+path="res://.godot/imported/Pixolde.ttf-c227c1fb55179a3fe01f5efad23c61b1.fontdata"
 
 [deps]
 
-source_file="res://Pixolde.ttf"
-dest_files=["res://.godot/imported/Pixolde.ttf-a5e89c182642a5163aba8765e24dfc94.fontdata"]
+source_file="res://assets/Pixolde.ttf"
+dest_files=["res://.godot/imported/Pixolde.ttf-c227c1fb55179a3fe01f5efad23c61b1.fontdata"]
 
 [params]
 

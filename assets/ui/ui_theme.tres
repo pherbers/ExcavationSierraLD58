@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://ij46sbvxy1e5" path="res://assets/ui/button.png" id="1_q4r4s"]
 [ext_resource type="Texture2D" uid="uid://14oaccmshhhn" path="res://assets/ui/button_pressed.png" id="2_2t3ff"]
 [ext_resource type="Texture2D" uid="uid://b66fw50fikkgs" path="res://assets/ui/tooltip.png" id="2_l64jj"]
-[ext_resource type="FontFile" uid="uid://cg2nyph7fexsd" path="res://Pixolde.ttf" id="2_pxcak"]
+[ext_resource type="FontFile" uid="uid://cg2nyph7fexsd" path="res://assets/Pixolde.ttf" id="2_pxcak"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_l64jj"]
 texture = ExtResource("1_q4r4s")

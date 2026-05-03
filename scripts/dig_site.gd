@@ -588,9 +588,9 @@ func getTileForMousePos() -> Vector2i:
     return dig_layers[0].local_to_map(dig_layers[0].get_local_mouse_position())
 
 func debug_pickup_bone():
-    var bone = _bone_positions.keys().pick_random()
-    if not bone:
+    if _bone_positions.is_empty():
         return
+    var bone = _bone_positions.keys().pick_random()
     var bone_cells = _bone_positions[bone]
 
     # erase cells
