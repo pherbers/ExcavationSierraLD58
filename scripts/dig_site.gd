@@ -17,6 +17,8 @@ var object_layers: Array[TileMapLayer]
 @export var brush_mask: Texture2D
 @export var gpr_masks: Array[Texture2D]
 @export var damage_sprites: Array[Texture2D]
+
+@export var dust_particles: PackedScene
 var _shovel_cells_west: Array[Vector3i]
 var _shovel_cells_north: Array[Vector3i]
 var _shovel_cells_east: Array[Vector3i]
@@ -47,7 +49,7 @@ var _bone_positions: Dictionary[String, Vector3i]
 signal hit_bone
 signal brush_used
 signal flag_planted
-signal bone_stuck
+signal bone_stuck(position: Vector3i)
 
 @onready var brush_sound = $BrushSound as AudioStreamPlayer
 
@@ -73,6 +75,9 @@ func _ready() -> void:
     randomize_site = $"/root/Global".play_mode == ESGlobal.PlayMode.RANDOM
     if randomize_site:
         dino_tile_map = load("res://assets/bones/dino_tiles_stego.tres")
+    else:
+        dino_tile_map = load("res://assets/bones/dino_tiles.tres")
+
 
     _shovel_cells_west  = read_mask(shovel_masks[0])
     _shovel_cells_south = read_mask(shovel_masks[1])
@@ -126,8 +131,14 @@ func _ready() -> void:
         # Place random flags
         # First, at the top layer
         flag_layer.clear()
-        for c in object_layers[0].get_used_cells():
-            place_flag(c)
+        var flag_placed = []
+        var top_bones = object_layers[0].get_used_cells()
+        top_bones.shuffle()
+        for c in top_bones:
+            var id = object_layers[0].get_cell_tile_data(c).get_custom_data("ObjectID")
+            if id not in flag_placed:
+                place_flag(c)
+                flag_placed.append(id)
         # Second, 20 random red flags
         for i in range(20):
             var pos = Vector2i(randi_range(0, bounds.size.x), randi_range(0, bounds.size.y))
@@ -137,11 +148,11 @@ func _ready() -> void:
         for object_layer_index in object_layers.size():
             var object_layer = object_layers[object_layer_index]
             for cell in object_layer.get_used_cells():
-                    var data = object_layer.get_cell_tile_data(cell)
-                    if data == null or not data.has_custom_data("ObjectID"):
-                        continue
-                    var objname = data.get_custom_data("ObjectID")
-                    _bone_positions[objname] = Vector3i(cell.x, cell.y, object_layer_index)
+                var data = object_layer.get_cell_tile_data(cell)
+                if data == null or not data.has_custom_data("ObjectID"):
+                    continue
+                var objname = data.get_custom_data("ObjectID")
+                _bone_positions[objname] = Vector3i(cell.x, cell.y, object_layer_index)
 
     print("Dig Site prepared, it is " + str(len(dig_layers)) + " layers deep")
 
@@ -187,9 +198,9 @@ func bury_bone_somewhere(pattern: TileMapPattern) -> bool:
     if psize <= 1:
         possible_layers = [1,1,1,1,1,1,1,2]
     elif psize <= 4:
-        possible_layers = [1,1,1,1,2,2,3,4]
+        possible_layers = [1,1,2,2,2,3,3,4]
     elif psize <= 8:
-        possible_layers = [1,2,2,2,3,3,4,5]
+        possible_layers = [1,2,2,3,3,4,4,5]
     elif psize <= 16:
         possible_layers = [2,2,3,3,4,4,5,5]
     else:
@@ -407,7 +418,8 @@ func take_object(pos: Vector2i) -> String:
                 obj_depth = layer_index
                 break
         var layer = dig_layers[layer_index]
-        if layer.get_cell_tile_data(pos):
+        var earth = layer.get_cell_tile_data(pos)
+        if earth != null and earth.get_custom_data("ignore") != true:
             break
 
     if theObj == "":
@@ -425,8 +437,10 @@ func take_object(pos: Vector2i) -> String:
 
     # check if bone is still dug in
     for obj_pos in bone_cells:
-        if find_top_dig_layer(obj_pos).z <= obj_depth:
-            bone_stuck.emit()
+        var top_dig_layer = find_top_dig_layer(obj_pos)
+        if top_dig_layer.z <= obj_depth:
+            bone_stuck.emit(top_dig_layer)
+            spawn_dust(top_dig_layer)
             return ""
 
     # erase cells
@@ -445,6 +459,12 @@ func take_object(pos: Vector2i) -> String:
     _bone_positions.erase(theObj)
 
     return theObj
+
+func spawn_dust(cell: Vector3i):
+    var particles = dust_particles.instantiate() as Node2D
+    particles.position = dig_layers[0].map_to_local(Vector2i(cell.x, cell.y))
+    particles.emitting = true
+    add_child(particles)
 
 func place_multi_flag(pos: Vector2i, level: int = 2):
     var cells = get_gpr_tiles(level)
@@ -488,7 +508,8 @@ func find_top_object(pos: Vector2i, ignore_dig_layer=false) -> Vector3i:
 func find_top_dig_layer(pos: Vector2i) -> Vector3i:
     for layer_index in dig_layers.size():
         var layer = dig_layers[layer_index]
-        if layer.get_cell_tile_data(pos):
+        var earth = layer.get_cell_tile_data(pos)
+        if earth != null and earth.get_custom_data("ignore") != true:
             return Vector3i(pos.x, pos.y, layer_index)
     return Vector3i(pos.x, pos.y, dig_layers.size() + 1)
 

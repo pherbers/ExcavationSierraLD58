@@ -66,7 +66,7 @@ func _ready() -> void:
     playerPosOnField = camera.global_position
     playerPosOnCollection = collectionSpawnPoint.global_position
     playerPosOnShop = shopSpawnPoint.global_position
-    
+
     get_viewport().size_changed.connect(window_update)
     window_update()
 
@@ -104,16 +104,16 @@ func switch_to_hand():
 
 func change_direction_up():
     if !(currentTool == Tools.Shovel or currentTool == Tools.Trowel):
-        return 
+        return
     direction += 1
     direction = direction % tool_dic_mod[currentTool]
     direction_has_changed.emit(direction)
-    
+
 func change_direction_down():
     if !(currentTool == Tools.Shovel or currentTool == Tools.Trowel):
         return
     direction -= 1
-    if direction < 0: 
+    if direction < 0:
         direction = tool_dic_mod[currentTool] - 1
     direction_has_changed.emit(direction)
 
@@ -126,7 +126,7 @@ func digSiteAktion(pressed:bool):
                 var boneName = digSite.take_object(digSite.getTileForMousePos())
                 if boneName != "":
                     gameState.collect_bone(
-                        boneName, 
+                        boneName,
                         digSite.lastTakenBoneUndamaged,
                         digSite.lastTakenBoneDamaged
                         )
@@ -167,21 +167,21 @@ func _unhandled_input(event: InputEvent) -> void:
             change_direction_up()
         elif event.pressed and event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
             change_direction_down()
-        
+
 func _input(event: InputEvent) -> void:
     if event is InputEventMouseButton:
         if event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
             change_tool(Tools.Hand)
-    
+
 func _process(_delta: float) -> void:
     var camBottomRight = camera.get_screen_center_position() + Vector2(get_viewport_rect().size / camera.zoom / 2)
     global_position = camBottomRight
-        
+
     shovelSprite.texture = shovelDefaultTexture
     trowelSprite.texture = trowelDefaultTexture
     brushSprite.texture = brushDefaultTexture
     gprSprite.texture = gprDefaultTexture
-    
+
     if highlightTool == Tools.Shovel:
         shovelSprite.texture = shovelHighlightedTexture
     if highlightTool == Tools.Trowel:
@@ -190,7 +190,7 @@ func _process(_delta: float) -> void:
         brushSprite.texture = brushHighlightedTexture
     if highlightTool == Tools.GPR:
         gprSprite.texture = gprHighlightedTexture
-        
+
     shovelSprite.visible = true
     trowelSprite.visible = true
     brushSprite.visible = true
@@ -203,22 +203,22 @@ func _process(_delta: float) -> void:
         brushSprite.visible = false
     if currentTool == Tools.GPR or !gameState.is_tool_available(Tools.GPR):
         gprSprite.visible = false
-        
+
 func reset_highlight():
-    highlightTool = Tools.Hand    
-    
+    highlightTool = Tools.Hand
+
 func highlight_shove():
     highlightTool = Tools.Shovel
-    
+
 func highlight_brush():
     highlightTool = Tools.Brush
-    
+
 func highlight_trowel():
     highlightTool = Tools.Trowel
-    
+
 func highlight_gpr():
     highlightTool = Tools.GPR
-    
+
 func toggle_collection():
     if (playerPosOnShop - camera.global_position).length() < 200:
         camera.global_position = playerPosOnCollection
@@ -227,7 +227,7 @@ func toggle_collection():
     else:
         playerPosOnField = camera.global_position
         camera.global_position = playerPosOnShop
-       
+
 func forcePlayerToCollectionSpawnPoint():
     playerPosOnCollection = collectionSpawnPoint.global_position
     toggle_collection()

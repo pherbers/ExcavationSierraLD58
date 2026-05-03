@@ -120,7 +120,7 @@ func is_tool_available(tool: Toolbelt.Tools) -> bool:
 
 func queue_feedback_text(value: String):
     var msg = Message.new()
-    msg.pos = get_global_mouse_position()
+    msg.pos = get_global_mouse_position() + Vector2(16,-16)
     msg.text = value
 
     indicatorQueue.append(msg)
@@ -143,5 +143,5 @@ func _on_dig_site_hit_bone() -> void:
     queue_feedback_text("Bone DAMAGED!")
 
 
-func _on_dig_site_bone_stuck() -> void:
+func _on_dig_site_bone_stuck(_pos) -> void:
     queue_feedback_text("Stuck!")
