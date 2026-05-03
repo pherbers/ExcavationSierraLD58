@@ -1,4 +1,4 @@
-[gd_resource type="AtlasTexture" load_steps=2 format=3 uid="uid://ckqyb5yqfb0jd"]
+[gd_resource type="AtlasTexture" format=3 uid="uid://ckqyb5yqfb0jd"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_pcsen"]
 load_path = "res://.godot/imported/dig_masks.png-9e844b62b9a17c5fd26fee2797a9d166.ctex"

@@ -1,4 +1,4 @@
-[gd_resource type="SpriteFrames" load_steps=29 format=3 uid="uid://cjj8bqaba3c5l"]
+[gd_resource type="SpriteFrames" format=3 uid="uid://cjj8bqaba3c5l"]
 
 [ext_resource type="Texture2D" uid="uid://kcisoqqyrnvr" path="res://assets/curser/Brush-moving.png" id="1_rxiyv"]
 [ext_resource type="Texture2D" uid="uid://cxsg0a7lmv61v" path="res://assets/items/Bonefinder0.png" id="2_b2wtl"]

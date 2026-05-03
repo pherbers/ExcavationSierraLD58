@@ -35,13 +35,13 @@ class Message:
 func _process(delta: float) -> void:
     if timer > 0:
             timer -= delta
-            
+
     if indicatorQueue.size() > 0:
         if timer <= 0:
             var text = indicatorQueue.pop_front()
             spawn_feedback_text(text)
             timer = 1.4
-            
+
 
 func collect_bone(bone_name: String, numberOfUnBoneDamagedTiles: int, numberOfDamagedBoneTiles:int):
     print("Bone collected: " + bone_name)
@@ -55,7 +55,7 @@ func get_damages_for_bone(bone_name: String) -> Array[BoneDamage]:
 
 func jump_to_end():
     _FADE.time_to_fade = 5
-    _FADE.FadeTo("res://ending_sceme.tscn")  
+    _FADE.FadeTo("res://ending_sceme.tscn")
 
 func setCollectionCompleted():
     if !isCollectionComplete:
@@ -63,7 +63,7 @@ func setCollectionCompleted():
         isCollectionComplete = true
         collection_completed.emit()
         jump_to_end()
-        
+
 func add_bone_damage(damage: BoneDamage):
     BoneCollectionState.add_bone_damage(damage)
 
@@ -80,7 +80,7 @@ func update_tool_state(shopItems: Dictionary[String, Shop.ShopItem]):
     elif shopItemShovel.currentLevel == 2:
         item_has_shovel = true
         item_shovel_big = true
-    
+
     var shopItemTrowel = shopItems["trowel"] as Shop.ShopItem
     if shopItemTrowel.currentLevel == 0:
         item_has_trowel = false
@@ -91,20 +91,20 @@ func update_tool_state(shopItems: Dictionary[String, Shop.ShopItem]):
     elif shopItemTrowel.currentLevel == 2:
         item_has_trowel = true
         item_trowel_safe = true
-    
+
     var shopItemGpr = shopItems["gpr"] as Shop.ShopItem
     if shopItemGpr.currentLevel == 0:
         item_has_gpr = false
     if shopItemGpr.currentLevel == 1:
         item_has_gpr = true
-        
+
     var shopItemGprW = shopItems["gpr_width"] as Shop.ShopItem
     item_gpr_width = shopItemGprW.currentLevel
-        
+
     var shopItemGprD = shopItems["gpr_depth"] as Shop.ShopItem
     item_gpr_depth = 3 + shopItemGprD.currentLevel
-    
-    
+
+
 func is_tool_available(tool: Toolbelt.Tools) -> bool:
     if tool == Toolbelt.Tools.Hand:
         return true
@@ -117,14 +117,14 @@ func is_tool_available(tool: Toolbelt.Tools) -> bool:
     if tool == Toolbelt.Tools.GPR:
         return item_has_gpr and not item_gpr_placed
     return false
- 
+
 func queue_feedback_text(value: String):
     var msg = Message.new()
     msg.pos = get_global_mouse_position()
     msg.text = value
 
     indicatorQueue.append(msg)
-   
+
 func spawn_feedback_text(msg: Message):
     var node = feedbackPrefab.instantiate()
     node.lifetime = 5

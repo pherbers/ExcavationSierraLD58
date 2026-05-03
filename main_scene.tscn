@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://lscs07ilg14g"]
+[gd_scene format=3 uid="uid://lscs07ilg14g"]
 
 [ext_resource type="PackedScene" uid="uid://do4voo658ul1u" path="res://nodes/toolbelt.tscn" id="1_hq1ik"]
 [ext_resource type="Script" uid="uid://bs0dqoje38owq" path="res://scripts/game_state.gd" id="1_nfk4m"]
@@ -12,43 +12,45 @@
 [ext_resource type="PackedScene" uid="uid://bqx1kbnooinrg" path="res://nodes/shop.tscn" id="9_wr18j"]
 [ext_resource type="Texture2D" uid="uid://cwieed5t23esi" path="res://assets/ui/tutorial.png" id="11_qwutr"]
 
-[node name="MainScene" type="Node2D"]
+[node name="MainScene" type="Node2D" unique_id=1986807538]
 texture_filter = 1
 
-[node name="GameState" type="Node2D" parent="." node_paths=PackedStringArray("toolbelt")]
+[node name="GameState" type="Node2D" parent="." unique_id=1643525494 node_paths=PackedStringArray("toolbelt")]
 script = ExtResource("1_nfk4m")
 toolbelt = NodePath("../Toolbelt")
 
-[node name="Toolbelt" parent="." node_paths=PackedStringArray("digSite", "collectionSpawnPoint", "shopSpawnPoint") instance=ExtResource("1_hq1ik")]
+[node name="Toolbelt" parent="." unique_id=963952286 node_paths=PackedStringArray("digSite", "collectionSpawnPoint", "shopSpawnPoint") instance=ExtResource("1_hq1ik")]
 z_index = 10
 digSite = NodePath("../DigSite")
 collectionSpawnPoint = NodePath("../CollectionSpawnPoint")
 shopSpawnPoint = NodePath("../ShopSpawnPoint")
 
-[node name="Curser" type="Node2D" parent="." node_paths=PackedStringArray("curserAnimator", "toolbelt", "label")]
+[node name="Curser" type="Node2D" parent="." unique_id=1519961411 node_paths=PackedStringArray("curserAnimator", "toolbelt", "label")]
 z_index = 50
 script = ExtResource("5_8mm7a")
 curserAnimator = NodePath("AnimatedSprite2D")
 toolbelt = NodePath("../Toolbelt")
 label = NodePath("Label")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Curser"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Curser" unique_id=1342967199]
 sprite_frames = ExtResource("6_66tet")
 animation = &"GPR"
 centered = false
 
-[node name="Label" type="Label" parent="Curser"]
+[node name="Label" type="Label" parent="Curser" unique_id=1372021236]
 offset_right = 40.0
 offset_bottom = 23.0
 text = "Shovel"
 
-[node name="BeepSound" type="AudioStreamPlayer" parent="Curser"]
+[node name="BeepSound" type="AudioStreamPlayer" parent="Curser" unique_id=1416310831]
 stream = ExtResource("5_wr18j")
 volume_db = -6.0
 
-[node name="DigSite" parent="." instance=ExtResource("6_nfk4m")]
+[node name="DigSite" parent="." unique_id=913726557 instance=ExtResource("6_nfk4m")]
+randomize = null
+dseed = null
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1292895065]
 position = Vector2(-121, 309)
 zoom = Vector2(6, 6)
 limit_enabled = false
@@ -60,28 +62,28 @@ position_smoothing_enabled = true
 script = ExtResource("7_66tet")
 scrollSpeed = 200.0
 
-[node name="Collection" parent="." node_paths=PackedStringArray("gameState") instance=ExtResource("9_7ycvg")]
+[node name="Collection" parent="." unique_id=200903687 node_paths=PackedStringArray("gameState") instance=ExtResource("9_7ycvg")]
 z_index = -1
 position = Vector2(-286, 232)
 gameState = NodePath("../GameState")
 
-[node name="CollectionSpawnPoint" type="Node2D" parent="."]
+[node name="CollectionSpawnPoint" type="Node2D" parent="." unique_id=625120896]
 position = Vector2(-158, 330)
 
-[node name="ShopSpawnPoint" type="Node2D" parent="."]
+[node name="ShopSpawnPoint" type="Node2D" parent="." unique_id=1525448894]
 position = Vector2(-181, 104)
 
-[node name="Node" type="Node" parent="."]
+[node name="Node" type="Node" parent="." unique_id=163945096]
 
-[node name="Ambiance" type="AudioStreamPlayer" parent="Node"]
+[node name="Ambiance" type="AudioStreamPlayer" parent="Node" unique_id=1864951520]
 stream = ExtResource("8_66tet")
 autoplay = true
 parameters/looping = true
 
-[node name="Shop" parent="." instance=ExtResource("9_wr18j")]
+[node name="Shop" parent="." unique_id=2027318409 instance=ExtResource("9_wr18j")]
 position = Vector2(-398, 8)
 
-[node name="Tutorial" type="Sprite2D" parent="."]
+[node name="Tutorial" type="Sprite2D" parent="." unique_id=384859752]
 modulate = Color(1, 1, 1, 0.27058825)
 position = Vector2(-305, 335)
 texture = ExtResource("11_qwutr")

@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://dmb62m1t13ccu"]
+[gd_resource type="TileSet" format=3 uid="uid://dmb62m1t13ccu"]
 
 [ext_resource type="Texture2D" uid="uid://co5wsi42nwe5p" path="res://assets/tilesets/bedrock.png" id="1_mmkcu"]
 

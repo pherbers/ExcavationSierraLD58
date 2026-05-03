@@ -1,14 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://dj3gh6hvhj8ka"]
+[gd_scene format=3 uid="uid://dj3gh6hvhj8ka"]
 
 [ext_resource type="Script" uid="uid://ci3ntjh4helve" path="res://scripts/main_menue.gd" id="1_ldtmt"]
 [ext_resource type="Theme" uid="uid://bvt2oxur0aj5e" path="res://assets/ui/ui_theme.tres" id="2_6jjk0"]
 [ext_resource type="Texture2D" uid="uid://0nkn1na5jw11" path="res://assets/Exhibit_empty.png" id="3_7k14n"]
 [ext_resource type="AudioStream" uid="uid://btprf3kvspsvu" path="res://assets/sounds/museum_ambiance.ogg" id="4_7k14n"]
 
-[node name="MainMenue" type="Node2D"]
+[node name="MainMenue" type="Node2D" unique_id=567545313]
 texture_filter = 1
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=906715835]
 position = Vector2(96, 54)
 scale = Vector2(0.99999994, 0.99999994)
 zoom = Vector2(6, 6)
@@ -17,10 +17,10 @@ limit_top = -100000000
 limit_right = 100000
 limit_bottom = 100000
 
-[node name="Menue" type="Node2D" parent="Camera2D"]
+[node name="Menue" type="Node2D" parent="Camera2D" unique_id=1605370523]
 script = ExtResource("1_ldtmt")
 
-[node name="Button" type="Button" parent="Camera2D/Menue"]
+[node name="Button" type="Button" parent="Camera2D/Menue" unique_id=1489600419]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -35,7 +35,22 @@ theme = ExtResource("2_6jjk0")
 text = "Start
 Excavation"
 
-[node name="Title" type="Label" parent="Camera2D/Menue"]
+[node name="RandomMode" type="Button" parent="Camera2D/Menue" unique_id=431745605]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 119.0
+offset_top = 70.0
+offset_right = 233.0
+offset_bottom = 97.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_6jjk0")
+text = "Random Mode"
+
+[node name="Title" type="Label" parent="Camera2D/Menue" unique_id=689076221]
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -52,7 +67,7 @@ text = "Excavation
 Sierra"
 horizontal_alignment = 1
 
-[node name="Impressum2" type="Label" parent="Camera2D/Menue"]
+[node name="Impressum2" type="Label" parent="Camera2D/Menue" unique_id=1387016577]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -74,13 +89,25 @@ Patrick Q."
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="ExhibitEmpty" type="Sprite2D" parent="Camera2D/Menue"]
+[node name="ExhibitEmpty" type="Sprite2D" parent="Camera2D/Menue" unique_id=927588262]
 z_index = -2
 texture = ExtResource("3_7k14n")
+metadata/_edit_lock_ = true
 
-[node name="Ambiance" type="AudioStreamPlayer" parent="."]
+[node name="RandomSeed" type="LineEdit" parent="Camera2D/Menue" unique_id=545671625]
+offset_left = 118.0
+offset_top = 102.0
+offset_right = 233.0
+offset_bottom = 125.0
+theme = ExtResource("2_6jjk0")
+text = "030455"
+alignment = 1
+select_all_on_focus = true
+
+[node name="Ambiance" type="AudioStreamPlayer" parent="." unique_id=2014451468]
 stream = ExtResource("4_7k14n")
 autoplay = true
 
 [connection signal="pressed" from="Camera2D/Menue/Button" to="Camera2D/Menue" method="play_game"]
+[connection signal="pressed" from="Camera2D/Menue/RandomMode" to="Camera2D/Menue" method="play_random_game"]
 [connection signal="finished" from="Ambiance" to="Ambiance" method="play"]

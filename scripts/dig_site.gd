@@ -4,6 +4,8 @@ class_name DigSite
 
 var dig_layers: Array[TileMapLayer]
 var object_layers: Array[TileMapLayer]
+@export var randomize_site: bool
+@export var dseed: int = -1
 @onready var flag_layer: TileMapLayer = $Flags/TileMapLayer
 @export var bounds: Rect2i
 
@@ -55,7 +57,7 @@ class DigInstruction:
     var max_depth: int
     var safety: bool = false
     var flag: bool = false
-    
+
 enum DigResult {
     NoOp = 0,
     OK = 1,
@@ -67,65 +69,80 @@ var lastTakenBoneUndamaged:int = 0
 var lastTakenBoneDamaged:int = 0
 
 func _ready() -> void:
+    dseed = $"/root/Global".random_seed
+    randomize_site = $"/root/Global".play_mode == ESGlobal.PlayMode.RANDOM
+    if randomize_site:
+        dino_tile_map = load("res://assets/bones/dino_tiles_stego.tres")
+
     _shovel_cells_west  = read_mask(shovel_masks[0])
     _shovel_cells_south = read_mask(shovel_masks[1])
     _shovel_cells_east  = read_mask(shovel_masks[2])
     _shovel_cells_north = read_mask(shovel_masks[3])
-    
+
     _shovel_cells_west_big  = read_mask(shovel_masks_big[0])
     _shovel_cells_south_big = read_mask(shovel_masks_big[1])
     _shovel_cells_east_big  = read_mask(shovel_masks_big[2])
     _shovel_cells_north_big = read_mask(shovel_masks_big[3])
-    
+
     _trowel_cells_e = read_mask(trowel_masks[0])
     _trowel_cells_s = read_mask(trowel_masks[1])
     _trowel_cells_w = read_mask(trowel_masks[2])
     _trowel_cells_n = read_mask(trowel_masks[3])
-    
+
     _brush_cells = read_mask(brush_mask)
-    
+
     _gpr_cells_1  = read_mask(gpr_masks[0])
     _gpr_cells_2  = read_mask(gpr_masks[1])
     _gpr_cells_3  = read_mask(gpr_masks[2])
-    
+
     for t in $DigLayers.find_children("*", "TileMapLayer"):
         dig_layers.append(t)
-        
+
     dig_layers.sort_custom(func (t1, t2): return t1.z_index > t2.z_index)
     dig_layers.pop_back()  # remove bedrock
-    
-    for t in $ObjectLayers.find_children("*", "TileMapLayer"):
+
+    # Set up bone layers
+    for t: TileMapLayer in $ObjectLayers.find_children("*", "TileMapLayer"):
+        if randomize_site:
+            t.clear()
+        t.tile_set = dino_tile_map
         object_layers.append(t)
-        
+
     object_layers.sort_custom(func (t1, t2): return t1.z_index > t2.z_index)
-    
-    var n_buried_bones = 0
-    for i in dino_tile_map.get_patterns_count():
-        var pattern = dino_tile_map.get_pattern(i)
-        var success = bury_bone_somewhere(pattern)
-        if success:
-            n_buried_bones += 1
-    print("Buried %d/%d bones under the desert sun" % [n_buried_bones, dino_tile_map.get_patterns_count()])
-    
-    # Place random flags
-    # First, at the top layer
-    for c in object_layers[0].get_used_cells():
-        place_flag(c)
-    # Second, 20 random red flags
-    for i in range(20):
-        var pos = Vector2i(randi_range(0, bounds.size.x), randi_range(0, bounds.size.y))
-        if find_top_object(pos, true).z == -1:
-            place_flag(pos, true)
-    
-    #for object_layer_index in object_layers.size():
-    #    var object_layer = object_layers[object_layer_index]
-    #   for cell in object_layer.get_used_cells():
-    #        var data = object_layer.get_cell_tile_data(cell)
-    #        if data == null or not data.has_custom_data("ObjectID"):
-    #            continue
-    #        var objname = data.get_custom_data("ObjectID")
-    #        _bone_positions[objname] = Vector3i(cell.x, cell.y, object_layer_index)
-    
+
+    if randomize_site:
+        # Switch to Stegosaurus for random mode
+        if dseed >= 0:
+            seed(dseed)
+        print("Preparing random dig site with seed %d" % dseed)
+        var n_buried_bones = 0
+        for i in dino_tile_map.get_patterns_count():
+            var pattern = dino_tile_map.get_pattern(i)
+            var success = bury_bone_somewhere(pattern)
+            if success:
+                n_buried_bones += 1
+        print("Buried %d/%d bones under the desert sun" % [n_buried_bones, dino_tile_map.get_patterns_count()])
+
+        # Place random flags
+        # First, at the top layer
+        flag_layer.clear()
+        for c in object_layers[0].get_used_cells():
+            place_flag(c)
+        # Second, 20 random red flags
+        for i in range(20):
+            var pos = Vector2i(randi_range(0, bounds.size.x), randi_range(0, bounds.size.y))
+            if find_top_object(pos, true).z == -1:
+                place_flag(pos, true)
+    else:
+        for object_layer_index in object_layers.size():
+            var object_layer = object_layers[object_layer_index]
+            for cell in object_layer.get_used_cells():
+                    var data = object_layer.get_cell_tile_data(cell)
+                    if data == null or not data.has_custom_data("ObjectID"):
+                        continue
+                    var objname = data.get_custom_data("ObjectID")
+                    _bone_positions[objname] = Vector3i(cell.x, cell.y, object_layer_index)
+
     print("Dig Site prepared, it is " + str(len(dig_layers)) + " layers deep")
 
 func _process(_delta: float) -> void:
@@ -136,12 +153,12 @@ func _process(_delta: float) -> void:
         _brush_timer = 0
         if !brush_sound.playing:
             brush_sound.play()
-                
+
     var ct = Time.get_ticks_msec()
     if _dig_queue_dirty:
         _dig_queue.sort_custom(func(d1,d2): return d1.time > d2.time)
         _dig_queue_dirty = false
-        
+
     var _hitBone = false
     while _dig_queue.size() > 0:
         var di = _dig_queue.back()
@@ -164,7 +181,7 @@ func _process(_delta: float) -> void:
 func bury_bone_somewhere(pattern: TileMapPattern) -> bool:
     var pcells = pattern.get_used_cells()
     var psize = pcells.size()
-    
+
     # Determine depth based on pattern size
     var possible_layers = []
     if psize <= 1:
@@ -178,7 +195,7 @@ func bury_bone_somewhere(pattern: TileMapPattern) -> bool:
     else:
         possible_layers = [3,3,4,4,4,5,5,5]
     var at_depth = possible_layers.pick_random() - 1
-    
+
     # Find free pos
     var success = false
     var attempts = 200
@@ -190,7 +207,7 @@ func bury_bone_somewhere(pattern: TileMapPattern) -> bool:
             return true
     push_warning("Could not bury bone of size %d after %d attempts" % [len(pcells), attempts])
     return false
-    
+
 func bury_bone(pattern: TileMapPattern, pos: Vector2i, depth: int) -> bool:
     var layer = object_layers[depth]
     var pcells = pattern.get_used_cells()
@@ -214,12 +231,12 @@ func dig_shovel(pos: Vector2i, dir: int, big: bool = false) -> DigResult:
         if layer.get_cell_tile_data(pos):
             dig_layer_index = layer_index
             break
-    
+
     if dig_layer_index == -1:
         return DigResult.NoOp
-    
+
     print("Digging at " + str(pos) + " with shovel at depth " + str(dig_layer_index))
-    
+
     for pd in get_shovel_tiles(dir, 1 if big else 0):
         var p = Vector2i(pd.x, pd.y)
         var delay: float = pd.z
@@ -235,12 +252,12 @@ func dig_trowel(pos: Vector2i, dir: int, safety: bool = true) -> DigResult:
         if layer.get_cell_tile_data(pos):
             dig_layer_index = layer_index
             break
-    
+
     if dig_layer_index == -1:
         return DigResult.NoOp
-    
+
     print("Digging at " + str(pos) + " with shovel at depth " + str(dig_layer_index))
-    
+
     for pd in get_trowel_tiles(dir):
         var p = Vector2i(pd.x, pd.y)
         var delay: float = pd.z
@@ -251,13 +268,13 @@ func dig_brush(pos: Vector2i):
     for pd in _brush_cells:
         var p = Vector2i(pd.x,pd.y) + pos
         brush_tile(Vector3i(p.x, p.y, pd.z))
-                
+
     _brush_chance += 0.01
 
 func brush_tile(p: Vector3i) -> DigResult:
     var pos = Vector2i(p.x, p.y)
     var strength = p.z
-    
+
     var base_random = randf() * strength
     if base_random > _brush_chance:
         return DigResult.NoOp
@@ -275,7 +292,7 @@ func brush_tile(p: Vector3i) -> DigResult:
         if l.get_cell_tile_data(pos):
             dig_layer_index = layer_index
             break
-            
+
     # Check neighborhood
     var layer = dig_layers[dig_layer_index]
     var r = 0
@@ -287,7 +304,7 @@ func brush_tile(p: Vector3i) -> DigResult:
         for n in neighbours:
             if layer.get_cell_tile_data(pos + n):
                 n_count += 1
-        
+
         match n_count:
             8,7,6,5: r = 0.
             4:     r = 0.05
@@ -295,7 +312,7 @@ func brush_tile(p: Vector3i) -> DigResult:
             2:     r = max(0.5, r)
             1:     r = max(0.8, r)
             0:     r = max(1., r)
-            
+
     if randf() < r:
         layer.set_cells_terrain_connect([pos], 0, -1, false)
         flag_layer.set_cell(pos, -1)
@@ -321,10 +338,10 @@ func dig_tile(pos: Vector2i, max_depth=-1, safety=false) -> DigResult:
     var dig_layer_index = -1
     var hitBone = false
     for layer_index in dig_layers.size():
-        
+
         if layer_index > max_depth and max_depth >= 0:
             return DigResult.NoOp
-            
+
         if object_layers.size() > layer_index:
             var obj_layer = object_layers[layer_index]
             var obj_data = obj_layer.get_cell_tile_data(pos)
@@ -347,13 +364,13 @@ func dig_tile(pos: Vector2i, max_depth=-1, safety=false) -> DigResult:
 
     if dig_layer_index == -1:
         return DigResult.NoOp
-        
+
     var diglayer = dig_layers[dig_layer_index]
     diglayer.set_cell(pos, -1)
     diglayer.set_cells_terrain_connect([pos], 0, -1, false)
-    
+
     flag_layer.set_cell(pos, -1)
-    
+
     if hitBone:
         if safety:
             return DigResult.HitBoneSafe
@@ -375,7 +392,7 @@ func create_damage(pos: Vector2i, bone_name: String) -> int:
 func take_object(pos: Vector2i) -> String:
     if not bounds.has_point(pos):
         return ""
-    
+
     var theObj = ""
     var obj_layer: TileMapLayer
     var obj_depth = -1
@@ -392,41 +409,41 @@ func take_object(pos: Vector2i) -> String:
         var layer = dig_layers[layer_index]
         if layer.get_cell_tile_data(pos):
             break
-    
+
     if theObj == "":
         return ""
-    
+
     # get all bone cells
     var obj_cells = obj_layer.get_used_cells()
     var bone_cells = obj_cells.filter(
-        func(c): 
+        func(c):
             var d = obj_layer.get_cell_tile_data(c)
             if d != null:
                 return d.get_custom_data("ObjectID") == theObj
             return false
     )
-    
+
     # check if bone is still dug in
     for obj_pos in bone_cells:
         if find_top_dig_layer(obj_pos).z <= obj_depth:
             bone_stuck.emit()
             return ""
-    
+
     # erase cells
     for obj_pos in bone_cells:
         obj_layer.erase_cell(Vector2i(obj_pos.x, obj_pos.y))
-    
+
     # remove damages
     var damages = $Damages.find_children(theObj + "*")
     for d in damages:
         d.queue_free()
-        
+
     lastTakenBoneUndamaged = bone_cells.size() - damages.size()
     lastTakenBoneDamaged = damages.size()
-    
+
     # remove from gpr
     _bone_positions.erase(theObj)
-    
+
     return theObj
 
 func place_multi_flag(pos: Vector2i, level: int = 2):
@@ -440,7 +457,7 @@ func place_multi_flag(pos: Vector2i, level: int = 2):
         di.flag = true
         _dig_queue.append(di)
     _dig_queue_dirty = true
-    
+
 func place_flag(pos: Vector2i, silent:bool=false):
     if not bounds.has_point(pos):
         return DigResult.NoOp
@@ -467,7 +484,7 @@ func find_top_object(pos: Vector2i, ignore_dig_layer=false) -> Vector3i:
         if layer.get_cell_tile_data(pos) and not ignore_dig_layer:
             break
     return Vector3i(pos.x, pos.y, -1)
-    
+
 func find_top_dig_layer(pos: Vector2i) -> Vector3i:
     for layer_index in dig_layers.size():
         var layer = dig_layers[layer_index]
@@ -490,7 +507,7 @@ func get_closest_bone_pos(pos: Vector2i, max_depth: int) -> Vector3i:
         if dist < closest_dist:
             closest_pos = bone_pos
             closest_dist = dist
-            
+
     return closest_pos
 
 func read_mask(mask: Texture2D) -> Array[Vector3i]:
@@ -520,7 +537,7 @@ func get_shovel_tiles(shovel_dir: int, size: int = 0) -> Array[Vector3i]:
             2: return _shovel_cells_south_big
             3: return _shovel_cells_east_big
     return _shovel_cells_north
-    
+
 func get_trowel_tiles(trowel_dir: int) -> Array[Vector3i]:
     match(trowel_dir):
         0: return _trowel_cells_n
@@ -531,7 +548,7 @@ func get_trowel_tiles(trowel_dir: int) -> Array[Vector3i]:
 
 func get_brush_tiles() -> Array[Vector3i]:
     return _brush_cells
-    
+
 func get_gpr_tiles(level: int) -> Array[Vector3i]:
     match level:
         2: return _gpr_cells_3
