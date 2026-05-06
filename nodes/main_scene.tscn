@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://lscs07ilg14g"]
 
 [ext_resource type="Script" uid="uid://bs0dqoje38owq" path="res://scripts/game_state.gd" id="1_0ab4c"]
+[ext_resource type="AudioStream" uid="uid://c3bvwrkwsfw0h" path="res://assets/sounds/sierra_stinger.ogg" id="1_s6gel"]
+[ext_resource type="Script" uid="uid://c1tt4gdyqsmvx" path="res://scripts/music_stinger.gd" id="2_7wf88"]
 [ext_resource type="PackedScene" uid="uid://do4voo658ul1u" path="res://nodes/toolbelt.tscn" id="2_ti7h6"]
 [ext_resource type="Script" uid="uid://dg6spvn56tg0o" path="res://scripts/curser.gd" id="3_os3ct"]
 [ext_resource type="SpriteFrames" uid="uid://cjj8bqaba3c5l" path="res://assets/shovel_sprite_frames.tres" id="4_3p3cd"]
@@ -82,6 +84,12 @@ position = Vector2(-181, 104)
 stream = ExtResource("9_5a24p")
 autoplay = true
 parameters/looping = true
+
+[node name="SierraStinger" type="AudioStreamPlayer" parent="Node" unique_id=285256969]
+stream = ExtResource("1_s6gel")
+volume_db = -14.604
+script = ExtResource("2_7wf88")
+time_between_plays = 45.0
 
 [node name="Shop" parent="." unique_id=2027318409 instance=ExtResource("10_ecuwd")]
 position = Vector2(-398, 8)
