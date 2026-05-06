@@ -11,6 +11,11 @@
 [ext_resource type="AudioStream" uid="uid://15wtdmr71jgl" path="res://assets/sounds/desert_ambience.ogg" id="9_5a24p"]
 [ext_resource type="PackedScene" uid="uid://bqx1kbnooinrg" path="res://nodes/shop.tscn" id="10_ecuwd"]
 [ext_resource type="Texture2D" uid="uid://cwieed5t23esi" path="res://assets/ui/tutorial.png" id="11_ucfn8"]
+[ext_resource type="Script" uid="uid://bxefubdofhkft" path="res://scripts/quit_to_main_menu.gd" id="12_os3ct"]
+[ext_resource type="Theme" uid="uid://bvt2oxur0aj5e" path="res://assets/ui/ui_theme.tres" id="12_ti7h6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3p3cd"]
+bg_color = Color(0, 0, 0, 0.5019608)
 
 [node name="MainScene" type="Node2D" unique_id=1986807538]
 texture_filter = 1
@@ -19,10 +24,10 @@ texture_filter = 1
 script = ExtResource("1_0ab4c")
 toolbelt = NodePath("../Toolbelt")
 
-[node name="Toolbelt" parent="." unique_id=963952286 node_paths=PackedStringArray("collectionSpawnPoint", "digSite", "shopSpawnPoint") instance=ExtResource("2_ti7h6")]
+[node name="Toolbelt" parent="." unique_id=963952286 node_paths=PackedStringArray("digSite", "collectionSpawnPoint", "shopSpawnPoint") instance=ExtResource("2_ti7h6")]
 z_index = 10
-collectionSpawnPoint = NodePath("../CollectionSpawnPoint")
 digSite = NodePath("../DigSite")
+collectionSpawnPoint = NodePath("../CollectionSpawnPoint")
 shopSpawnPoint = NodePath("../ShopSpawnPoint")
 
 [node name="Curser" type="Node2D" parent="." unique_id=1519961411 node_paths=PackedStringArray("curserAnimator", "toolbelt", "label")]
@@ -85,6 +90,48 @@ position = Vector2(-398, 8)
 modulate = Color(1, 1, 1, 0.27058825)
 position = Vector2(-305, 335)
 texture = ExtResource("11_ucfn8")
+
+[node name="QuitToMainMenu" type="CanvasLayer" parent="." unique_id=1968898223]
+process_mode = 3
+layer = 128
+visible = false
+script = ExtResource("12_os3ct")
+
+[node name="Panel" type="Panel" parent="QuitToMainMenu" unique_id=944344332]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3p3cd")
+
+[node name="QuitToMainMenu" type="CenterContainer" parent="QuitToMainMenu" unique_id=998510427]
+texture_filter = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -135.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(2, 2)
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("12_ti7h6")
+
+[node name="Label" type="Label" parent="QuitToMainMenu/QuitToMainMenu" unique_id=384445327]
+texture_filter = 1
+custom_minimum_size = Vector2(200, 120)
+layout_mode = 2
+text = "Quit to main menu? 
+Progress will be lost.
+
+Yes (Enter) / No (Escape)"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="bone_collected" from="GameState" to="Collection" method="_on_game_state_bone_collected"]
 [connection signal="finished" from="Curser/BeepSound" to="Curser" method="gpr_beep"]
