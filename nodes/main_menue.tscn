@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://ci3ntjh4helve" path="res://scripts/main_menue.gd" id="1_jqky1"]
 [ext_resource type="Theme" uid="uid://bvt2oxur0aj5e" path="res://assets/ui/ui_theme.tres" id="2_kq2ct"]
 [ext_resource type="Texture2D" uid="uid://0nkn1na5jw11" path="res://assets/Exhibit_empty.png" id="3_588nx"]
+[ext_resource type="Texture2D" uid="uid://cc287jcp7axyj" path="res://assets/ui/title.png" id="4_kq2ct"]
 [ext_resource type="AudioStream" uid="uid://btprf3kvspsvu" path="res://assets/sounds/museum_ambiance.ogg" id="4_vx2cb"]
 
 [node name="MainMenue" type="Node2D" unique_id=567545313]
@@ -50,23 +51,6 @@ grow_vertical = 2
 theme = ExtResource("2_kq2ct")
 text = "Random Mode"
 
-[node name="Title" type="Label" parent="Camera2D/Menue" unique_id=689076221]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 137.00002
-offset_top = -59.000004
-offset_right = 215.00002
-offset_bottom = -14.000004
-grow_horizontal = 2
-grow_vertical = 2
-theme = ExtResource("2_kq2ct")
-text = "Excavation
-Sierra"
-horizontal_alignment = 1
-
 [node name="Impressum2" type="Label" parent="Camera2D/Menue" unique_id=1387016577]
 anchors_preset = 7
 anchor_left = 0.5
@@ -103,6 +87,18 @@ theme = ExtResource("2_kq2ct")
 text = "030455"
 alignment = 1
 select_all_on_focus = true
+
+[node name="Title" type="Sprite2D" parent="Camera2D/Menue" unique_id=1475698314]
+position = Vector2(185.00002, -77.00001)
+texture = ExtResource("4_kq2ct")
+
+[node name="Label" type="Label" parent="Camera2D/Menue" unique_id=2021637767]
+offset_left = -227.0
+offset_top = 101.0
+offset_right = -197.0
+offset_bottom = 128.0
+theme = ExtResource("2_kq2ct")
+text = "v1.1"
 
 [node name="Ambiance" type="AudioStreamPlayer" parent="." unique_id=2014451468]
 stream = ExtResource("4_vx2cb")
